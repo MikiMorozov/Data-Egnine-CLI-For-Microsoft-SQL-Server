@@ -100,18 +100,18 @@ def get_table_order(connection_string):
         table_added = False
         for table in tables_with_foreign_keys.copy():
             foreign_keys = inspector.get_foreign_keys(table)
-        
+
             # Check if all referred tables are already in the order
             if all(fk['referred_table'] in table_order for fk in foreign_keys):
                 table_order.append(table)
                 tables_with_foreign_keys.remove(table)
                 table_added = True
 
-    # If no table was added, there might be a circular dependency
+        # If no table was added, there might be a circular dependency
         if not table_added:
             raise ValueError("Circular dependency detected in table relationships.")
-    
-        # Print out the order
+
+    # Print out the order
     click.echo(click.style("\nTable order for data generation:", fg='green'))
     for i, table_name in enumerate(table_order, start=1):
         print(f"{i}. {table_name}")

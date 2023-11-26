@@ -34,5 +34,7 @@ def main():
     database.extract_database_schema(connection_string)
     database.get_table_order(connection_string)
 
+    click.echo("\nData Engine will now start generating test data for your database. ")
+
 if __name__ == "__main__":
     main()
