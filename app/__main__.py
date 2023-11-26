@@ -1,7 +1,7 @@
 # #!/usr/bin/env python
 
 import click
-from database import extract_database_schema
+import database
 # from app.cli.commands import generate_dummy_data
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -19,7 +19,8 @@ def main():
     click.echo("This program generates dummy data for your application.")
 
     # Prompt the user for input
-    connection_string = click.prompt("Please provide the connection string for your database")
+    connection_string = r"DRIVER={ODBC Driver 17 for SQL Server};Server=michael\SQLEXPRESS01;Database=Hotel;Trusted_Connection=yes;"
+    # connection_string = click.prompt("Please provide the connection string for your database")
                                  
     output_dir = click.prompt("Please provide the output directory for the generated data")
 
@@ -30,7 +31,8 @@ def main():
     click.echo(f"Output Directory: {output_dir}")
     click.echo("----------------------------------------")
 
-    extract_database_schema(connection_string)
+    database.extract_database_schema(connection_string)
+    database.get_table_order(connection_string)
 
 if __name__ == "__main__":
     main()
