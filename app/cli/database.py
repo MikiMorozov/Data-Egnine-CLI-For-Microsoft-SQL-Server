@@ -3,11 +3,15 @@ from sqlalchemy.engine.reflection import Inspector
 from collections import deque
 import click
 
+CONNECTION_STRING = f"mssql+pyodbc:///?odbc_connect="
+OUTPUT_DIRECTORY = ""
+TABLE_ORDER = []
+
 #DRIVER={ODBC Driver 17 for SQL Server};Server=michael\SQLEXPRESS01;Database=Hotel;Trusted_Connection=yes;
 
-def extract_database_schema(connection_string):
+def extract_database_schema():
     """Extract the database schema including tables and their relationships."""
-    engine = create_engine(f'mssql+pyodbc:///?odbc_connect={connection_string}')
+    engine = create_engine(CONNECTION_STRING)
     metadata = MetaData()
     metadata.reflect(bind=engine)
 
@@ -22,54 +26,6 @@ def extract_database_schema(connection_string):
         for foreign_key in table.foreign_keys:
             print(f"{table.name} -> {foreign_key.target_fullname}")
 
-# def get_foreign_keys(inspector, table_name):
-#     """Get the foreign keys for the given table."""
-#     return inspector.get_foreign_keys(table_name)
-
-# def topological_sort(graph):
-#     """Sort the tables by dependencies."""
-
-# def topological_sort(graph):
-#     # Modified Kahn's algorithm for topological sorting
-#     in_degree = {vertex: 0 for vertex in graph}
-#     for vertex in graph:
-#         for neighbor in graph[vertex]:
-#             in_degree[neighbor] += 1
-
-#     queue = deque(vertex for vertex in graph if in_degree[vertex] == 0)
-#     result = []
-
-#     while queue:
-#         current_vertex = queue.popleft()
-#         result.append(current_vertex)
-
-#         for neighbor in graph[current_vertex]:
-#             in_degree[neighbor] -= 1
-#             if in_degree[neighbor] == 0:
-#                 queue.append(neighbor)
-
-#     return result
-
-# def get_table_order(connection_string):
-#     engine = create_engine(f'mssql+pyodbc:///?odbc_connect={connection_string}')
-#     inspector = Inspector.from_engine(engine)
-
-#     # Get all table names
-#     tables = inspector.get_table_names()
-
-#     # Build a graph of foreign key relationships
-#     graph = {table: [fk['referred_table'] for fk in get_foreign_keys(inspector, table)] for table in tables}
-
-#     # Perform topological sorting
-#     order = topological_sort(graph)
-
-#     # Print out the order
-#     click.echo(click.style("Table Order:", fg='green'))
-#     for i, table_name in enumerate(order, start=1):
-#         print(f"{i}. {table_name}")
-
-#     return order
-
 def get_tables_without_foreign_keys(inspector):
     # Get tables without foreign keys
     tables = inspector.get_table_names()
@@ -82,8 +38,10 @@ def get_tables_without_foreign_keys(inspector):
 
     return tables_without_foreign_keys
 
-def get_table_order(connection_string):
-    engine = create_engine(f'mssql+pyodbc:///?odbc_connect={connection_string}')
+def get_table_order():
+    global TABLE_ORDER
+
+    engine = create_engine(CONNECTION_STRING)
     inspector = Inspector.from_engine(engine)
 
     # Get tables without foreign keys
@@ -116,5 +74,4 @@ def get_table_order(connection_string):
     for i, table_name in enumerate(table_order, start=1):
         print(f"{i}. {table_name}")
 
-    return table_order
-
+    TABLE_ORDER = table_order

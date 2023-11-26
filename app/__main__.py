@@ -1,7 +1,8 @@
 # #!/usr/bin/env python
-
+from gpt import OpenAIUtils
 import click
-import database
+import cli.database
+
 # from app.cli.commands import generate_dummy_data
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -18,23 +19,27 @@ def main():
     click.echo("****************************************")
     click.echo("This program generates dummy data for your application.")
 
-    # Prompt the user for input
-    connection_string = r"DRIVER={ODBC Driver 17 for SQL Server};Server=michael\SQLEXPRESS01;Database=Hotel;Trusted_Connection=yes;"
-    # connection_string = click.prompt("Please provide the connection string for your database")
-                                 
-    output_dir = click.prompt("Please provide the output directory for the generated data")
+
+    # cli.database.CONNECTION_STRING += click.prompt('Please provide the connection string for your database')
+                         
+    # cli.database.OUTPUT_DIRECTORY = click.prompt("Please provide the output directory for the generated data")
+
+    cli.database.CONNECTION_STRING += r"DRIVER={ODBC Driver 17 for SQL Server};Server=michael\SQLEXPRESS01;Database=Hotel;Trusted_Connection=yes;"
+    cli.database.OUTPUT_DIRECTORY = "XXX"
 
     # Now you can use the provided input (connection_string, output_dir) as needed
 
     click.echo("----------------------------------------")
-    click.echo(f"Connection String: {connection_string}")
-    click.echo(f"Output Directory: {output_dir}")
+    click.echo(f"Connection String: {cli.database.CONNECTION_STRING}")
+    click.echo(f"Output Directory: {cli.database.OUTPUT_DIRECTORY}")
     click.echo("----------------------------------------")
 
-    database.extract_database_schema(connection_string)
-    database.get_table_order(connection_string)
+    cli.database.extract_database_schema()
+    cli.database.get_table_order()
 
-    click.echo("\nData Engine will now start generating test data for your database. ")
+    click.confirm("Start generating data?", abort=True)
+
+    OpenAIUtils().get_response("Hello World")
 
 if __name__ == "__main__":
     main()
