@@ -1,5 +1,5 @@
 # #!/usr/bin/env python
-from gpt import OpenAIUtils
+import gpt
 import click
 import cli.database
 
@@ -37,9 +37,12 @@ def main():
     cli.database.extract_database_schema()
     cli.database.get_table_order()
 
-    click.confirm("Start generating data?", abort=True)
+    click.confirm("\nStart generating data?", abort=True)
 
-    OpenAIUtils().get_response("Hello World")
+    # create list of all tables in the database
+    
+
+    gpt.get_response()
 
 if __name__ == "__main__":
     main()
