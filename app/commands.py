@@ -1,0 +1,7 @@
+PRINT_HELP = '--help'
+PRINT_TABLES = '-pt'
+PRINT_TABLE_RELATIONSHIPS = '-ptr'
+PRINT_TABLE_ORDER = '-pto'
+START_DATA_ENGINE = '-start'
+WRITE_DATA = '-w'
+ABORT = '-a'
