@@ -1,48 +1,36 @@
 # #!/usr/bin/env python
+import printer_util
 import gpt
-import click
-import cli.database
+from database import Database_Manager
 
-# from app.cli.commands import generate_dummy_data
-
-CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
-
-@click.command(context_settings=CONTEXT_SETTINGS)
 def main():
-    click.clear()
-    """Welcome to the Dummy Data Generator CLI.
 
-    This program generates dummy data for your application.
-    """
-    click.echo("****************************************")
-    click.echo("Welcome to the Dummy Data Generator CLI.")
-    click.echo("****************************************")
-    click.echo("This program generates dummy data for your application.")
+    printer_util.welcome()
 
+    connection_string = r"DRIVER={ODBC Driver 17 for SQL Server};Server=michael\SQLEXPRESS01;Database=Hotel;Trusted_Connection=yes;"
+    output_directory = "XXX"
 
-    # cli.database.CONNECTION_STRING += click.prompt('Please provide the connection string for your database')
-                         
-    # cli.database.OUTPUT_DIRECTORY = click.prompt("Please provide the output directory for the generated data")
+    db_manager = Database_Manager(connection_string, output_directory)
 
-    cli.database.CONNECTION_STRING += r"DRIVER={ODBC Driver 17 for SQL Server};Server=michael\SQLEXPRESS01;Database=Hotel;Trusted_Connection=yes;"
-    cli.database.OUTPUT_DIRECTORY = "XXX"
+    printer_util.input(connection_string, output_directory)
 
-    # Now you can use the provided input (connection_string, output_dir) as needed
-
-    click.echo("----------------------------------------")
-    click.echo(f"Connection String: {cli.database.CONNECTION_STRING}")
-    click.echo(f"Output Directory: {cli.database.OUTPUT_DIRECTORY}")
-    click.echo("----------------------------------------")
-
-    cli.database.extract_database_schema()
-    cli.database.get_table_order()
-
-    click.confirm("\nStart generating data?", abort=True)
-
-    # create list of all tables in the database
-    
-
-    gpt.get_response()
+    if print_option:
+        if tables_option:
+            printer_util.print_tables(db_manager)
+        elif relationships_option:
+            printer_util.print_relationships(db_manager)
+        elif order_option:
+            printer_util.print_table_order(db_manager)
+        else:
+            printer_util.print_error()
+    elif generate_option:
+        gpt.get_response()
+    elif write_option:
+        db_manager.write_to_output_directory()
+    elif abort_option:
+        printer_util.print_error("Aborting...")
+    else:
+        printer_util.print_error()
 
 if __name__ == "__main__":
     main()

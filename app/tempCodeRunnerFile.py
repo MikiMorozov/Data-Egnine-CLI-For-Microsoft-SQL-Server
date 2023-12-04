@@ -1,0 +1,1 @@
+        click.confirm("\nStart generating data?", abort=True)
