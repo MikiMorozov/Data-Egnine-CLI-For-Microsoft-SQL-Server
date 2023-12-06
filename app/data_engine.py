@@ -25,10 +25,10 @@ class Engine_Manager:
             prompt += "\n"
         
         model = 'gpt-3.5-turbo-1106'
-        user_prompt = f"This my database. I need dummy data. Generate 1 SQL Server insert statement per table with {nr_of_lines} lines of dummy data. Take into consideration the FK constraints if there are any."
+        user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet."
         gpt_response = gpt.get_response(prompt, model, user_prompt)
         begin_idx = gpt_response.find("INSERT INTO")
-        end_idx = gpt_response.find(";") + 1
+        end_idx = gpt_response.rfind(";") + 1
         self.insert_script = gpt_response[begin_idx:end_idx]
 
     def write_to_file(self):

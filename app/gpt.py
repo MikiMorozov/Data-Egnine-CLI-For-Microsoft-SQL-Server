@@ -6,7 +6,7 @@ load_dotenv()
 NR_OF_LINES = int
 
 
-prompt = """
+"""
 
 USE [Hotel]
 GO
