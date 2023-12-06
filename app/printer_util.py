@@ -48,7 +48,8 @@ def print_help():
     print("-pt: see all tables in the database")
     print("-ptr: see tables and their FK relationships")
     print("-pto: see table order for data generation")
-    print("-start: starts Data Engine")
+    print("-start -d: starts default generation of data")
+    print("-start -c: starts custom generation of data")
     print("-w: writes data to .txt in output directory")
     print("-a: aborts the program")
 
