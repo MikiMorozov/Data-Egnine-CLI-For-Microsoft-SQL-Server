@@ -3,17 +3,49 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+NR_OF_LINES = int
+
+
+prompt = """
+
+USE [Hotel]
+GO
+
+/****** Object:  Table [dbo].[contact_info]    Script Date: 12/4/2023 10:20:31 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[contact_info](
+	[contact_info_id] [int] IDENTITY(1,1) NOT NULL,
+	[phone] [nvarchar](50) NOT NULL,
+	[email] [nvarchar](50) NOT NULL,
+	[address] [nvarchar](500) NOT NULL,
+ CONSTRAINT [PK_contact_info] PRIMARY KEY CLUSTERED 
+(
+	[contact_info_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+"""
+
 def get_response():
     client = OpenAI(api_key = os.getenv("OPENAI_API_KEY"))
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are an assistant that helps me to generate INSERT scripts with dummy data for tables in an SQL Server Database."},
-            {"role": "assistant", "content": "Skip comments, give raw INSERT script."},
-            {"role": "user", "content": "Generate an SQL Server insert statement for the fictional table 'users'."},
-                ]  
+           {"role": "system", "content": prompt},
+            {"role": "user", "content": f"Generate an SQL Server insert statement with 5 lines of dummy data."},
+        ]
     )
-    print(completion.choices[0].message)
+    # )
+    # start_index = completion.choices[0].message.content.find("INSERT INTO")
+    # end_index = completion.choices[0].message.content.find(";") + 1
+    return completion.choices[0].message.content
+
 
 
 

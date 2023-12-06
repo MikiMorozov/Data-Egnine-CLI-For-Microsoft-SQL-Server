@@ -2,14 +2,14 @@ import os
 
 def welcome():
     os.system('cls')
-    """Welcome to the Dummy Data Generator 
+    """Welcome to Data Engine!
 
     This program generates dummy data for your application.
     """
     print("****************************************")
-    print("Welcome to the Dummy Data Generator ")
+    print("Welcome to Data Engine!")
+    print("v1.0")
     print("****************************************")
-    print("Ready to save some yourself some valuable time?")
 
 def prompt_for_connection_string():
     return input('Please provide the connection string for your database')
@@ -24,20 +24,23 @@ def input(connection_string, output_directory):
     print("----------------------------------------")
 
 def print_tables(Data_Manager):
-    print('Tables:')
+    print('\nTables:')
     for i, table in enumerate(Data_Manager.tables, start=1):
         print(f'{i}. {table.name}')
+    print('\n')
 
-def print_relationships(Data_Manager):
-    print('Table relationships:')
+def print_table_relationships(Data_Manager):
+    print('\nTable relationships:')
     for table_name, foreign_keys in Data_Manager.relationships.items():
         for foreign_key in foreign_keys:
-            print(f"{table_name} -> {foreign_key.target_fullname}")
+            print(f"{table_name} -> {foreign_key}")
+    print('\n')
 
 def print_table_order(Data_Manager):
-    print('Table order for data generation:')
+    print('\nTable order for data generation:')
     for i, table_name in enumerate(Data_Manager.table_order, start=1):
         print(f"{i}. {table_name}")
+    print('\n')
 
 def print_help():
     print('Help:')

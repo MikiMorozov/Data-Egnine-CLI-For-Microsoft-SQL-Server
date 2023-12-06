@@ -1,8 +1,5 @@
 import sqlalchemy
-from sqlalchemy.engine.reflection import Inspector
-from collections import deque
-import click
-
+from sqlalchemy.schema import CreateTable
 
 #DRIVER={ODBC Driver 17 for SQL Server};Server=michael\SQLEXPRESS01;Database=Hotel;Trusted_Connection=yes;
 class Database_Manager:
@@ -17,7 +14,8 @@ class Database_Manager:
     metadata: sqlalchemy.MetaData
     tables: list
     relationships: {}
-    table_order: list
+    table_order: []
+    # table_props: list
 
     # constructor
 
@@ -30,6 +28,7 @@ class Database_Manager:
         self.set_tables()
         self.set_relationships()
         self.set_table_order()
+        self.set_table_props()
 
     # setters
 
@@ -43,7 +42,7 @@ class Database_Manager:
         self.metadata = sqlalchemy.MetaData()
         self.metadata.reflect(bind=self.engine)
     def set_inspector(self):
-        self.inspector = Inspector.from_engine(self.engine)
+        self.inspector = sqlalchemy.Inspector.from_engine(self.engine)
     def set_tables(self):
         self.tables = self.metadata.tables.values()
     def set_relationships(self):
@@ -53,7 +52,7 @@ class Database_Manager:
     def set_table_order(self):
         """Get the order in which tables should be generated."""
         engine = sqlalchemy.create_engine(self.connection_string)
-        inspector = Inspector.from_engine(engine)
+        inspector = sqlalchemy.Inspector.from_engine(engine)
 
         # Get tables without foreign keys
         tables_without_foreign_keys = []
@@ -64,7 +63,7 @@ class Database_Manager:
             tables_without_foreign_keys.append(table_name)
 
         # Build the table order
-        table_order = tables_without_foreign_keys.copy()
+        self.table_order = tables_without_foreign_keys.copy()
 
         # Get tables with foreign keys
         tables_with_foreign_keys = list(set(inspector.get_table_names()) - set(tables_without_foreign_keys))
@@ -76,11 +75,22 @@ class Database_Manager:
                 foreign_keys = inspector.get_foreign_keys(table)
 
                 # Check if all referred tables are already in the order
-                if all(fk['referred_table'] in table_order for fk in foreign_keys):
-                    table_order.append(table)
+                if all(fk['referred_table'] in self.table_order for fk in foreign_keys):
+                    self.table_order.append(table)
                     tables_with_foreign_keys.remove(table)
                     table_added = True
 
             # If no table was added, there might be a circular dependency
             if not table_added:
                 raise ValueError("Circular dependency detected in table relationships.")
+            
+    def set_table_props(self):
+        """Create a string for the table creation statement."""
+        self.table_props = []
+        for table_name in self.table_order:
+            table = self.metadata.tables[table_name]
+            create_table_stmt = str(CreateTable(table).compile(self.engine)).replace('CREATE TABLE', '')
+            create_table_stmt = create_table_stmt.replace('(', '')
+            create_table_stmt = create_table_stmt.replace(')', '')
+            create_table_stmt = create_table_stmt.strip()
+            self.table_props.append(create_table_stmt)
