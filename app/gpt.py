@@ -3,35 +3,6 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-NR_OF_LINES = int
-
-
-"""
-
-USE [Hotel]
-GO
-
-/****** Object:  Table [dbo].[contact_info]    Script Date: 12/4/2023 10:20:31 PM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[contact_info](
-	[contact_info_id] [int] IDENTITY(1,1) NOT NULL,
-	[phone] [nvarchar](50) NOT NULL,
-	[email] [nvarchar](50) NOT NULL,
-	[address] [nvarchar](500) NOT NULL,
- CONSTRAINT [PK_contact_info] PRIMARY KEY CLUSTERED 
-(
-	[contact_info_id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-"""
-
 """
 User: Represents the input or message provided by the end user, typically a human interacting with the system. It's the part of the conversation where the user asks questions, provides context, or makes requests.
 

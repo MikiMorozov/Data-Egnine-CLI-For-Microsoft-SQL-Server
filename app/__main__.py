@@ -17,7 +17,7 @@ def main():
 
     db_manager = Database_Manager(connection_string, output_directory)
     engine_manager = Engine_Manager(db_manager)
-    printer_util.input(connection_string, output_directory)
+    printer_util.print_user_input(connection_string, output_directory)
 
     while True:
         user_input = input('> ')
@@ -30,22 +30,10 @@ def main():
         elif user_input == commands.PRINT_TABLE_ORDER:
             printer_util.print_table_order(db_manager)
         elif user_input == commands.GENERATE_DEFAULT:
-            start_time = time.time()
-            try: 
-                with Halo(text='generating data', spinner='dots'):
-                    engine_manager.generate_default(5)
-                    print('\n')
-                    print(Fore.LIGHTBLUE_EX + engine_manager.insert_script)
-                    print('\n')
-                    end_time = time.time()
-                    print(f"Time elapsed: {round(end_time - start_time, 3)} seconds\n")
-            except: 
-                    print("Error")
-            user_input = input('Write data to file / abort [1/2] : ')
-            if user_input == '1':
-                engine_manager.write_to_file()
-            elif user_input == '2':
-                print('Aborted')
+            printer_util.print_generate_default(engine_manager)
+            printer_util.write_prompt(engine_manager)
+        elif user_input == commands.GENERATE_CUSTOM:
+            printer_util.print_generate_custom(engine_manager)
         elif user_input == commands.WRITE_DATA:
             gpt.write_data(db_manager)
         elif user_input == commands.ABORT:
