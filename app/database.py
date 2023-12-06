@@ -85,7 +85,6 @@ class Database_Manager:
                 raise ValueError("Circular dependency detected in table relationships.")
             
     def set_table_props(self):
-        """Create a string for the table creation statement."""
         self.table_props = []
         for table_name in self.table_order:
             table = self.metadata.tables[table_name]

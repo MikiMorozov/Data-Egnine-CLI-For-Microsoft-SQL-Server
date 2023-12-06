@@ -4,6 +4,7 @@ import gpt
 import commands
 from database import Database_Manager
 from halo import Halo
+import engine
 
 def main():
 
@@ -32,7 +33,7 @@ def main():
         elif user_input == commands.START_DATA_ENGINE:
             try: 
                 with Halo(text='generating data', spinner='dots'):
-                    print(f"\n\n{gpt.get_response()}")
+                    print(f"\n\n{engine.generate_default(5, db_manager)}")
             except: print("Error")
         elif user_input == commands.WRITE_DATA:
             gpt.write_data(db_manager)
