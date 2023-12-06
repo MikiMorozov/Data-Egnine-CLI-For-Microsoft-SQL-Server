@@ -2,11 +2,10 @@
 import printer_util
 import gpt
 import commands
-from database import Database_Manager
+from database_manager import Database_Manager
 from halo import Halo
-from data_engine import Engine_Manager
+from data_engine import Data_Engine
 from colorama import Fore
-import time
 
 def main():
 
@@ -16,7 +15,7 @@ def main():
     output_directory = r"C:\Users\micha\OneDrive\Documents\DataEngineTests"
 
     db_manager = Database_Manager(connection_string, output_directory)
-    engine_manager = Engine_Manager(db_manager)
+    data_engine = Data_Engine(db_manager)
     printer_util.print_user_input(connection_string, output_directory)
 
     while True:
@@ -30,10 +29,10 @@ def main():
         elif user_input == commands.PRINT_TABLE_ORDER:
             printer_util.print_table_order(db_manager)
         elif user_input == commands.GENERATE_DEFAULT:
-            printer_util.print_generate_default(engine_manager)
-            printer_util.write_prompt(engine_manager)
+            printer_util.print_generate_default(data_engine)
+            printer_util.write_prompt(data_engine)
         elif user_input == commands.GENERATE_CUSTOM:
-            printer_util.print_generate_custom(engine_manager)
+            printer_util.print_generate_custom(data_engine)
         elif user_input == commands.WRITE_DATA:
             gpt.write_data(db_manager)
         elif user_input == commands.ABORT:

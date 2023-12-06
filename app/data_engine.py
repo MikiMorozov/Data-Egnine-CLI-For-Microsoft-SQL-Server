@@ -1,11 +1,10 @@
 import gpt
-import database
-import commands
+from database_manager import Database_Manager
 from datetime import datetime
 
-class Engine_Manager:
+class Data_Engine:
     # properties
-    db_manager: database.Database_Manager
+    db_manager: Database_Manager
     insert_script: str
 
     # constructor
