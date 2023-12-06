@@ -1,6 +1,7 @@
 import gpt
 import database
 import commands
+from datetime import datetime
 
 class Engine_Manager:
     # properties
@@ -25,9 +26,13 @@ class Engine_Manager:
         
         model = 'gpt-3.5-turbo-1106'
         user_prompt = f"This my database. I need dummy data. Generate 1 SQL Server insert statement per table with {nr_of_lines} lines of dummy data. Take into consideration the FK constraints if there are any."
-        self.insert_script = gpt.get_response(prompt, model, user_prompt)
+        gpt_response = gpt.get_response(prompt, model, user_prompt)
+        begin_idx = gpt_response.find("INSERT INTO")
+        end_idx = gpt_response.find(";") + 1
+        self.insert_script = gpt_response[begin_idx:end_idx]
 
     def write_to_file(self):
-        file = open(f"{self.db_manager.output_directory}\\insert_script.sql", "w")
+        timestamp = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+        file = open(f"{self.db_manager.output_directory}\\data_engine_insert_script_{self.db_manager.db_name}_{timestamp}.sql", "w")
         file.write(self.insert_script)
         file.close()

@@ -12,10 +12,11 @@ class Database_Manager:
     engine: sqlalchemy.Engine
     inspector = sqlalchemy.Inspector
     metadata: sqlalchemy.MetaData
+    db_name: str
     tables: list
     relationships: {}
     table_order: []
-    # table_props: list
+    table_props: list
 
     # constructor
 
@@ -23,8 +24,9 @@ class Database_Manager:
         self.set_connection_string(connection_string)
         self.set_output_directory(output_directory)
         self.set_engine()
-        self.set_metadata()
         self.set_inspector()
+        self.set_metadata()
+        self.set_db_name()
         self.set_tables()
         self.set_relationships()
         self.set_table_order()
@@ -38,11 +40,13 @@ class Database_Manager:
         self.output_directory = output_directory
     def set_engine(self):
         self.engine = sqlalchemy.create_engine(self.connection_string)
+    def set_inspector(self):
+        self.inspector = sqlalchemy.Inspector.from_engine(self.engine)
     def set_metadata(self):
         self.metadata = sqlalchemy.MetaData()
         self.metadata.reflect(bind=self.engine)
-    def set_inspector(self):
-        self.inspector = sqlalchemy.Inspector.from_engine(self.engine)
+    def set_db_name(self):
+        self.db_name = self.connection_string.split(';')[2].split('=')[1]
     def set_tables(self):
         self.tables = self.metadata.tables.values()
     def set_relationships(self):
