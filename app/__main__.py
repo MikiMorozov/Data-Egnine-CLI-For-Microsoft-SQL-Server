@@ -3,6 +3,7 @@ import printer_util
 import gpt
 import commands
 from database import Database_Manager
+from halo import Halo
 
 def main():
 
@@ -16,8 +17,7 @@ def main():
     printer_util.input(connection_string, output_directory)
 
 
-    for string in db_manager.table_props:
-        print(string)
+
 
     while True:
         user_input = input('> ')
@@ -30,7 +30,10 @@ def main():
         elif user_input == commands.PRINT_TABLE_ORDER:
             printer_util.print_table_order(db_manager)
         elif user_input == commands.START_DATA_ENGINE:
-            print(gpt.get_response())
+            try: 
+                with Halo(text='generating data', spinner='dots'):
+                    print(f"\n\n{gpt.get_response()}")
+            except: print("Error")
         elif user_input == commands.WRITE_DATA:
             gpt.write_data(db_manager)
         elif user_input == commands.ABORT:

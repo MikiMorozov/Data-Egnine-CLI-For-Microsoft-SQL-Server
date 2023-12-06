@@ -38,12 +38,9 @@ def get_response():
         model="gpt-3.5-turbo",
         messages=[
            {"role": "system", "content": prompt},
-            {"role": "user", "content": f"Generate an SQL Server insert statement with 5 lines of dummy data."},
+            {"role": "user", "content": f"Generate 1 SQL Server insert statement with 5 lines of dummy data. End with ';'"},
         ]
     )
-    # )
-    # start_index = completion.choices[0].message.content.find("INSERT INTO")
-    # end_index = completion.choices[0].message.content.find(";") + 1
     return completion.choices[0].message.content
 
 
