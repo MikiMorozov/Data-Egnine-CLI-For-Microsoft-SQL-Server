@@ -72,7 +72,7 @@ def print_error():
 def print_abort_message():
     print('Aborting...')
 
-def print_generate_default(engine_manager, nr_of_lines):
+def print_response(engine_manager, nr_of_lines):
     start_time = time.time()
     try: 
         with Halo(text='generating data...'):
