@@ -20,6 +20,8 @@ def main():
     # for table in db_manager.table_props:
     #     printer_util.print_table(table_prop)
 
+    engine_running = False
+
     while True:
         user_input = input('> ')
         if user_input == commands.PRINT_HELP:
@@ -32,16 +34,12 @@ def main():
             printer_util.print_table_order(db_manager)
         elif user_input == commands.GENERATE_DEFAULT:
             printer_util.print_generate_default(data_engine)
-            while user_input is not 4:
+            while user_input is not 2:
                 user_input = printer_util.write_prompt()
                 if user_input == '1':
-                    data_engine.write_to_file()
-                elif user_input == '2':
                     printer_util.print_generate_default(data_engine)
                     printer_util.write_prompt(data_engine)
-                elif user_input == '3':
-                    db_manager.insert_into_db()
-                elif user_input == '4':
+                elif user_input == '2':
                     print('Aborted')
         elif user_input == commands.GENERATE_CUSTOM:
             printer_util.print_generate_custom(data_engine)
