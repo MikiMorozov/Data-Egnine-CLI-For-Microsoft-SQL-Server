@@ -4,6 +4,7 @@ from datetime import datetime
 
 class Data_Engine:
     # properties
+    
     db_manager: Database_Manager
     insert_script: str
     requirement_list: []
@@ -19,15 +20,15 @@ class Data_Engine:
         self.db_manager = db_manager
 
     def generate(self, nr_of_lines):
-        prompt = ''
-
-        for string in self.db_manager.table_props:
-            prompt += string
-            prompt += "\n"
+        
+        prompt = self.format_prompt()
         
         model = 'gpt-4-1106-preview'
-        user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated."
+        user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
         gpt_response = gpt.get_response(prompt, model, user_prompt)
+
+        # format the response
+
         begin_idx = gpt_response.find("INSERT INTO")
         end_idx = gpt_response.rfind(";") + 1
         self.insert_script = gpt_response[begin_idx:end_idx]
@@ -49,3 +50,24 @@ class Data_Engine:
     def clear(self):
         self.insert_script = ''
         self.requirement_list = []
+
+    def format_prompt(self):
+        prompt = ''
+
+        for string in self.requirement_list:
+            prompt += string
+            prompt += "\n"
+
+        return prompt
+    
+    def format_user_prompt(self, nr_of_lines):
+        if len(self.requirement_list) == 0:
+            prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. "
+        else:
+            prompt + self.format_requirments()
+    
+    def format_requirments(self):
+        requirements = 'Take into consideration the following requirements: \n'
+        for i, string in self.requirement_list:
+            requirements += f"{i}. {string}\n"
+        return requirements
