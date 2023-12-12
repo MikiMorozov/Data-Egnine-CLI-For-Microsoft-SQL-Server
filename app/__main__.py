@@ -75,11 +75,11 @@ def main():
                     if match:
                         prompt = match.group(1)
                         data_engine.add_prompt(prompt)
-                        printer_util.print_prompt_added(prompt)
+                        printer_util.print_req_added(prompt)
                     else:
                         print('Invalid input for -ap command')
             elif user_input == commands['PRINT_REQUIREMENTS']:
-                printer_util.print_prompts(data_engine)
+                printer_util.print_reqs(data_engine)
         else:
             printer_util.handle_not_running_commands(user_input)
 
