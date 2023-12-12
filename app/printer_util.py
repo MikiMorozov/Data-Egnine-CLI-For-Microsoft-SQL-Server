@@ -115,3 +115,6 @@ def handle_not_running_commands(user_input):
 
     if generate_match or add_prompt_match:
         print_engine_not_running()
+
+def print_prompt_added(prompt):
+    print(f"Prompt added: \"{prompt}\". Use -p to see all prompts.")

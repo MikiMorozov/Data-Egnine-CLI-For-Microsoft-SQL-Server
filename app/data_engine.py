@@ -6,7 +6,7 @@ class Data_Engine:
     # properties
     db_manager: Database_Manager
     insert_script: str
-    prompt_list: list
+    prompt_list: []
 
     # constructor
     def __init__(self, db_manager):
@@ -42,6 +42,7 @@ class Data_Engine:
         self.db_manager.insert_into_db(self.insert_script) 
 
     def add_prompt(self, prompt):
+        self.prompt_list = []
         self.prompt_list.append(prompt)
 
     def clear(self):
