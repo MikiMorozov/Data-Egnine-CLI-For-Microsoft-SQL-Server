@@ -58,9 +58,7 @@ def main():
                 match = re.match(commands['WRITE_DATA'], user_input)
                 if match:
                     output_directory = match.group(1)
-                    data_engine.set_output_directory(output_directory)
-                    printer_util.print_output_directory(output_directory)
-                data_engine.write_to_file()
+                    data_engine.write_to_file(output_directory)
 
             elif user_input == commands['INSERT_INTO_DB']:
                 data_engine.insert_into_db()
