@@ -40,8 +40,7 @@ class Data_Engine:
         # TODO: implement this
         self.db_manager.insert_into_db(self.insert_script) 
 
-    def add_prompt(self, prompt):
-        self.requirement_list = []
+    def add_requirement(self, prompt):
         self.requirement_list.append(prompt)
 
     def clear(self):
