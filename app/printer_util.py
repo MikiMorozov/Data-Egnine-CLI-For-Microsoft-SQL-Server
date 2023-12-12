@@ -122,10 +122,10 @@ def print_req_added(requirement):
     print(f"Requirement added: \"{requirement}\". Use -pr to see all requirements.")
 
 def print_reqs(engine_manager):
-    if len(engine_manager.prompt_list) == 0:
+    if len(engine_manager.requirement_list) == 0:
         print('No requirements added.')
         return
     print('\nRequirements:\n')
-    for i, req in enumerate(engine_manager.prompt_list, start=1):
+    for i, req in enumerate(engine_manager.requirement_list, start=1):
         print(f"{i}. {req}")
     print('\n')
