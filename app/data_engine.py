@@ -30,11 +30,23 @@ class Data_Engine:
         response = gpt.get_response(prompt, self.model, user_prompt)
         self.format_response(response)
 
-    def write_to_file(self):
-        timestamp = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
-        file = open(f"{self.db_manager.output_directory}\\data_engine_insert_script_{self.db_manager.db_name}_{timestamp}.sql", "w")
-        file.write(self.insert_script)
-        file.close()
+    def write_to_file(output_directory, self):
+        try:
+            timestamp = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+            file_path = f"{output_directory}\\data_engine_insert_script_{self.db_manager.db_name}_{timestamp}.sql"
+
+            with open(file_path, "w") as file:
+                file.write(self.insert_script)
+
+            print(f"Data written to: {file_path}")
+
+        except FileNotFoundError as e:
+            print(f"Error: The specified directory '{output_directory}' does not exist.")
+        except PermissionError as e:
+            print(f"Error: Permission denied. Unable to write to '{output_directory}'.")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
 
     def insert_into_db(self):
         # TODO: implement this
