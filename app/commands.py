@@ -9,5 +9,6 @@ commands_dict = {
     'QUIT': '-q',
     'INSERT_INTO_DB': '-idb',
     'GENERATE': r'-g\s+(\d+)$',
-    'ADD_POMPT': r'-ap\s+(.+)$'
+    'ADD_POMPT': r'-ap\s+(.+)$',
+    'PRINT_PROMPTS': '-p'
     }

@@ -75,6 +75,7 @@ def main():
                     if match:
                         prompt = match.group(1)
                         data_engine.add_prompt(prompt)
+                        printer_util.print_add_prompt(prompt)
                     else:
                         print('Invalid input for -ap command')
         else:
