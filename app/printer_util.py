@@ -90,8 +90,6 @@ def print_generate_default(engine_manager):
             print(f"Time elapsed: {round(end_time - start_time, 3)} seconds\n")
     except: 
             print("Error")
-def write_prompt():
-    return input('Try again [1] Abort[2] : ')
 
 def print_engine_not_running():
     print('Engine is not running. Please start the engine before executing this command. Use -h or --help for help.')
@@ -100,4 +98,7 @@ def print_invalid_command(user_input):
     print(f"Invalid command: \'{user_input}\'. Use -h or --help for help.")
 
 def print_engine_started():
-    print('ENGINE STARTED _ _ _')
+    print(Fore.LIGHTBLUE_EX + 'ENGINE STARTED _ _ _')
+
+def print_engine_stopped():
+    print(Fore.LIGHTBLUE_EX + 'ENGINE STOPPED _ _ _')

@@ -5,7 +5,7 @@ from commands import commands_dict as commands
 from database_manager import Database_Manager
 from halo import Halo
 from data_engine import Data_Engine
-from colorama import Fore
+from colorama import Fore, Style
 
 def main():
 
@@ -23,7 +23,10 @@ def main():
     engine_running = False
 
     while True:
-        user_input = input('> ').strip().lower()
+        if not engine_running:
+            user_input = input('> ').strip().lower()
+        else:
+            user_input = input(Fore.LIGHTBLUE_EX + '>>> ' + Style.RESET_ALL).strip().lower()
 
         if user_input not in commands.values():
             printer_util.print_invalid_command(user_input)
@@ -37,15 +40,9 @@ def main():
         elif user_input == commands['PRINT_TABLE_ORDER']:
             printer_util.print_table_order(db_manager)
         elif user_input == commands['GENERATE_DEFAULT']:
-            engine_running = True
+            engine_running = True 
+            printer_util.print_engine_started()
             printer_util.print_generate_default(data_engine)
-            while user_input != '2':
-                user_input = printer_util.write_prompt()
-                if user_input == '1':
-                    printer_util.print_generate_default(data_engine)
-                    printer_util.write_prompt()
-                elif user_input == '2':
-                    print('Aborted')
         elif user_input == commands['GENERATE_CUSTOM']:
             printer_util.print_generate_custom(data_engine)
         elif user_input == commands['WRITE_DATA'] and engine_running:
@@ -57,6 +54,10 @@ def main():
         #     # db_manager.insert_into_db()
         # elif user_input == commands['INSERT_INTO_DB'] and not engine_running:
         #     printer_util.print_engine_not_running()
+        elif user_input == commands['STOP']:
+            engine_running = False
+            printer_util.print_engine_stopped()
+            data_engine.insert_script = ''
         elif user_input == commands['ABORT']:
             break
 
