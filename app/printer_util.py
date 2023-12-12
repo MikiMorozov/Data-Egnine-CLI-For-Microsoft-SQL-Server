@@ -15,10 +15,11 @@ HELP_TEXT = """
     -pto                see table order for data generation
     -start              starts engine: saves latest prompt in memory
     -stop               stops engine: clears latest generated data and prompts from memory
-    -w                  writes data to file when engine is running
+    -w <path>           writes data to file when engine is running
     -idb                inserts data into database when engine is running
     -g <number>         generates data when engine is running: specify the number of lines of data data to be generated for each table
-    -ar <requirement>   adds prompt to the prompt list when engine is running. Prompts are used to customize the data generation output.
+    -ar <requirement>   adds requirement to the requirement list when engine is running. Prompts are used to customize the data generation output.
+    -dr <number>        deletes requirement from the requirement list when engine is running
     -pr                 prints all save requirements
     -q                  quits the program
 
