@@ -16,7 +16,7 @@ HELP_TEXT = """
     -w              writes data to file
     -idb            inserts data into database
     -a              aborts the program
-    
+
     """
 
 def welcome():
@@ -92,3 +92,6 @@ def print_generate_default(engine_manager):
             print("Error")
 def write_prompt(engine_manager, database_manager):
     return input('Try again [1] Abort[2] : ')
+
+def print_engine_not_running():
+    print('Engine is not running. Please start the engine before executing this command. Use -h or --help for help.')

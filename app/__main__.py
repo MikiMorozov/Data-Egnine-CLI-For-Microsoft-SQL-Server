@@ -21,9 +21,10 @@ def main():
     #     printer_util.print_table(table_prop)
 
     engine_running = False
+    
 
     while True:
-        user_input = input('> ')
+        user_input = input('> ').trim().lower()
         if user_input == commands.PRINT_HELP:
             printer_util.print_help()
         elif user_input == commands.PRINT_TABLES:
@@ -33,6 +34,7 @@ def main():
         elif user_input == commands.PRINT_TABLE_ORDER:
             printer_util.print_table_order(db_manager)
         elif user_input == commands.GENERATE_DEFAULT:
+            engine_running = True
             printer_util.print_generate_default(data_engine)
             while user_input is not 2:
                 user_input = printer_util.write_prompt()
@@ -43,8 +45,10 @@ def main():
                     print('Aborted')
         elif user_input == commands.GENERATE_CUSTOM:
             printer_util.print_generate_custom(data_engine)
-        elif user_input == commands.WRITE_DATA:
+        elif user_input == commands.WRITE_DATA and engine_running:
             gpt.write_data(db_manager)
+        elif user_input == commands.WRITE_DATA and not engine_running:
+            printer_util.print_engine_not_running()
         elif user_input == commands.ABORT:
             break
 
