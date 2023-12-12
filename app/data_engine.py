@@ -43,3 +43,7 @@ class Data_Engine:
 
     def add_prompt(self, prompt):
         self.prompt_list.append(prompt)
+
+    def clear(self):
+        self.insert_script = ''
+        self.prompt_list = []

@@ -47,7 +47,7 @@ def main():
         elif user_input == commands['STOP_ENGINE']:
             engine_running = False
             printer_util.print_engine_stopped()
-            data_engine.insert_script = ''
+            data_engine.clear()
         elif user_input == commands['QUIT']:
             break
 
