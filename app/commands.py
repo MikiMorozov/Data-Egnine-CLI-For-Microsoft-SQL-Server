@@ -5,7 +5,7 @@ commands_dict = {
     'PRINT_TABLE_ORDER': '-pto',
     'START_ENGINE': '--start',
     'STOP_ENGINE': '--stop',
-    'WRITE_DATA': '-w',
+    'WRITE_DATA': r'-w\s+(.+)$',
     'QUIT': '-q',
     'INSERT_INTO_DB': '-idb',
     'GENERATE': r'-g\s+(\d+)$',
