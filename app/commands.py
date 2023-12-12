@@ -10,5 +10,6 @@ commands_dict = {
     'INSERT_INTO_DB': '-idb',
     'GENERATE': r'-g\s+(\d+)$',
     'ADD_REQUIREMENT': r'-ar\s+(.+)$',
+    'DELETE_REQUIREMENT': r'-dr\s+(\d+)$',
     'PRINT_REQUIREMENTS': '-pr'
     }

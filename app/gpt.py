@@ -19,7 +19,7 @@ def get_response(prompt, model, user_prompt):
             model=model,
             messages=[
                 {"role": "system", "content": prompt},
-                {"role": "assistant", "content": 'I am a highly intelligent assistant that can generate SQL Server INSERT statements with dummy data for your tables. I will only give code snippets and leave out comments. I will also take into consideration the foreign key constraints if there are any. I will generate 1 SQL Server INSERT statement with 100 lines of dummy data for each individual table. I will output everything in 1 code snippet. I will not generate IDs if they are auto-generated.'},
+                {"role": "assistant", "content": 'I am a highly intelligent assistant that can generate SQL Server INSERT statements with dummy data for your tables. I will only give code snippets and leave out comments.'},
                 {"role": "user", "content": user_prompt},
             ]
         )
