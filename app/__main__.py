@@ -21,7 +21,7 @@ def main():
     #     printer_util.print_table(table_prop)
 
     engine_running = False
-
+    temp_gpt_response = str
 
     while True:
         user_input = input('> ').trim().lower()
@@ -46,7 +46,8 @@ def main():
         elif user_input == commands.GENERATE_CUSTOM:
             printer_util.print_generate_custom(data_engine)
         elif user_input == commands.WRITE_DATA and engine_running:
-            gpt.write_data(db_manager)
+            printer_util.prompt_for_output_directory()
+            data_engine.write_to_file()
         elif user_input == commands.WRITE_DATA and not engine_running:
             printer_util.print_engine_not_running()
         elif user_input == commands.INSERT_INTO_DB and engine_running:
