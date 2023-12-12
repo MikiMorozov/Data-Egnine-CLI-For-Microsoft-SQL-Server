@@ -8,7 +8,6 @@ class Database_Manager:
     # properties
 
     connection_string: str
-    output_directory: str
     engine: sqlalchemy.Engine
     inspector = sqlalchemy.Inspector
     metadata: sqlalchemy.MetaData
@@ -22,7 +21,6 @@ class Database_Manager:
 
     def __init__(self, connection_string, output_directory):
         self.set_connection_string(connection_string)
-        self.set_output_directory(output_directory)
         self.set_engine()
         self.set_inspector()
         self.set_metadata()
@@ -36,8 +34,6 @@ class Database_Manager:
 
     def set_connection_string(self, connection_string):
         self.connection_string = f"mssql+pyodbc:///?odbc_connect=" + connection_string
-    def set_output_directory(self, output_directory):
-        self.output_directory = output_directory
     def set_engine(self):
         self.engine = sqlalchemy.create_engine(self.connection_string)
     def set_inspector(self):

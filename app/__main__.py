@@ -54,14 +54,18 @@ def main():
         # engine-dependent commands
 
         if engine_running:
-            if user_input == commands['WRITE_DATA']:
+            if re.match(commands['WRITE_DATA'], user_input):
+                match = re.match(commands['WRITE_DATA'], user_input)
+                if match:
+                    output_directory = match.group(1)
+                    data_engine.set_output_directory(output_directory)
+                    printer_util.print_output_directory(output_directory)
                 data_engine.write_to_file()
 
             elif user_input == commands['INSERT_INTO_DB']:
                 data_engine.insert_into_db()
 
             elif re.match(commands['GENERATE'], user_input):
-                if engine_running:
                     match = re.match(commands['GENERATE'], user_input)
                     if match:
                         nr_of_lines = int(match.group(1))
@@ -70,7 +74,6 @@ def main():
                         print('Invalid input for -g command')
 
             elif re.match(commands['ADD_REQUIREMENT'], user_input):
-                if engine_running:
                     match = re.match(commands['ADD_REQUIREMENT'], user_input)
                     if match:
                         prompt = match.group(1)
@@ -83,7 +86,6 @@ def main():
 
             # delete requirement
             elif re.match(commands['DELETE_REQUIREMENT'], user_input):
-                if engine_running:
                     match = re.match(commands['DELETE_REQUIREMENT'], user_input)
                     if match:
                         index = int(match.group(1))
