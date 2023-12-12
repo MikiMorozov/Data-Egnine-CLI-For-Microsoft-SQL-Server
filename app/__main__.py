@@ -25,6 +25,10 @@ def main():
 
     while True:
         user_input = input('> ').strip().lower()
+
+        if user_input not in commands:
+            printer_util.print_invalid_command(user_input)
+
         if user_input == commands['PRINT_HELP']:
             printer_util.print_help()
         elif user_input == commands['PRINT_TABLES']:

@@ -95,3 +95,6 @@ def write_prompt(engine_manager, database_manager):
 
 def print_engine_not_running():
     print('Engine is not running. Please start the engine before executing this command. Use -h or --help for help.')
+
+def print_invalid_command(user_input):
+    print(f"Invalid command: \'{user_input}\'. Use -h or --help for help.")
