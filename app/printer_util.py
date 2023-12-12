@@ -72,13 +72,13 @@ def print_error():
 def print_abort_message():
     print('Aborting...')
 
-def print_response(engine_manager, nr_of_lines):
+def print_response(data_engine, nr_of_lines):
     start_time = time.time()
     try: 
         with Halo(text='generating data...'):
-            engine_manager.generate(nr_of_lines)
+            data_engine.generate(nr_of_lines)
             print('\n')
-            print(Fore.LIGHTBLUE_EX + engine_manager.insert_script)
+            print(Fore.LIGHTBLUE_EX + data_engine.insert_script)
             print('\n')
             end_time = time.time()
             print(f"Time elapsed: {round(end_time - start_time, 3)} seconds\n")

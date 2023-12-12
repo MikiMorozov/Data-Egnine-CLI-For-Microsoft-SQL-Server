@@ -8,12 +8,14 @@ class Data_Engine:
     db_manager: Database_Manager
     insert_script: str
     requirement_list: []
-    model = 'gpt-4-1106-preview'
+    model = str
 
     # constructor
     def __init__(self, db_manager):
         self.db_manager = db_manager
         self.requirement_list = []
+        self.model = 'gpt-4-1106-preview'
+
 
     # setters
     def set_db_manager(self, db_manager):
@@ -24,9 +26,8 @@ class Data_Engine:
         
         prompt = self.format_prompt()
         user_prompt = self.format_user_prompt(nr_of_lines)
-        model = 'gpt-4-1106-preview'
         
-        response = gpt.get_response(prompt, model, user_prompt)
+        response = gpt.get_response(prompt, self.model, user_prompt)
         self.format_response(response)
 
     def write_to_file(self):
@@ -50,21 +51,23 @@ class Data_Engine:
     def format_prompt(self):
         prompt = ''
 
-        for string in self.requirement_list:
+        for string in self.db_manager.table_props:
             prompt += string
             prompt += "\n"
 
         return prompt
     
     def format_user_prompt(self, nr_of_lines):
-        if len(self.requirement_list) == 0:
-            prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
-        else:
-            prompt + self.format_requirments()
+        prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
+        if len(self.requirement_list) != 0:
+            requirements = self.format_requirments()
+            prompt += requirements
+        return prompt
+
     
     def format_requirments(self):
         requirements = 'Take into consideration the following requirements: \n'
-        for i, string in self.requirement_list:
+        for i, string in enumerate(self.requirement_list, start=1):
             requirements += f"{i}. {string}\n"
         return requirements
     
