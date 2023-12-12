@@ -76,7 +76,7 @@ def print_response(engine_manager, nr_of_lines):
     start_time = time.time()
     try: 
         with Halo(text='generating data...'):
-            engine_manager.generate_default(nr_of_lines)
+            engine_manager.generate(nr_of_lines)
             print('\n')
             print(Fore.LIGHTBLUE_EX + engine_manager.insert_script)
             print('\n')
