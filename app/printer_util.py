@@ -3,6 +3,22 @@ import time
 from colorama import Fore
 from halo import Halo
 
+HELP_TEXT = """
+
+    The following options are available:
+
+    --help          see help
+    -pt             see all tables in the database
+    -ptr            see tables and their FK relationships
+    -pto            see table order for data generation
+    -start -d       starts default generation of data
+    -start -c       starts custom generation of data
+    -w              writes data to file
+    -idb            inserts data into database
+    -a              aborts the program
+    
+    """
+
 def welcome():
     os.system('cls')
     """Welcome to Data Engine!
@@ -46,15 +62,7 @@ def print_table_order(Data_Manager):
     print('\n')
 
 def print_help():
-    print('Help:')
-    print("The following options are available:")
-    print("-pt: see all tables in the database")
-    print("-ptr: see tables and their FK relationships")
-    print("-pto: see table order for data generation")
-    print("-start -d: starts default generation of data")
-    print("-start -c: starts custom generation of data")
-    print("-w: writes data to .txt in output directory")
-    print("-a: aborts the program")
+    print(HELP_TEXT)
 
 def print_error():
     print('Please specify a valid command. Use -h or --help for help.')
@@ -82,12 +90,5 @@ def print_generate_default(engine_manager):
             print(f"Time elapsed: {round(end_time - start_time, 3)} seconds\n")
     except: 
             print("Error")
-def write_prompt(engine_manager):
-    user_input = input('Write data to file [1] Try again [2] Abort[3] : ')
-    if user_input == '1':
-        engine_manager.write_to_file()
-    elif user_input == '2':
-        print_generate_default(engine_manager)
-        write_prompt(engine_manager)
-    elif user_input == '2':
-        print('Aborted')
+def write_prompt(engine_manager, database_manager):
+    return input('Try again [1] Abort[2] : ')

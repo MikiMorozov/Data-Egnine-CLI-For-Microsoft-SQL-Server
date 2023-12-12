@@ -97,3 +97,7 @@ class Database_Manager:
             create_table_stmt = create_table_stmt.replace(')', '')
             create_table_stmt = create_table_stmt.strip()
             self.table_props.append(create_table_stmt)
+
+    def insert_into_db(self, insert_stmt):
+        with self.engine.connect() as con:
+            con.execute(insert_stmt)
