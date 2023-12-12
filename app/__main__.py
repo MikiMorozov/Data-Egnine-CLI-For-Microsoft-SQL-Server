@@ -74,7 +74,7 @@ def main():
                     match = re.match(commands['ADD_REQUIREMENT'], user_input)
                     if match:
                         prompt = match.group(1)
-                        data_engine.add_prompt(prompt)
+                        data_engine.add_requirement(prompt)
                         printer_util.print_req_added(prompt)
                     else:
                         print('Invalid input for -ap command')

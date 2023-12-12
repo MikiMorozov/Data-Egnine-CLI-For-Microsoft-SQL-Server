@@ -102,8 +102,8 @@ def handle_not_running_commands(user_input):
         commands['WRITE_DATA'],
         commands['INSERT_INTO_DB'],
         commands['GENERATE'],
-        commands['ADD_POMPT'],
-        commands['PRINT_PROMPTS']
+        commands['ADD_REQUIREMENT'],
+        commands['PRINT_REQUIREMENTS']
     ]
 
     for cmd in matching_commands:
@@ -113,7 +113,7 @@ def handle_not_running_commands(user_input):
 
     # Check if user_input matches the patterns for 'GENERATE' or 'ADD_POMPT'
     generate_match = re.match(commands['GENERATE'], user_input)
-    add_prompt_match = re.match(commands['ADD_POMPT'], user_input)
+    add_prompt_match = re.match(commands['ADD_REQUIREMENT'], user_input)
 
     if generate_match or add_prompt_match:
         print_engine_not_running()
