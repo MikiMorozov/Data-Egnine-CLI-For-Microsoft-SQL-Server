@@ -101,7 +101,8 @@ def handle_not_running_commands(user_input):
         commands['WRITE_DATA'],
         commands['INSERT_INTO_DB'],
         commands['GENERATE'],
-        commands['ADD_POMPT']
+        commands['ADD_POMPT'],
+        commands['PRINT_PROMPTS']
     ]
 
     for cmd in matching_commands:
