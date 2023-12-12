@@ -81,7 +81,7 @@ def print_generate_default(engine_manager):
     nr_of_lines = prompt_number_of_lines()
     start_time = time.time()
     try: 
-        with Halo(text='generating data', spinner='dots'):
+        with Halo(text='generating data...'):
             engine_manager.generate_default(nr_of_lines)
             print('\n')
             print(Fore.LIGHTBLUE_EX + engine_manager.insert_script)
@@ -90,7 +90,7 @@ def print_generate_default(engine_manager):
             print(f"Time elapsed: {round(end_time - start_time, 3)} seconds\n")
     except: 
             print("Error")
-def write_prompt(engine_manager, database_manager):
+def write_prompt():
     return input('Try again [1] Abort[2] : ')
 
 def print_engine_not_running():
@@ -98,3 +98,6 @@ def print_engine_not_running():
 
 def print_invalid_command(user_input):
     print(f"Invalid command: \'{user_input}\'. Use -h or --help for help.")
+
+def print_engine_started():
+    print('ENGINE STARTED _ _ _')

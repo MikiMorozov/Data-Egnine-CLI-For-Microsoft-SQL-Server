@@ -1,4 +1,4 @@
-commands = {
+commands_dict = {
     'PRINT_HELP': '--help',
     'PRINT_TABLES': '-pt',
     'PRINT_TABLE_RELATIONSHIPS': '-ptr',

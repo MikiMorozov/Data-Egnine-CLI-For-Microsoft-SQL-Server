@@ -24,7 +24,7 @@ class Data_Engine:
             prompt += "\n"
         
         model = 'gpt-4-1106-preview'
-        user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet."
+        user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated."
         gpt_response = gpt.get_response(prompt, model, user_prompt)
         begin_idx = gpt_response.find("INSERT INTO")
         end_idx = gpt_response.rfind(";") + 1

@@ -1,7 +1,7 @@
 # #!/usr/bin/env python
 import printer_util
 import gpt
-from commands import commands
+from commands import commands_dict as commands
 from database_manager import Database_Manager
 from halo import Halo
 from data_engine import Data_Engine
@@ -21,14 +21,13 @@ def main():
     #     printer_util.print_table(table_prop)
 
     engine_running = False
-    temp_gpt_response = str
 
     while True:
         user_input = input('> ').strip().lower()
 
-        if user_input not in commands:
+        if user_input not in commands.values():
             printer_util.print_invalid_command(user_input)
-
+        
         if user_input == commands['PRINT_HELP']:
             printer_util.print_help()
         elif user_input == commands['PRINT_TABLES']:
@@ -44,7 +43,7 @@ def main():
                 user_input = printer_util.write_prompt()
                 if user_input == '1':
                     printer_util.print_generate_default(data_engine)
-                    printer_util.write_prompt(data_engine)
+                    printer_util.write_prompt()
                 elif user_input == '2':
                     print('Aborted')
         elif user_input == commands['GENERATE_CUSTOM']:
@@ -52,12 +51,12 @@ def main():
         elif user_input == commands['WRITE_DATA'] and engine_running:
             printer_util.prompt_for_output_directory()
             data_engine.write_to_file()
-        elif user_input == commands['WRITE_DATA'] and not engine_running:
-            printer_util.print_engine_not_running()
-        elif user_input == commands['INSERT_INTO_DB'] and engine_running:
-            db_manager.insert_into_db()
-        elif user_input == commands['INSERT_INTO_DB'] and not engine_running:
-            printer_util.print_engine_not_running()
+        # elif user_input == commands['WRITE_DATA'] and not engine_running:
+        #     printer_util.print_engine_not_running()
+        # elif user_input == commands['INSERT_INTO_DB'] and engine_running:
+        #     # db_manager.insert_into_db()
+        # elif user_input == commands['INSERT_INTO_DB'] and not engine_running:
+        #     printer_util.print_engine_not_running()
         elif user_input == commands['ABORT']:
             break
 
