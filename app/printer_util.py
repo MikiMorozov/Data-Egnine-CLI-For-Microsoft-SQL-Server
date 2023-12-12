@@ -118,3 +118,9 @@ def handle_not_running_commands(user_input):
 
 def print_prompt_added(prompt):
     print(f"Prompt added: \"{prompt}\". Use -p to see all prompts.")
+
+def print_prompts(engine_manager):
+    print('\nPrompts:\n')
+    for i, prompt in enumerate(engine_manager.prompt_list, start=1):
+        print(f"{i}. {prompt}")
+    print('\n')
