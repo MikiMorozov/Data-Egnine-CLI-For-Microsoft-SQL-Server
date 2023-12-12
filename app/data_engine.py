@@ -74,3 +74,9 @@ class Data_Engine:
         begin_idx = response.find("INSERT INTO")
         end_idx = response.rfind(";") + 1
         self.insert_script = response[begin_idx:end_idx]
+
+    def delete_requirement(self, index):
+        try:
+            self.requirement_list.pop(index-1)
+        except IndexError:
+            print('Invalid index')
