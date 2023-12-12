@@ -51,24 +51,34 @@ def main():
         elif user_input == commands['QUIT']:
             break
 
-
         # engine-dependent commands
-        elif re.match(commands['GENERATE'], user_input) and engine_running:
-            match = re.match(commands['GENERATE'], user_input)
-            if match:
-                nr_of_lines = int(match.group(1))
-                printer_util.print_generate_default(data_engine, nr_of_lines)
-            else:
-                print('Invalid input for -g command')
-        elif user_input == commands['WRITE_DATA'] and engine_running:
-            data_engine.write_to_file()
-        elif user_input == commands['WRITE_DATA'] and not engine_running:
-            printer_util.print_engine_not_running()
-        elif user_input == commands['INSERT_INTO_DB'] and engine_running:
-            db_manager.insert_into_db()
-        elif user_input == commands['INSERT_INTO_DB'] and not engine_running:
-            printer_util.print_engine_not_running()
 
+        if engine_running:
+            if user_input == commands['WRITE_DATA']:
+                data_engine.write_to_file()
+
+            elif user_input == commands['INSERT_INTO_DB']:
+                data_engine.insert_into_db()
+
+            elif re.match(commands['GENERATE'], user_input):
+                if engine_running:
+                    match = re.match(commands['GENERATE'], user_input)
+                    if match:
+                        nr_of_lines = int(match.group(1))
+                        printer_util.print_generate_default(data_engine, nr_of_lines)
+                    else:
+                        print('Invalid input for -g command')
+
+            elif re.match(commands['ADD_POMPT'], user_input):
+                if engine_running:
+                    match = re.match(commands['ADD_POMPT'], user_input)
+                    if match:
+                        prompt = match.group(1)
+                        data_engine.add_prompt(prompt)
+                    else:
+                        print('Invalid input for -ap command')
+        else:
+            printer_util.handle_not_running_commands(user_input)
 
 
 if __name__ == "__main__":

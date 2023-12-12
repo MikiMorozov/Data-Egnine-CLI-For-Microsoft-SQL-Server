@@ -2,6 +2,8 @@ import os
 import time
 from colorama import Fore
 from halo import Halo
+from commands import commands_dict as commands
+import re
 
 HELP_TEXT = """
 
@@ -93,3 +95,23 @@ def print_engine_started():
 
 def print_engine_stopped():
     print(Fore.LIGHTBLUE_EX + 'ENGINE STOPPED _ _ _')
+
+def handle_not_running_commands(user_input):
+    matching_commands = [
+        commands['WRITE_DATA'],
+        commands['INSERT_INTO_DB'],
+        commands['GENERATE'],
+        commands['ADD_POMPT']
+    ]
+
+    for cmd in matching_commands:
+        if cmd == user_input:
+            print_engine_not_running()
+            return
+
+    # Check if user_input matches the patterns for 'GENERATE' or 'ADD_POMPT'
+    generate_match = re.match(commands['GENERATE'], user_input)
+    add_prompt_match = re.match(commands['ADD_POMPT'], user_input)
+
+    if generate_match or add_prompt_match:
+        print_engine_not_running()

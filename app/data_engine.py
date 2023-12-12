@@ -6,6 +6,7 @@ class Data_Engine:
     # properties
     db_manager: Database_Manager
     insert_script: str
+    prompt_list: list
 
     # constructor
     def __init__(self, db_manager):
@@ -35,3 +36,10 @@ class Data_Engine:
         file = open(f"{self.db_manager.output_directory}\\data_engine_insert_script_{self.db_manager.db_name}_{timestamp}.sql", "w")
         file.write(self.insert_script)
         file.close()
+
+    def insert_into_db(self):
+        # TODO: implement this
+        self.db_manager.insert_into_db(self.insert_script) 
+
+    def add_prompt(self, prompt):
+        self.prompt_list.append(prompt)
