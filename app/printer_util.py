@@ -118,11 +118,11 @@ def handle_not_running_commands(user_input):
     if generate_match or add_prompt_match:
         print_engine_not_running()
 
-def print_prompt_added(prompt):
-    print(f"Prompt added: \"{prompt}\". Use -p to see all prompts.")
+def print_req_added(requirement):
+    print(f"Requirement added: \"{requirement}\". Use -pr to see all requirements.")
 
-def print_prompts(engine_manager):
-    print('\nPrompts:\n')
-    for i, prompt in enumerate(engine_manager.prompt_list, start=1):
-        print(f"{i}. {prompt}")
+def print_reqs(engine_manager):
+    print('\nRequirements:\n')
+    for i, req in enumerate(engine_manager.prompt_list, start=1):
+        print(f"{i}. {req}")
     print('\n')
