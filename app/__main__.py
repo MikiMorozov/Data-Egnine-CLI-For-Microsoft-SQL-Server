@@ -6,6 +6,7 @@ from database_manager import Database_Manager
 from halo import Halo
 from data_engine import Data_Engine
 from colorama import Fore, Style
+import re
 
 def main():
 
@@ -29,7 +30,8 @@ def main():
             user_input = input(Fore.LIGHTBLUE_EX + '>>> ' + Style.RESET_ALL).strip().lower()
 
         if user_input not in commands.values():
-            printer_util.print_invalid_command(user_input)
+            if not any(re.match(command, user_input) for command in commands.values()):
+                printer_util.print_invalid_command(user_input)
         
         if user_input == commands['PRINT_HELP']:
             printer_util.print_help()
@@ -42,22 +44,31 @@ def main():
         elif user_input == commands['START_ENGINE']:
             engine_running = True 
             printer_util.print_engine_started()
-            printer_util.print_generate_default(data_engine)
-        elif user_input == commands['WRITE_DATA'] and engine_running:
-            printer_util.prompt_for_output_directory()
-            data_engine.write_to_file()
-        # elif user_input == commands['WRITE_DATA'] and not engine_running:
-        #     printer_util.print_engine_not_running()
-        # elif user_input == commands['INSERT_INTO_DB'] and engine_running:
-        #     # db_manager.insert_into_db()
-        # elif user_input == commands['INSERT_INTO_DB'] and not engine_running:
-        #     printer_util.print_engine_not_running()
-        elif user_input == commands['STOP']:
+        elif user_input == commands['STOP_ENGINE']:
             engine_running = False
             printer_util.print_engine_stopped()
             data_engine.insert_script = ''
         elif user_input == commands['QUIT']:
             break
+
+
+        # engine-dependent commands
+        elif re.match(commands['GENERATE'], user_input) and engine_running:
+            match = re.match(commands['GENERATE'], user_input)
+            if match:
+                nr_of_lines = int(match.group(1))
+                printer_util.print_generate_default(data_engine, nr_of_lines)
+            else:
+                print('Invalid input for -g command')
+        elif user_input == commands['WRITE_DATA'] and engine_running:
+            data_engine.write_to_file()
+        elif user_input == commands['WRITE_DATA'] and not engine_running:
+            printer_util.print_engine_not_running()
+        elif user_input == commands['INSERT_INTO_DB'] and engine_running:
+            db_manager.insert_into_db()
+        elif user_input == commands['INSERT_INTO_DB'] and not engine_running:
+            printer_util.print_engine_not_running()
+
 
 
 if __name__ == "__main__":

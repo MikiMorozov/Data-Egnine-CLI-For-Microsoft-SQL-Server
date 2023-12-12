@@ -8,5 +8,5 @@ commands_dict = {
     'WRITE_DATA': '-w',
     'QUIT': '-q',
     'INSERT_INTO_DB': '-idb',
-    'GENERATE': '-g',
+    'GENERATE': r'-g\s+(\d+)$',
 }

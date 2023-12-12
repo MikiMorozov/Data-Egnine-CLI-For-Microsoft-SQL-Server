@@ -11,11 +11,12 @@ HELP_TEXT = """
     -pt             see all tables in the database
     -ptr            see tables and their FK relationships
     -pto            see table order for data generation
-    -start -d       starts default generation of data
-    -start -c       starts custom generation of data
-    -w              writes data to file
-    -idb            inserts data into database
-    -a              aborts the program
+    -start          starts engine: saves latest prompt in memoery
+    -stop           stops engine: clears prompt from memory
+    -w              writes data to file when engine is running
+    -idb            inserts data into database when engine is running
+    -q              quits the program
+    -g <number>     generates data when engine is running: specify the number of lines of data data to be generated for each table
 
     """
 
@@ -32,9 +33,6 @@ def welcome():
 
 def prompt_for_connection_string():
     return input('Please provide the connection string for your database : ')
-
-def prompt_for_output_directory():
-    return input("Please provide the output directory for the generated data : ")
 
 def print_user_input(connection_string, output_directory):
     print("----------------------------------------")
