@@ -69,16 +69,16 @@ def main():
                     else:
                         print('Invalid input for -g command')
 
-            elif re.match(commands['ADD_POMPT'], user_input):
+            elif re.match(commands['ADD_REQUIREMENT'], user_input):
                 if engine_running:
-                    match = re.match(commands['ADD_POMPT'], user_input)
+                    match = re.match(commands['ADD_REQUIREMENT'], user_input)
                     if match:
                         prompt = match.group(1)
                         data_engine.add_prompt(prompt)
                         printer_util.print_prompt_added(prompt)
                     else:
                         print('Invalid input for -ap command')
-            elif user_input == commands['PRINT_PROMPTS']:
+            elif user_input == commands['PRINT_REQUIREMENTS']:
                 printer_util.print_prompts(data_engine)
         else:
             printer_util.handle_not_running_commands(user_input)
