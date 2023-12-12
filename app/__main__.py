@@ -80,6 +80,17 @@ def main():
                         print('Invalid input for -ap command')
             elif user_input == commands['PRINT_REQUIREMENTS']:
                 printer_util.print_reqs(data_engine)
+
+            # delete requirement
+            elif re.match(commands['DELETE_REQUIREMENT'], user_input):
+                if engine_running:
+                    match = re.match(commands['DELETE_REQUIREMENT'], user_input)
+                    if match:
+                        index = int(match.group(1))
+                        data_engine.delete_requirement(index)
+                        printer_util.print_req_deleted(index)
+                    else:
+                        print('Invalid input for -dr command')
         else:
             printer_util.handle_not_running_commands(user_input)
 
