@@ -70,15 +70,7 @@ def print_error():
 def print_abort_message():
     print('Aborting...')
 
-def prompt_number_of_lines():
-    try:
-        return int(input('How many lines of data do you want to generate for each insert statement? : '))
-    except:
-        print('Please enter a valid number')
-        prompt_number_of_lines()
-
-def print_generate_default(engine_manager):
-    nr_of_lines = prompt_number_of_lines()
+def print_generate_default(engine_manager, nr_of_lines):
     start_time = time.time()
     try: 
         with Halo(text='generating data...'):

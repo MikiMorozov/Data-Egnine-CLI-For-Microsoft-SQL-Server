@@ -39,12 +39,10 @@ def main():
             printer_util.print_table_relationships(db_manager)
         elif user_input == commands['PRINT_TABLE_ORDER']:
             printer_util.print_table_order(db_manager)
-        elif user_input == commands['GENERATE_DEFAULT']:
+        elif user_input == commands['START_ENGINE']:
             engine_running = True 
             printer_util.print_engine_started()
             printer_util.print_generate_default(data_engine)
-        elif user_input == commands['GENERATE_CUSTOM']:
-            printer_util.print_generate_custom(data_engine)
         elif user_input == commands['WRITE_DATA'] and engine_running:
             printer_util.prompt_for_output_directory()
             data_engine.write_to_file()
@@ -58,7 +56,7 @@ def main():
             engine_running = False
             printer_util.print_engine_stopped()
             data_engine.insert_script = ''
-        elif user_input == commands['ABORT']:
+        elif user_input == commands['QUIT']:
             break
 
 
