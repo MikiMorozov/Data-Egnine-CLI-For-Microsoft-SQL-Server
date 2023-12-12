@@ -11,13 +11,14 @@ class Data_Engine:
     # constructor
     def __init__(self, db_manager):
         self.db_manager = db_manager
+        self.requirement_list = []
 
     # setters
     def set_db_manager(self, db_manager):
         if db_manager is None : raise TypeError("db_manager cannot be None")
         self.db_manager = db_manager
 
-    def generate_default(self, nr_of_lines):
+    def generate(self, nr_of_lines):
         prompt = ''
 
         for string in self.db_manager.table_props:

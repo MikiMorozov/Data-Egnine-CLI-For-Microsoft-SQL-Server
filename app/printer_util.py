@@ -121,11 +121,11 @@ def handle_not_running_commands(user_input):
 def print_req_added(requirement):
     print(f"Requirement added: \"{requirement}\". Use -pr to see all requirements.")
 
-def print_reqs(engine_manager):
-    if len(engine_manager.requirement_list) == 0:
+def print_reqs(data_engine):
+    if len(data_engine.requirement_list) == 0:
         print('No requirements added.')
         return
     print('\nRequirements:\n')
-    for i, req in enumerate(engine_manager.requirement_list, start=1):
+    for i, req in enumerate(data_engine.requirement_list, start=1):
         print(f"{i}. {req}")
     print('\n')
