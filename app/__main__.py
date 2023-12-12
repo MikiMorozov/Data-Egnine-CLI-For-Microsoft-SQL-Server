@@ -1,7 +1,7 @@
 # #!/usr/bin/env python
 import printer_util
 import gpt
-import commands
+from commands import commands
 from database_manager import Database_Manager
 from halo import Halo
 from data_engine import Data_Engine
@@ -24,38 +24,39 @@ def main():
     temp_gpt_response = str
 
     while True:
-        user_input = input('> ').trim().lower()
-        if user_input == commands.PRINT_HELP:
+        user_input = input('> ').strip().lower()
+        if user_input == commands['PRINT_HELP']:
             printer_util.print_help()
-        elif user_input == commands.PRINT_TABLES:
+        elif user_input == commands['PRINT_TABLES']:
             printer_util.print_tables(db_manager)
-        elif user_input == commands.PRINT_TABLE_RELATIONSHIPS:
+        elif user_input == commands['PRINT_TABLE_RELATIONSHIPS']:
             printer_util.print_table_relationships(db_manager)
-        elif user_input == commands.PRINT_TABLE_ORDER:
+        elif user_input == commands['PRINT_TABLE_ORDER']:
             printer_util.print_table_order(db_manager)
-        elif user_input == commands.GENERATE_DEFAULT:
+        elif user_input == commands['GENERATE_DEFAULT']:
             engine_running = True
             printer_util.print_generate_default(data_engine)
-            while user_input is not 2:
+            while user_input != '2':
                 user_input = printer_util.write_prompt()
                 if user_input == '1':
                     printer_util.print_generate_default(data_engine)
                     printer_util.write_prompt(data_engine)
                 elif user_input == '2':
                     print('Aborted')
-        elif user_input == commands.GENERATE_CUSTOM:
+        elif user_input == commands['GENERATE_CUSTOM']:
             printer_util.print_generate_custom(data_engine)
-        elif user_input == commands.WRITE_DATA and engine_running:
+        elif user_input == commands['WRITE_DATA'] and engine_running:
             printer_util.prompt_for_output_directory()
             data_engine.write_to_file()
-        elif user_input == commands.WRITE_DATA and not engine_running:
+        elif user_input == commands['WRITE_DATA'] and not engine_running:
             printer_util.print_engine_not_running()
-        elif user_input == commands.INSERT_INTO_DB and engine_running:
+        elif user_input == commands['INSERT_INTO_DB'] and engine_running:
             db_manager.insert_into_db()
-        elif user_input == commands.INSERT_INTO_DB and not engine_running:
+        elif user_input == commands['INSERT_INTO_DB'] and not engine_running:
             printer_util.print_engine_not_running()
-        elif user_input == commands.ABORT:
+        elif user_input == commands['ABORT']:
             break
+
 
 if __name__ == "__main__":
     main()

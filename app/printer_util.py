@@ -31,10 +31,10 @@ def welcome():
     print("****************************************")
 
 def prompt_for_connection_string():
-    return input('Please provide the connection string for your database')
+    return input('Please provide the connection string for your database : ')
 
 def prompt_for_output_directory():
-    return input("Please provide the output directory for the generated data")
+    return input("Please provide the output directory for the generated data : ")
 
 def print_user_input(connection_string, output_directory):
     print("----------------------------------------")
