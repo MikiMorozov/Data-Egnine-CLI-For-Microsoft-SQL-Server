@@ -9,17 +9,18 @@ HELP_TEXT = """
 
     The following options are available:
 
-    --help          see help
-    -pt             see all tables in the database
-    -ptr            see tables and their FK relationships
-    -pto            see table order for data generation
-    -start          starts engine: saves latest prompt in memory
-    -stop           stops engine: clears latest generated data and prompts from memory
-    -w              writes data to file when engine is running
-    -idb            inserts data into database when engine is running
-    -g <number>     generates data when engine is running: specify the number of lines of data data to be generated for each table
-    -ap <prompt>    adds prompt to the prompt list when engine is running. Prompts are used to customize the data generation output.
-    -q              quits the program
+    --help              see help
+    -pt                 see all tables in the database
+    -ptr                see tables and their FK relationships
+    -pto                see table order for data generation
+    -start              starts engine: saves latest prompt in memory
+    -stop               stops engine: clears latest generated data and prompts from memory
+    -w                  writes data to file when engine is running
+    -idb                inserts data into database when engine is running
+    -g <number>         generates data when engine is running: specify the number of lines of data data to be generated for each table
+    -ar <requirement>   adds prompt to the prompt list when engine is running. Prompts are used to customize the data generation output.
+    -pr                 prints all save requirements
+    -q                  quits the program
 
     """
 
