@@ -65,7 +65,7 @@ def main():
                     match = re.match(commands['GENERATE'], user_input)
                     if match:
                         nr_of_lines = int(match.group(1))
-                        printer_util.print_generate_default(data_engine, nr_of_lines)
+                        printer_util.print_response(data_engine, nr_of_lines)
                     else:
                         print('Invalid input for -g command')
 
