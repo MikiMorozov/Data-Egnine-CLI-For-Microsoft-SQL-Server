@@ -127,7 +127,7 @@ def print_reqs(data_engine):
         return
     print('\nRequirements:\n')
     for i, req in enumerate(data_engine.requirement_list, start=1):
-        print(f"{i}. {req}")
+        print(f"[{i}] {req}")
     print('\n')
 
 def print_req_deleted():

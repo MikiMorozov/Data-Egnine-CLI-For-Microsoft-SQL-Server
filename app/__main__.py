@@ -88,7 +88,7 @@ def main():
                     if match:
                         index = int(match.group(1))
                         data_engine.delete_requirement(index)
-                        printer_util.print_req_deleted(index)
+                        printer_util.print_req_deleted()
                     else:
                         print('Invalid input for -dr command')
         else:
