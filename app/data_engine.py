@@ -14,7 +14,7 @@ class Data_Engine:
     def __init__(self, db_manager):
         self.db_manager = db_manager
         self.requirement_list = []
-        self.model = 'gpt-4-1106-preview'
+        self.model = 'gpt-4'
 
 
     # setters
