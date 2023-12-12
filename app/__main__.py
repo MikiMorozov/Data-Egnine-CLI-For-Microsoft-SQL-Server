@@ -78,6 +78,8 @@ def main():
                         printer_util.print_add_prompt(prompt)
                     else:
                         print('Invalid input for -ap command')
+            elif user_input == commands['PRINT_PROMPTS']:
+                printer_util.print_prompts(data_engine)
         else:
             printer_util.handle_not_running_commands(user_input)
 
