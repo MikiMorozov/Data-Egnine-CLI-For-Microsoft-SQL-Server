@@ -15,7 +15,10 @@ commands_dict = {
     'GENERATE_TABLE': r'-g\s+(\d+)\s+-t\s+(\d+)$',
     'ADD_REQUIREMENT': r'-ar\s+(.+)$',
     'DELETE_REQUIREMENT': r'-dr\s+(\d+)$',
-    'PRINT_REQUIREMENTS': '-pr'
+    'PRINT_REQUIREMENTS': '-pr',
+    'ADD_TABLE': r'-at\s+(\d+)$',
+    'REMOVE_TABLE': r'-rt\s+(\d+)$',
+    'SEE PROMPTS': '-sp'
     }
 
 

@@ -14,6 +14,7 @@ HELP_TEXT = """
     -pt                                 see all tables in the database
     -ptr                                see tables and their FK relationships
     -pto                                see table order for data generation
+    -pr                                 prints all saved requirements
     -start                              starts engine: saves latest prompt in memory
     -stop                               stops engine: clears latest generated data and prompts from memory
     -w <path>                           writes data to file when engine is running
@@ -22,8 +23,11 @@ HELP_TEXT = """
     -g <number> -t <table_index>        specify the number of lines of data data to be generated for given table. Table index can be found using -pto command
     -ar <requirement>                   adds requirement to the requirement list when engine is running. Prompts are used to customize the data generation output.
     -dr <number>                        deletes requirement from the requirement list when engine is running
-    -pr                                 prints all save requirements
+    -pr                                 prints all saved requirements
     -q                                  quits the program
+    -at                                 add stable to prompt
+    -dt                                 delete table from prompt
+    --see -p                            see prompt
 
     """
 
