@@ -9,7 +9,6 @@ class Data_Engine:
     db_manager: Database_Manager
     insert_script: str
     db_prompt: str
-    tables_prompt: str
     requirement_list: list
     model = str
     table_list: list
@@ -85,7 +84,7 @@ class Data_Engine:
             prompt += string
             prompt += "\n"
 
-        return prompt
+        self.db_prompt = prompt
     
     def format_prompt_tables(self, table_indices):
         prompt = ''
@@ -128,15 +127,26 @@ class Data_Engine:
         self.insert_script = response[begin_idx:end_idx]
 
     def add_table(self, table_index):
+        # if table_list already contains the table, don't add it again. check by table name if the strings match
         try:
-            table = self.db_manager.table_order[table_index-1]
-            self.table_list.append(table)
+            table_name = self.db_manager.table_order[table_index - 1]
+
+            if table_name not in self.table_list:
+                self.table_list.append(table_name)
+                print(f"Table '{table_name}' added to the list.")
+            else:
+                print(f"Table '{table_name}' is already in the list.")
         except IndexError:
             print('Invalid index')
 
     def remove_table(self, table_index):
         try:
-            table = self.db_manager.table_order[table_index-1]
-            self.table_list.remove(table)
+            table_name = self.db_manager.table_order[table_index - 1]
+
+            if table_name in self.table_list:
+                self.table_list.remove(table_name)
+                print(f"Table '{table_name}' removed from the list.")
+            else:
+                print(f"Table '{table_name}' is not in the list.")
         except IndexError:
             print('Invalid index')

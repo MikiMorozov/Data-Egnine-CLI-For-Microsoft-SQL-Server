@@ -105,7 +105,6 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                 if match:
                     index = int(match.group(1))
                     data_engine.add_table(index)
-                    printer_util.print_table_added()
                 else:
                     print('Invalid input for -at command')
 
@@ -114,13 +113,12 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                 if match:
                     index = int(match.group(1))
                     data_engine.remove_table(index)
-                    printer_util.print_table_deleted()
                 else:
                     print('Invalid input for -rt command')
 
         elif user_input == commands_dict['PRINT PROMPT']:
             if len(data_engine.table_list) == 0:
-                printer_util.print_db_prompt(data_engine.db_prompt)
+                printer_util.print_db_prompt(data_engine)
             else:
                 printer_util.print_tables_prompt(data_engine)
     else:
