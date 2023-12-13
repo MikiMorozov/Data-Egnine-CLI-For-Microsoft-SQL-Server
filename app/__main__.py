@@ -1,12 +1,9 @@
 # #!/usr/bin/env python
 import printer_util
-import gpt
 import commands
 from database_manager import Database_Manager
-from halo import Halo
 from data_engine import Data_Engine
-from colorama import init, Fore, Style
-import re
+from colorama import Fore, Style
 
 def main():
 
