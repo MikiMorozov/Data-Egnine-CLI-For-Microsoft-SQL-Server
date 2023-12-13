@@ -19,7 +19,7 @@ def main():
     # for table in db_manager.table_props:
     #     printer_util.print_table(table_prop)
 
-    engine_running = False
+    engine_running = True
 
     while True:
         if not engine_running:
@@ -60,7 +60,7 @@ def main():
                     data_engine.write_to_file(output_directory)
 
             elif user_input == commands['INSERT_INTO_DB']:
-                data_engine.insert_into_db()
+                db_manager.insert_into_db(connection_string, data_engine.insert_script)
 
             elif re.match(commands['GENERATE'], user_input):
                     match = re.match(commands['GENERATE'], user_input)

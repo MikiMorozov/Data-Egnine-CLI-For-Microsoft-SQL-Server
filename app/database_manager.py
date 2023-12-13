@@ -95,5 +95,9 @@ class Database_Manager:
             create_table_stmt = create_table_stmt.strip()
             self.table_props.append(create_table_stmt)
 
-    def insert_into_db(self, insert_stmt):
-        conn = pyodbc.connect(self.connection_string)
+    def insert_into_db(self, connection_string, insert_stmt):
+        conn = pyodbc.connect(connection_string)
+        with conn as connection:
+            cursor = connection.cursor()
+            cursor.execute(insert_stmt)
+            cursor.commit()
