@@ -9,6 +9,7 @@ commands_dict = {
     'QUIT': '-q',
     'INSERT_INTO_DB': '-idb',
     'GENERATE': r'-g\s+(\d+)$',
+    'GENERATE_TABLE': r'-g\s+(\d+)\s+-t\s+(\d+)$',
     'ADD_REQUIREMENT': r'-ar\s+(.+)$',
     'DELETE_REQUIREMENT': r'-dr\s+(\d+)$',
     'PRINT_REQUIREMENTS': '-pr'
