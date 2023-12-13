@@ -19,7 +19,7 @@ class Database_Manager:
 
     # constructor
 
-    def __init__(self, connection_string, output_directory):
+    def __init__(self, connection_string):
         self.set_connection_string(connection_string)
         self.set_engine()
         self.set_inspector()

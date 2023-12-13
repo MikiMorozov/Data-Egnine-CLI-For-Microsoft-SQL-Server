@@ -3,11 +3,12 @@ from database_manager import Database_Manager
 from datetime import datetime
 
 class Data_Engine:
+    
     # properties
 
     db_manager: Database_Manager
     insert_script: str
-    requirement_list: []
+    requirement_list: list
     model = str
 
     # constructor
@@ -30,9 +31,11 @@ class Data_Engine:
         response = gpt.get_response(prompt, self.model, user_prompt)
         self.format_response(response)
 
-    def write_to_file(output_directory, self):
+    def write_to_file(self, output_directory):
         try:
             timestamp = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+            name = self.db_manager.db_name
+            print(name)
             file_path = f"{output_directory}\\data_engine_insert_script_{self.db_manager.db_name}_{timestamp}.sql"
 
             with open(file_path, "w") as file:

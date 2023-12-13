@@ -15,7 +15,7 @@ def main():
     connection_string = r"DRIVER={ODBC Driver 17 for SQL Server};Server=michael\SQLEXPRESS01;Database=Restaurant;Trusted_Connection=yes;"
     output_directory = r"C:\Users\micha\OneDrive\Documents\DataEngineTests"
 
-    db_manager = Database_Manager(connection_string, output_directory)
+    db_manager = Database_Manager(connection_string)
     data_engine = Data_Engine(db_manager)
 
     # for table in db_manager.table_props:
@@ -58,6 +58,7 @@ def main():
                 match = re.match(commands['WRITE_DATA'], user_input)
                 if match:
                     output_directory = match.group(1)
+
                     data_engine.write_to_file(output_directory)
 
             elif user_input == commands['INSERT_INTO_DB']:
