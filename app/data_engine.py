@@ -14,7 +14,7 @@ class Data_Engine:
     # constructor
     def __init__(self, db_manager):
         self.db_manager = db_manager
-        self.requirement_list = []
+        self.requirement_list = list
         self.model = 'gpt-4'
 
 
@@ -34,8 +34,7 @@ class Data_Engine:
     def write_to_file(self, output_directory):
         try:
             timestamp = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
-            name = self.db_manager.db_name
-            print(name)
+
             file_path = f"{output_directory}\\data_engine_insert_script_{self.db_manager.db_name}_{timestamp}.sql"
 
             with open(file_path, "w") as file:

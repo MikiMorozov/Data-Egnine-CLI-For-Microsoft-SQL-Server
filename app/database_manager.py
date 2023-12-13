@@ -13,8 +13,8 @@ class Database_Manager:
     metadata: sqlalchemy.MetaData
     db_name: str
     tables: list
-    relationships: {}
-    table_order: []
+    relationships: dict
+    table_order: list
     table_props: list
 
     # constructor

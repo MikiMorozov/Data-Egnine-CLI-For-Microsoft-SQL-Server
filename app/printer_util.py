@@ -4,6 +4,7 @@ from colorama import Fore
 from halo import Halo
 from commands import commands_dict as commands
 import re
+from sys import stdout
 
 HELP_TEXT = """
 
