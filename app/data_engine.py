@@ -96,8 +96,8 @@ VALUES
 
     def generate_db(self, nr_of_lines):
         
-        prompt = self.format_prompt()
-        user_prompt = self.format_user_prompt(nr_of_lines)
+        prompt = self.format_prompt_db()
+        user_prompt = self.format_user_prompt_db(nr_of_lines)
         
         response = gpt.get_response_db(prompt, self.model, user_prompt)
         self.format_response(response)
@@ -127,9 +127,14 @@ VALUES
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
-
     def insert_into_db(self):
         self.db_manager.insert_into_db(self.insert_script) 
+
+    def delete_requirement(self, index):
+        try:
+            self.requirement_list.pop(index-1)
+        except IndexError:
+            print('Invalid index')
 
     def add_requirement(self, prompt):
         self.requirement_list.append(prompt)
@@ -147,15 +152,30 @@ VALUES
 
         return prompt
     
+    def format_prompt_tables(self, table_indices):
+        prompt = ''
+
+        for index in table_indices:
+            prompt += self.db_manager.table_props[index]
+            prompt += "\n"
+
+        return prompt
+    
     def format_user_prompt_db(self, nr_of_lines):
         prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
         if len(self.requirement_list) != 0:
-            requirements = self.format_requirments()
+            requirements = self.format_requirements()
             prompt += requirements
         return prompt
 
-    
-    def format_requirments(self):
+    def format_user_prompt_tables(self, nr_of_lines, table_indices):
+        prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for these tables: {tables} Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
+        if len(self.requirement_list) != 0:
+            requirements = self.format_requirements()
+            prompt += requirements
+        return prompt
+
+    def format_requirements(self):
         requirements = 'Take into consideration the following requirements: \n'
         for i, string in enumerate(self.requirement_list, start=1):
             requirements += f"{i}. {string}\n"
@@ -165,9 +185,3 @@ VALUES
         begin_idx = response.find("INSERT INTO")
         end_idx = response.rfind(";") + 1
         self.insert_script = response[begin_idx:end_idx]
-
-    def delete_requirement(self, index):
-        try:
-            self.requirement_list.pop(index-1)
-        except IndexError:
-            print('Invalid index')
