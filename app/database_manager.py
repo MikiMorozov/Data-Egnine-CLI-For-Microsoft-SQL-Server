@@ -45,7 +45,7 @@ class Database_Manager:
     def set_db_name(self):
         self.db_name = self.connection_string.split(';')[2].split('=')[1]
     def set_tables(self):
-        self.tables = self.metadata.tables.values()
+        self.tables = self.inspector.get_table_names()
     def set_relationships(self):
         # usage of dictionary comprehension
         self.relationships = {table.name: [foreign_key.target_fullname for foreign_key in table.foreign_keys]

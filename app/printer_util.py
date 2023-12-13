@@ -51,22 +51,22 @@ def print_user_input(connection_string, output_directory):
     print(f"Output Directory: {output_directory}")
     print("----------------------------------------")
 
-def print_tables(Data_Manager):
+def print_tables(db_manager):
     print('\nTables:')
-    for table in enumerate(Data_Manager.tables, start=1):
-        print(table.name)
+    for table in enumerate(db_manager.tables, start=1):
+        print(table)
     print('\n')
 
-def print_table_relationships(Data_Manager):
+def print_table_relationships(db_manager):
     print('\nTable relationships:')
-    for table_name, foreign_keys in Data_Manager.relationships.items():
+    for table_name, foreign_keys in db_manager.relationships.items():
         for foreign_key in foreign_keys:
             print(f"{table_name} -> {foreign_key}")
     print('\n')
 
-def print_table_order(Data_Manager):
+def print_table_order(db_manager):
     print('\nTable order for data generation:')
-    for i, table_name in enumerate(Data_Manager.table_order, start=1):
+    for i, table_name in enumerate(db_manager.table_order, start=1):
         print(f"[{i}] {table_name}")
     print('\n')
 
