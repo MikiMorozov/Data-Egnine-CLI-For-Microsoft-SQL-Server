@@ -1,3 +1,6 @@
+import re
+import printer_util
+
 commands_dict = {
     'PRINT_HELP': '--help',
     'PRINT_TABLES': '-pt',
@@ -14,3 +17,84 @@ commands_dict = {
     'DELETE_REQUIREMENT': r'-dr\s+(\d+)$',
     'PRINT_REQUIREMENTS': '-pr'
     }
+
+
+def execute_command(user_input, db_manager, data_engine, engine_running):
+
+
+
+    if user_input not in commands_dict.values():
+            if not any(re.match(command, user_input) for command in commands_dict.values()):
+                printer_util.print_invalid_command(user_input)
+    
+    # print commands
+
+    if user_input == commands_dict['PRINT_HELP']:
+        printer_util.print_help()
+    elif user_input == commands_dict['PRINT_TABLES']:
+        printer_util.print_tables(db_manager)
+    elif user_input == commands_dict['PRINT_TABLE_RELATIONSHIPS']:
+        printer_util.print_table_relationships(db_manager)
+    elif user_input == commands_dict['PRINT_TABLE_ORDER']:
+        printer_util.print_table_order(db_manager)
+
+
+    elif user_input == commands_dict['START_ENGINE']:
+        engine_running = True 
+        printer_util.print_engine_started()
+    elif user_input == commands_dict['STOP_ENGINE']:
+        engine_running = False
+        printer_util.print_engine_stopped()
+        data_engine.clear()
+
+        # engine-dependent commands
+
+    if engine_running:
+        if re.match(commands_dict['WRITE_DATA'], user_input):
+            match = re.match(commands_dict['WRITE_DATA'], user_input)
+            if match:
+                output_directory = match.group(1)
+
+                data_engine.write_to_file(output_directory)
+
+        elif user_input == commands_dict['INSERT_INTO_DB']:
+            data_engine.insert_into_db()
+
+        elif re.match(commands_dict['GENERATE'], user_input):
+                match = re.match(commands_dict['GENERATE'], user_input)
+                if match:
+                    nr_of_lines = int(match.group(1))
+                    printer_util.print_response_db(data_engine, nr_of_lines)
+                else:
+                    print('Invalid input for -g command')
+
+        elif re.match(commands_dict['GENERATE_TABLE'], user_input):
+                match = re.match(commands_dict['GENERATE_TABLE'], user_input)
+                if match:
+                    nr_of_lines = int(match.group(1))
+                    table_index = int(match.group(2))
+                    printer_util.print_response(data_engine, nr_of_lines, table_index)
+                else:
+                    print('Invalid input for -g command')
+
+        elif re.match(commands_dict['ADD_REQUIREMENT'], user_input):
+                match = re.match(commands_dict['ADD_REQUIREMENT'], user_input)
+                if match:
+                    prompt = match.group(1)
+                    data_engine.add_requirement(prompt)
+                    printer_util.print_req_added(prompt)
+                else:
+                    print('Invalid input for -ap command')
+        elif user_input == commands_dict['PRINT_REQUIREMENTS']:
+            printer_util.print_reqs(data_engine)
+
+        elif re.match(commands_dict['DELETE_REQUIREMENT'], user_input):
+                match = re.match(commands_dict['DELETE_REQUIREMENT'], user_input)
+                if match:
+                    index = int(match.group(1))
+                    data_engine.delete_requirement(index)
+                    printer_util.print_req_deleted()
+                else:
+                    print('Invalid input for -dr command')
+    else:
+        printer_util.handle_not_running_commands(user_input)

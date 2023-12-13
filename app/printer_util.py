@@ -63,7 +63,7 @@ def print_table_relationships(Data_Manager):
 def print_table_order(Data_Manager):
     print('\nTable order for data generation:')
     for i, table_name in enumerate(Data_Manager.table_order, start=1):
-        print(f"{i}. {table_name}")
+        print(f"[{i}] {table_name}")
     print('\n')
 
 def print_help():

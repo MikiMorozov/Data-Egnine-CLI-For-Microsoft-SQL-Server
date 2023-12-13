@@ -10,12 +10,14 @@ class Data_Engine:
     insert_script: str
     requirement_list: list
     model = str
+    table_list: list
 
     # constructor
     def __init__(self, db_manager):
         self.db_manager = db_manager
-        self.requirement_list = list
+        self.requirement_list = []
         self.model = 'gpt-4'
+        self.table_list = []
         self.insert_script = """INSERT INTO contact_info (phone, email, address) 
 VALUES 
 ('1234567890', 'email1@example.com', 'Address 1'),
@@ -94,19 +96,16 @@ VALUES
         if db_manager is None : raise TypeError("db_manager cannot be None")
         self.db_manager = db_manager
 
-    def generate_db(self, nr_of_lines):
+    def generate(self, nr_of_lines):
         
-        prompt = self.format_prompt_db()
-        user_prompt = self.format_user_prompt_db(nr_of_lines)
+        if len(self.table_list) == 0:
+            prompt = self.format_prompt_db()
+            user_prompt = self.format_user_prompt_db(nr_of_lines)
+        else:
+            prompt = self.format_prompt_tables(self.table_list)
+            user_prompt = self.format_user_prompt_tables(nr_of_lines)
         
-        response = gpt.get_response_db(prompt, self.model, user_prompt)
-        self.format_response(response)
-
-    def generate_tables(self, nr_of_lines, table_indices):
-        prompt = self.format_prompt_db()
-        user_prompt = self.format_user_prompt(nr_of_lines)
-        
-        response = gpt.get_response_tables(prompt, self.model, user_prompt, table_indices)
+        response = gpt.get_response(prompt, self.model, user_prompt)
         self.format_response(response)
 
     def write_to_file(self, output_directory):
@@ -162,18 +161,24 @@ VALUES
         return prompt
     
     def format_user_prompt_db(self, nr_of_lines):
-        prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
+        user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
         if len(self.requirement_list) != 0:
             requirements = self.format_requirements()
             prompt += requirements
-        return prompt
+        return user_prompt
 
-    def format_user_prompt_tables(self, nr_of_lines, table_indices):
-        prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for these tables: {tables} Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
+    def format_user_prompt_tables(self, nr_of_lines):
+        tables = ''
+
+        for table in self.table_list:
+            tables += table
+            tables += ', '
+
+        user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for these tables: {tables}. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
         if len(self.requirement_list) != 0:
             requirements = self.format_requirements()
             prompt += requirements
-        return prompt
+        return user_prompt
 
     def format_requirements(self):
         requirements = 'Take into consideration the following requirements: \n'
@@ -185,3 +190,17 @@ VALUES
         begin_idx = response.find("INSERT INTO")
         end_idx = response.rfind(";") + 1
         self.insert_script = response[begin_idx:end_idx]
+
+    def add_table(self, table_index):
+        try:
+            table = self.db_manager.table_order[table_index-1]
+            self.table_list.append(table)
+        except IndexError:
+            print('Invalid index')
+
+    def remove_table(self, table_index):
+        try:
+            table = self.db_manager.table_order[table_index-1]
+            self.table_list.remove(table)
+        except IndexError:
+            print('Invalid index')
