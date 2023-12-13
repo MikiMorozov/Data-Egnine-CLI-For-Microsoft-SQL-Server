@@ -96,8 +96,13 @@ class Database_Manager:
             self.table_props.append(create_table_stmt)
 
     def insert_into_db(self, connection_string, insert_stmt):
-        conn = pyodbc.connect(connection_string)
-        with conn as connection:
-            cursor = connection.cursor()
-            cursor.execute(insert_stmt)
-            cursor.commit()
+        try:
+            conn = pyodbc.connect(connection_string)
+            with conn as connection:
+                cursor = connection.cursor()
+                cursor.execute(insert_stmt)
+                cursor.commit()
+                print('Data succesfully inserted into database.')
+        except Exception as e:
+            cursor.rollback() 
+            print(f"An unexpected error occurred: {e}")
