@@ -99,11 +99,15 @@ VALUES
         prompt = self.format_prompt()
         user_prompt = self.format_user_prompt(nr_of_lines)
         
-        response = gpt.get_response(prompt, self.model, user_prompt)
+        response = gpt.get_response_db(prompt, self.model, user_prompt)
         self.format_response(response)
 
-    def generate_table(table_index):
-        pass
+    def generate_tables(self, nr_of_lines, table_indices):
+        prompt = self.format_prompt()
+        user_prompt = self.format_user_prompt(nr_of_lines)
+        
+        response = gpt.get_response_tables(prompt, self.model, user_prompt, table_indices)
+        self.format_response(response)
 
     def write_to_file(self, output_directory):
         try:
