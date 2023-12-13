@@ -43,10 +43,10 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
 
 
     elif user_input == commands_dict['START_ENGINE']:
-        engine_running = True 
+        engine_running[0] = True 
         printer_util.print_engine_started()
     elif user_input == commands_dict['STOP_ENGINE']:
-        engine_running = False
+        engine_running[0] = False
         printer_util.print_engine_stopped()
         data_engine.clear()
 
@@ -105,7 +105,7 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                 if match:
                     index = int(match.group(1))
                     data_engine.add_table(index)
-                    printer_util.print_table_added(data_engine.table_list[index-1])
+                    printer_util.print_table_added()
                 else:
                     print('Invalid input for -at command')
 
@@ -114,14 +114,15 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                 if match:
                     index = int(match.group(1))
                     data_engine.remove_table(index)
-                    printer_util.print_table_removed(data_engine.table_list[index-1])
+                    printer_util.print_table_deleted()
                 else:
                     print('Invalid input for -rt command')
 
         elif user_input == commands_dict['PRINT PROMPT']:
             if len(data_engine.table_list) == 0:
-                printer_util.print_prompt_db(data_engine.db_prompt)
-            printer_util.print_prompt(data_engine)
+                printer_util.print_db_prompt(data_engine.db_prompt)
+            else:
+                printer_util.print_tables_prompt(data_engine)
     else:
         printer_util.handle_not_running_commands(user_input)
 

@@ -1,7 +1,7 @@
 # #!/usr/bin/env python
 import printer_util
 import gpt
-from commands import commands_dict as commands
+import commands
 from database_manager import Database_Manager
 from halo import Halo
 from data_engine import Data_Engine
@@ -21,15 +21,15 @@ def main():
     # for table in db_manager.table_props:
     #     printer_util.print_table(table_prop)
 
-    engine_running = False
+    engine_running = [False]
 
     while True:
-        if not engine_running:
+        if engine_running[0] == False:
             user_input = input('> ').strip().lower()
         else:
             user_input = input(Fore.LIGHTBLUE_EX + '>>> ' + Style.RESET_ALL).strip().lower()
         commands.execute_command(user_input, db_manager, data_engine, engine_running)
-        if user_input == commands['QUIT']:
+        if user_input == commands.commands_dict['QUIT']:
             break
 
 if __name__ == "__main__":

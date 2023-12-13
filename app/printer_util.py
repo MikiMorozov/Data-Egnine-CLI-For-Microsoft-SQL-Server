@@ -153,10 +153,10 @@ def print_reqs(data_engine):
 def print_req_deleted():
     print(f"Requirement deleted.")
 
-def print_table_added(table_name):
+def print_table_added():
     print(f"Table added to prompt. Use -sp to see the prompt.")
 
-def print_table_deleted(table_name):
+def print_table_deleted():
     print(f"Table deleted from prompt. Use -sp to see the prompt.")
 
 def print_db_prompt(data_engine):
@@ -164,6 +164,6 @@ def print_db_prompt(data_engine):
     print(Fore.LIGHTBLUE_EX + data_engine.prompt)
     print('\n')
 
-def print_tables_prompt(data_engine.table_list):
+def print_tables_prompt(data_engine):
     for table in data_engine.table_list:
-        print(f"[{table}]")
+        print(Fore.LIGHTBLUE_EX + f"[{table}]")
