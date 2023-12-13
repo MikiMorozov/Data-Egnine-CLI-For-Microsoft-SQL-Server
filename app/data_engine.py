@@ -8,6 +8,8 @@ class Data_Engine:
 
     db_manager: Database_Manager
     insert_script: str
+    db_prompt: str
+    tables_prompt: str
     requirement_list: list
     model = str
     table_list: list
@@ -18,77 +20,8 @@ class Data_Engine:
         self.requirement_list = []
         self.model = 'gpt-4'
         self.table_list = []
-        self.insert_script = """INSERT INTO contact_info (phone, email, address) 
-VALUES 
-('1234567890', 'email1@example.com', 'Address 1'),
-('2345678901', 'email2@example.com', 'Address 2'),
-('3456789012', 'email3@example.com', 'Address 3'),
-('4567890123', 'email4@example.com', 'Address 4'),
-('5678901234', 'email5@example.com', 'Address 5');
-
-INSERT INTO organizer (name, contact_info_id) 
-VALUES 
-('Organizer 1', 1),
-('Organizer 2', 2),
-('Organizer 3', 3),
-('Organizer 4', 4),
-('Organizer 5', 5);
-
-INSERT INTO description (name, description, duration, location, activity_status) 
-VALUES 
-('Description 1', 'Description 1 Details', 60, 'Location 1', 1),
-('Description 2', 'Description 2 Details', 90, 'Location 2', 1),
-('Description 3', 'Description 3 Details', 120, 'Location 3', 1),
-('Description 4', 'Description 4 Details', 75, 'Location 4', 1),
-('Description 5', 'Description 5 Details', 45, 'Location 5', 1);
-
-INSERT INTO customer (name, contact_info_id, activity_status) 
-VALUES 
-('Customer 1', 1, 1),
-('Customer 2', 2, 1),
-('Customer 3', 3, 1),
-('Customer 4', 4, 1),
-('Customer 5', 5, 1);
-
-INSERT INTO price_info (adult_price, child_price, discount, adult_age) 
-VALUES 
-(100, 50, 10, 18),
-(120, 60, 15, 20),
-(150, 75, 20, 22),
-(90, 45, 10, 16),
-(110, 55, 12, 19);
-
-INSERT INTO member (name, birthday, customer_id, activity_status) 
-VALUES 
-('Member 1', '2000-01-01', 1, 1),
-('Member 2', '2001-02-02', 2, 1),
-('Member 3', '2002-03-03', 3, 1),
-('Member 4', '2003-04-04', 4, 1),
-('Member 5', '2004-05-05', 5, 1);
-
-INSERT INTO activity (fixture, nr_of_places, price_info_id, description_id, organizer_id) 
-VALUES 
-('2022-08-15 10:00:00', 50, 1, 1, 1),
-('2022-08-16 11:00:00', 40, 2, 2, 2),
-('2022-08-17 12:00:00', 30, 3, 3, 3),
-('2022-08-18 13:00:00', 45, 4, 4, 4),
-('2022-08-19 14:00:00', 55, 5, 5, 5);
-
-INSERT INTO registration (activity_id, customer_id, total_price) 
-VALUES 
-(1, 1, 100),
-(2, 2, 120),
-(3, 3, 150),
-(4, 4, 90),
-(5, 5, 110);
-
-INSERT INTO registration_details (registration_id, member_id, subtotal_price) 
-VALUES 
-(1, 1, 50),
-(2, 2, 60),
-(3, 3, 75),
-(4, 4, 45),
-(5, 5, 55);"""
+        self.insert_script = ''
+        self.set_prompt()
 
 
     # setters
@@ -97,9 +30,12 @@ VALUES
         self.db_manager = db_manager
 
     def generate(self, nr_of_lines):
+
+        prompt = ''
+        user_prompt = ''
         
         if len(self.table_list) == 0:
-            prompt = self.format_prompt_db()
+            prompt = self.db_prompt
             user_prompt = self.format_user_prompt_db(nr_of_lines)
         else:
             prompt = self.format_prompt_tables(self.table_list)
@@ -142,7 +78,7 @@ VALUES
         self.insert_script = ''
         self.requirement_list = []
 
-    def format_prompt_db(self):
+    def set_prompt(self):
         prompt = ''
 
         for string in self.db_manager.table_props:

@@ -18,7 +18,7 @@ commands_dict = {
     'PRINT_REQUIREMENTS': '-pr',
     'ADD_TABLE': r'-at\s+(\d+)$',
     'REMOVE_TABLE': r'-rt\s+(\d+)$',
-    'SEE PROMPTS': '-sp'
+    'PRINT PROMPT': '-pp'
     }
 
 
@@ -99,5 +99,30 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                     printer_util.print_req_deleted()
                 else:
                     print('Invalid input for -dr command')
+
+        elif re.match(commands_dict['ADD_TABLE'], user_input):
+                match = re.match(commands_dict['ADD_TABLE'], user_input)
+                if match:
+                    index = int(match.group(1))
+                    data_engine.add_table(index)
+                    printer_util.print_table_added(data_engine.table_list[index-1])
+                else:
+                    print('Invalid input for -at command')
+
+        elif re.match(commands_dict['REMOVE_TABLE'], user_input):
+                match = re.match(commands_dict['REMOVE_TABLE'], user_input)
+                if match:
+                    index = int(match.group(1))
+                    data_engine.remove_table(index)
+                    printer_util.print_table_removed(data_engine.table_list[index-1])
+                else:
+                    print('Invalid input for -rt command')
+
+        elif user_input == commands_dict['PRINT PROMPT']:
+            if len(data_engine.table_list) == 0:
+                printer_util.print_prompt_db(data_engine.db_prompt)
+            printer_util.print_prompt(data_engine)
     else:
         printer_util.handle_not_running_commands(user_input)
+
+    
