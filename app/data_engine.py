@@ -103,7 +103,7 @@ VALUES
         self.format_response(response)
 
     def generate_tables(self, nr_of_lines, table_indices):
-        prompt = self.format_prompt()
+        prompt = self.format_prompt_db()
         user_prompt = self.format_user_prompt(nr_of_lines)
         
         response = gpt.get_response_tables(prompt, self.model, user_prompt, table_indices)
@@ -138,7 +138,7 @@ VALUES
         self.insert_script = ''
         self.requirement_list = []
 
-    def format_prompt(self):
+    def format_prompt_db(self):
         prompt = ''
 
         for string in self.db_manager.table_props:
@@ -147,7 +147,7 @@ VALUES
 
         return prompt
     
-    def format_user_prompt(self, nr_of_lines):
+    def format_user_prompt_db(self, nr_of_lines):
         prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
         if len(self.requirement_list) != 0:
             requirements = self.format_requirments()
