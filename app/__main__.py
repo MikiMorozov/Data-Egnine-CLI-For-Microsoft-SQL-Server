@@ -1,17 +1,21 @@
 # #!/usr/bin/env python
 import printer_util
+import gpt
 from commands import commands_dict as commands
 from database_manager import Database_Manager
+from halo import Halo
 from data_engine import Data_Engine
-from colorama import Fore, Style
+from colorama import init, Fore, Style
 import re
 
 def main():
 
     printer_util.welcome()
 
-    connection_string = r"DRIVER={ODBC Driver 17 for SQL Server};Server=michael\SQLEXPRESS01;Database=Hotel;Trusted_Connection=yes;"
+    connection_string = r"DRIVER={ODBC Driver 17 for SQL Server};Server=michael\SQLEXPRESS01;Database=Restaurant;Trusted_Connection=yes;"
     output_directory = r"C:\Users\micha\OneDrive\Documents\DataEngineTests"
+
+    init()
 
     db_manager = Database_Manager(connection_string)
     data_engine = Data_Engine(db_manager)
@@ -19,7 +23,7 @@ def main():
     # for table in db_manager.table_props:
     #     printer_util.print_table(table_prop)
 
-    engine_running = True
+    engine_running = False
 
     while True:
         if not engine_running:
@@ -60,13 +64,13 @@ def main():
                     data_engine.write_to_file(output_directory)
 
             elif user_input == commands['INSERT_INTO_DB']:
-                db_manager.insert_into_db(connection_string, data_engine.insert_script)
+                data_engine.insert_into_db()
 
             elif re.match(commands['GENERATE'], user_input):
                     match = re.match(commands['GENERATE'], user_input)
                     if match:
                         nr_of_lines = int(match.group(1))
-                        printer_util.print_response(data_engine, nr_of_lines)
+                        printer_util.print_response_db(data_engine, nr_of_lines)
                     else:
                         print('Invalid input for -g command')
 
@@ -77,7 +81,7 @@ def main():
                         table_index = int(match.group(2))
                         printer_util.print_response(data_engine, nr_of_lines, table_index)
                     else:
-                        print('Invalid input for -g -t command')
+                        print('Invalid input for -g command')
 
             elif re.match(commands['ADD_REQUIREMENT'], user_input):
                     match = re.match(commands['ADD_REQUIREMENT'], user_input)
