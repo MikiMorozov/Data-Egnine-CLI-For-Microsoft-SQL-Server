@@ -94,13 +94,16 @@ VALUES
         if db_manager is None : raise TypeError("db_manager cannot be None")
         self.db_manager = db_manager
 
-    def generate(self, nr_of_lines):
+    def generate_db(self, nr_of_lines):
         
         prompt = self.format_prompt()
         user_prompt = self.format_user_prompt(nr_of_lines)
         
         response = gpt.get_response(prompt, self.model, user_prompt)
         self.format_response(response)
+
+    def generate_table(table_index):
+        pass
 
     def write_to_file(self, output_directory):
         try:

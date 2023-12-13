@@ -18,8 +18,8 @@ HELP_TEXT = """
     -stop                               stops engine: clears latest generated data and prompts from memory
     -w <path>                           writes data to file when engine is running
     -idb                                inserts data into database when engine is running
-    -g <number>                         generates data when engine is running: specify the number of lines of data data to be generated for each table
-    -g <number> -t <table_index>        generates data when engine is running: specify the number of lines of data data to be generated for each table
+    -g <number>                         specify the number of lines of data data to be generated for each table
+    -g <number> -t <table_index>        specify the number of lines of data data to be generated for given table. Table index can be found using -pto command
     -ar <requirement>                   adds requirement to the requirement list when engine is running. Prompts are used to customize the data generation output.
     -dr <number>                        deletes requirement from the requirement list when engine is running
     -pr                                 prints all save requirements
@@ -49,8 +49,8 @@ def print_user_input(connection_string, output_directory):
 
 def print_tables(Data_Manager):
     print('\nTables:')
-    for i, table in enumerate(Data_Manager.tables, start=1):
-        print(f'{i}. {table.name}')
+    for table in enumerate(Data_Manager.tables, start=1):
+        print(table.name)
     print('\n')
 
 def print_table_relationships(Data_Manager):
@@ -88,11 +88,11 @@ def print_response_db(data_engine, nr_of_lines):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-def print_response_table(data_engine, nr_of_lines):
+def print_response_table(data_engine, nr_of_lines, table_index):
     start_time = time.time()
     try: 
         with Halo(text='generating data...'):
-            data_engine.generate(nr_of_lines)
+            data_engine.generate_db(nr_of_lines)
             print('\n')
             print(Fore.LIGHTBLUE_EX + data_engine.insert_script)
             print('\n')
