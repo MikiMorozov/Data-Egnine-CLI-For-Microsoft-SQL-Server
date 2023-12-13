@@ -1,4 +1,5 @@
 import sqlalchemy
+import pyodbc
 from sqlalchemy.schema import CreateTable
 
 #DRIVER={ODBC Driver 17 for SQL Server};Server=michael\SQLEXPRESS01;Database=Hotel;Trusted_Connection=yes;
@@ -95,5 +96,4 @@ class Database_Manager:
             self.table_props.append(create_table_stmt)
 
     def insert_into_db(self, insert_stmt):
-        with self.engine.connect() as con:
-            con.execute(insert_stmt)
+        conn = pyodbc.connect(self.connection_string)
