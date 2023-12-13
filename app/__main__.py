@@ -70,6 +70,15 @@ def main():
                     else:
                         print('Invalid input for -g command')
 
+            elif re.match(commands['GENERATE_TABLE'], user_input):
+                    match = re.match(commands['GENERATE_TABLE'], user_input)
+                    if match:
+                        nr_of_lines = int(match.group(1))
+                        table_index = int(match.group(2))
+                        printer_util.print_response(data_engine, nr_of_lines, table_index)
+                    else:
+                        print('Invalid input for -g -t command')
+
             elif re.match(commands['ADD_REQUIREMENT'], user_input):
                     match = re.match(commands['ADD_REQUIREMENT'], user_input)
                     if match:
