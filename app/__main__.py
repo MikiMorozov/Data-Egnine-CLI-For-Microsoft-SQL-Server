@@ -1,12 +1,9 @@
 # #!/usr/bin/env python
 import printer_util
-import gpt
 from commands import commands_dict as commands
 from database_manager import Database_Manager
-from halo import Halo
 from data_engine import Data_Engine
-from colorama import Fore, Style, just_fix_windows_console
-just_fix_windows_console()
+from colorama import Fore, Style
 import re
 
 def main():

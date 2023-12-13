@@ -84,14 +84,14 @@ def print_response(data_engine, nr_of_lines):
             print('\n')
             end_time = time.time()
             print(f"Time elapsed: {round(end_time - start_time, 3)} seconds\n")
-    except: 
-            print("Error")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def print_engine_not_running():
     print('Engine is not running. Please start the engine before executing this command. Use -h or --help for help.')
 
 def print_invalid_command(user_input):
-    print(f"Invalid command: \'{user_input}\'. Use -h or --help for help.")
+    print(f"Invalid command: \'{user_input}\'. Use --help for help.")
 
 def print_engine_started():
     print(Fore.LIGHTBLUE_EX + 'ENGINE STARTED _ _ _')
