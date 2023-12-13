@@ -117,7 +117,7 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                     print('Invalid input for -rt command')
 
         elif user_input == commands_dict['PRINT PROMPT']:
-            if len(data_engine.table_list) == 0:
+            if len(data_engine.table_dict) == 0:
                 printer_util.print_db_prompt(data_engine)
             else:
                 printer_util.print_tables_prompt(data_engine)

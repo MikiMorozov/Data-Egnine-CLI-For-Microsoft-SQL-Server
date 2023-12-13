@@ -11,19 +11,17 @@ class Data_Engine:
     db_prompt: str
     requirement_list: list
     model = str
-    table_list: list
+    table_dict: dict
 
     # constructor
     def __init__(self, db_manager):
-        self.db_manager = db_manager
+        self.set_db_manager(db_manager)
         self.requirement_list = []
         self.model = 'gpt-4'
-        self.table_list = []
+        self.table_dict = {}
         self.insert_script = ''
         self.set_prompt()
 
-
-    # setters
     def set_db_manager(self, db_manager):
         if db_manager is None : raise TypeError("db_manager cannot be None")
         self.db_manager = db_manager
@@ -33,11 +31,11 @@ class Data_Engine:
         prompt = ''
         user_prompt = ''
         
-        if len(self.table_list) == 0:
+        if len(self.table_dict) == 0:
             prompt = self.db_prompt
             user_prompt = self.format_user_prompt_db(nr_of_lines)
         else:
-            prompt = self.format_prompt_tables(self.table_list)
+            prompt = self.format_prompt_tables()
             user_prompt = self.format_user_prompt_tables(nr_of_lines)
         
         response = gpt.get_response(prompt, self.model, user_prompt)
@@ -76,6 +74,7 @@ class Data_Engine:
     def clear(self):
         self.insert_script = ''
         self.requirement_list = []
+        self.table_dict = {}
 
     def set_prompt(self):
         prompt = ''
@@ -86,10 +85,10 @@ class Data_Engine:
 
         self.db_prompt = prompt
     
-    def format_prompt_tables(self, table_indices):
+    def format_prompt_tables(self):
         prompt = ''
 
-        for index in table_indices:
+        for index in self.table_dict.values():
             prompt += self.db_manager.table_props[index]
             prompt += "\n"
 
@@ -105,14 +104,14 @@ class Data_Engine:
     def format_user_prompt_tables(self, nr_of_lines):
         tables = ''
 
-        for table in self.table_list:
+        for table in self.table_dict.keys():
             tables += table
             tables += ', '
 
         user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for these tables: {tables}. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
         if len(self.requirement_list) != 0:
             requirements = self.format_requirements()
-            prompt += requirements
+            user_prompt += requirements
         return user_prompt
 
     def format_requirements(self):
@@ -127,12 +126,12 @@ class Data_Engine:
         self.insert_script = response[begin_idx:end_idx]
 
     def add_table(self, table_index):
-        # if table_list already contains the table, don't add it again. check by table name if the strings match
+        # if table_dict already contains the table, don't add it again. check by table name if the strings match
         try:
             table_name = self.db_manager.table_order[table_index - 1]
 
-            if table_name not in self.table_list:
-                self.table_list.append(table_name)
+            if table_name not in self.table_dict:
+                self.table_dict[table_name] = table_index -1
                 print(f"Table '{table_name}' added to the list.")
             else:
                 print(f"Table '{table_name}' is already in the list.")
@@ -143,8 +142,8 @@ class Data_Engine:
         try:
             table_name = self.db_manager.table_order[table_index - 1]
 
-            if table_name in self.table_list:
-                self.table_list.remove(table_name)
+            if table_name in self.table_dict:
+                del self.table_dict[table_name]
                 print(f"Table '{table_name}' removed from the list.")
             else:
                 print(f"Table '{table_name}' is not in the list.")

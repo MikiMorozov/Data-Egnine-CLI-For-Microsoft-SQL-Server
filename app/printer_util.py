@@ -161,11 +161,10 @@ def print_table_deleted():
 
 def print_db_prompt(data_engine):
     print('\n')
-    print(Fore.LIGHTBLUE_EX + f"{data_engine.db_prompt}")
+    print(f"{data_engine.db_prompt}")
     print('\n')
 
 def print_tables_prompt(data_engine):
-    for table in data_engine.table_list:
         print('\n')
-        print(Fore.LIGHTBLUE_EX + f"[{table}]")
+        print(f"{data_engine.format_prompt_tables()}")
         print('\n')
