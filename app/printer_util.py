@@ -138,9 +138,6 @@ def print_reqs(data_engine):
 def print_req_deleted():
     print(f"Requirement deleted.")
 
-def print_table_added():
-    print(f"Table added to prompt. Use -sp to see the prompt.")
-
 def print_table_deleted():
     print(f"Table deleted from prompt. Use -sp to see the prompt.")
 

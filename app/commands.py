@@ -39,7 +39,7 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                     
     if user_input in engine_commands.values() and engine_running[0] == False:
         printer_util.print_engine_not_running()
-    elif user_input in engine_commands.values() and engine_running[0] == True:
+    elif user_input in engine_commands.values() and engine_running[0] == True or any(re.match(command, user_input) for command in engine_commands.values()) and engine_running[0] == True:
         if re.match(engine_commands['WRITE_DATA'], user_input):
             match = re.match(engine_commands['WRITE_DATA'], user_input)
             if match:
@@ -104,7 +104,7 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                 except Exception as e:
                     print('Invalid input for -rt command')
         elif user_input == engine_commands['PRINT PROMPT']:
-            if len(data_engine.tablenon_engine_commands_dict) == 0:
+            if len(data_engine.table_dict) == 0:
                 printer_util.print_db_prompt(data_engine)
             else:
                 printer_util.print_tables_prompt(data_engine)
