@@ -25,8 +25,9 @@ HELP_TEXT = """
     -dr <number>                        deletes requirement from the requirement list when engine is running
     -pr                                 prints all saved requirements
     -q                                  quits the program
-    -at                                 add stable to prompt
+    -at                                 add table to prompt
     -dt                                 delete table from prompt
+    -ct                                 clear tables added to prompt
     -st                                 see tables added to prompt
     -pp                                 print prompt
 
