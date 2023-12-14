@@ -19,7 +19,8 @@ commands_dict = {
     'ADD_TABLE': r'-at\s+(\d+)$',
     'REMOVE_TABLE': r'-rt\s+(\d+)$',
     'SEE_TABLES': '-st',
-    'PRINT PROMPT': '-pp'
+    'PRINT PROMPT': '-pp',
+    'CLEAR_TABLES': '-ct'
     }
 
 
@@ -131,6 +132,10 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                 printer_util.print_db_prompt(data_engine)
             else:
                 printer_util.print_tables_prompt(data_engine)
+
+        elif user_input == commands_dict['CLEAR_TABLES']:
+            data_engine.clear_tables()
+            printer_util.print_tables_cleared()
     else:
         printer_util.handle_not_running_commands(user_input)
 

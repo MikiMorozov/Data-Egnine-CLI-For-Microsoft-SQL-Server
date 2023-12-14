@@ -183,3 +183,6 @@ def print_tables_prompt(data_engine):
         print('\n')
         print(f"{data_engine.format_prompt_tables()}")
         print('\n')
+
+def print_tables_cleared():
+    print('Tables cleared. -pp to see prompt.')

@@ -146,3 +146,6 @@ class Data_Engine:
                 print(f"Table '{table_name}' is not in the list.")
         except IndexError:
             print('Invalid index')
+
+    def clear_tables(self):
+        self.table_dict = {}
