@@ -27,7 +27,8 @@ HELP_TEXT = """
     -q                                  quits the program
     -at                                 add stable to prompt
     -dt                                 delete table from prompt
-    --see -p                            see prompt
+    -st                                 see tables added to prompt
+    -pp                                 print prompt
 
     """
 
@@ -158,6 +159,19 @@ def print_table_added():
 
 def print_table_deleted():
     print(f"Table deleted from prompt. Use -sp to see the prompt.")
+
+def see_tables_added(data_engine):
+    try:
+        if len(data_engine.table_dict) == 0:
+            print('No tables added.')
+            return
+        else:
+            print('\nTables added to prompt:\n')
+            for table_name, table_index in data_engine.table_dict.items():
+                print(f"[{table_index+1}] {table_name}")
+            print('\n')
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def print_db_prompt(data_engine):
     print('\n')

@@ -18,6 +18,7 @@ commands_dict = {
     'PRINT_REQUIREMENTS': '-pr',
     'ADD_TABLE': r'-at\s+(\d+)$',
     'REMOVE_TABLE': r'-rt\s+(\d+)$',
+    'SEE_TABLES': '-st',
     'PRINT PROMPT': '-pp'
     }
 
@@ -117,6 +118,12 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                     index = int(match.group(1))
                     data_engine.remove_table(index)
                 else:
+                    print('Invalid input for -rt command')
+
+        elif user_input == commands_dict['SEE_TABLES']:
+                try:
+                    printer_util.see_tables_added(data_engine)
+                except Exception as e:
                     print('Invalid input for -rt command')
 
         elif user_input == commands_dict['PRINT PROMPT']:
