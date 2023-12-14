@@ -20,7 +20,10 @@ commands_dict = {
     'REMOVE_TABLE': r'-rt\s+(\d+)$',
     'SEE_TABLES': '-st',
     'PRINT PROMPT': '-pp',
-    'CLEAR_TABLES': '-ct'
+    'CLEAR_TABLES': '-ct',
+    'MODELS': '--models',
+    'SET_MODEL': r'--setmodel\s+(\d+)$',
+    'GET_MODEL': '--getmodel'
     }
 
 
@@ -32,6 +35,27 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
             if not any(re.match(command, user_input) for command in commands_dict.values()):
                 printer_util.print_invalid_command(user_input)
     
+    # model commands
+    
+    if user_input == commands_dict['MODELS']:
+        try:
+            printer_util.print_models()
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+    elif re.match(commands_dict['SET_MODEL'], user_input):
+        match = re.match(commands_dict['SET_MODEL'], user_input)
+        if match:
+            model_index = int(match.group(1))
+            data_engine.set_model(model_index)
+            printer_util.print_model_set(model_index)
+        else:
+            print('Invalid input for --setmodel command')
+    elif user_input == commands_dict['GET_MODEL']:
+        try:
+            printer_util.print_model(data_engine)
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
     # print commands
 
     if user_input == commands_dict['PRINT_HELP']:
