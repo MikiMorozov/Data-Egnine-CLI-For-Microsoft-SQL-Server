@@ -61,7 +61,10 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                 data_engine.write_to_file(output_directory)
 
         elif user_input == commands_dict['INSERT_INTO_DB']:
-            data_engine.insert_into_db()
+            try:
+                db_manager.insert_into_db(data_engine.insert_script)
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
 
         elif re.match(commands_dict['GENERATE'], user_input):
                 match = re.match(commands_dict['GENERATE'], user_input)

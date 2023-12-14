@@ -17,7 +17,7 @@ class Data_Engine:
     def __init__(self, db_manager):
         self.set_db_manager(db_manager)
         self.requirement_list = []
-        self.model = 'gpt-4'
+        self.model = 'gpt-3.5-turbo-1106'
         self.table_dict = {}
         self.insert_script = ''
         self.set_prompt()
@@ -58,9 +58,6 @@ class Data_Engine:
             print(f"Error: Permission denied. Unable to write to '{output_directory}'.")
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
-    def insert_into_db(self):
-        self.db_manager.insert_into_db(self.insert_script) 
 
     def delete_requirement(self, index):
         try:

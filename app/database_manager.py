@@ -8,7 +8,8 @@ class Database_Manager:
 
     # properties
 
-    connection_string: str
+    connection_string_sa: str
+    connection_string_pyodbc: str
     engine: sqlalchemy.Engine
     inspector = sqlalchemy.Inspector
     metadata: sqlalchemy.MetaData
@@ -21,7 +22,8 @@ class Database_Manager:
     # constructor
 
     def __init__(self, connection_string):
-        self.set_connection_string(connection_string)
+        self.set_connection_string_sa(connection_string)
+        self.set_connection_string_pyodbc(connection_string)
         self.set_engine()
         self.set_inspector()
         self.set_metadata()
@@ -33,8 +35,10 @@ class Database_Manager:
 
     # setters
 
-    def set_connection_string(self, connection_string):
+    def set_connection_string_sa(self, connection_string):
         self.connection_string = f"mssql+pyodbc:///?odbc_connect=" + connection_string
+    def set_connection_string_pyodbc(self, connection_string):
+        self.connection_string_pyodbc = connection_string
     def set_engine(self):
         self.engine = sqlalchemy.create_engine(self.connection_string)
     def set_inspector(self):
@@ -95,9 +99,9 @@ class Database_Manager:
             create_table_stmt = create_table_stmt.strip()
             self.table_props.append(create_table_stmt)
 
-    def insert_into_db(self, connection_string, insert_stmt):
+    def insert_into_db(self, insert_stmt):
         try:
-            conn = pyodbc.connect(connection_string)
+            conn = pyodbc.connect(self.connection_string_pyodbc)
             with conn as connection:
                 cursor = connection.cursor()
                 cursor.execute(insert_stmt)
