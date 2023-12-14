@@ -149,3 +149,7 @@ class Data_Engine:
 
     def clear_tables(self):
         self.table_dict = {}
+
+    def set_model(self, model):
+        if model is None : raise TypeError("model cannot be None")
+        self.model = model

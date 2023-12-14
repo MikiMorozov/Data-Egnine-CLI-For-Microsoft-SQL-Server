@@ -2,6 +2,7 @@ import os
 import time
 from colorama import Fore
 from halo import Halo
+from models import MODELS
 from commands import commands_dict as commands
 import re
 from sys import stdout
@@ -30,6 +31,9 @@ HELP_TEXT = """
     -ct                                 clear tables added to prompt
     -st                                 see tables added to prompt
     -pp                                 print prompt
+    --models                            see all models
+    --setmodel <model_index>            set model
+    --getmodel                          get current model
 
     """
 
@@ -186,3 +190,15 @@ def print_tables_prompt(data_engine):
 
 def print_tables_cleared():
     print('Tables cleared. -pp to see prompt.')
+
+def print_models():
+    print('\nModels:\n')
+    for i, model in enumerate(MODELS, start=1):
+        print(f"[{i}] {model}")
+    print('\n')
+
+def print_model_set(model):
+    print(f"Model set to {model}.")
+
+def print_get_model(data_engine):
+    print(f"Current model: {data_engine.model}.")
