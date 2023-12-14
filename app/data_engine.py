@@ -155,5 +155,6 @@ class Data_Engine:
         try:
             if index is None : raise TypeError("model cannot be None")
             self.model = MODELS[index-1]
+            print(f"Model set to '{self.model}'")
         except IndexError:
             print('Invalid index')
