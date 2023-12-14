@@ -54,20 +54,18 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
 
         # engine-dependent commands
 
-    if engine_running:
+    if engine_running[0] == True:
         if re.match(commands_dict['WRITE_DATA'], user_input):
             match = re.match(commands_dict['WRITE_DATA'], user_input)
             if match:
                 output_directory = match.group(1)
 
                 data_engine.write_to_file(output_directory)
-
         elif user_input == commands_dict['INSERT_INTO_DB']:
             try:
                 db_manager.insert_into_db(data_engine.insert_script)
             except Exception as e:
                 print(f"An unexpected error occurred: {e}")
-
         elif re.match(commands_dict['GENERATE'], user_input):
                 match = re.match(commands_dict['GENERATE'], user_input)
                 if match:
@@ -75,7 +73,6 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                     printer_util.print_response_db(data_engine, nr_of_lines)
                 else:
                     print('Invalid input for -g command')
-
         elif re.match(commands_dict['GENERATE_TABLE'], user_input):
                 match = re.match(commands_dict['GENERATE_TABLE'], user_input)
                 if match:
@@ -84,7 +81,6 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                     printer_util.print_response(data_engine, nr_of_lines, table_index)
                 else:
                     print('Invalid input for -g command')
-
         elif re.match(commands_dict['ADD_REQUIREMENT'], user_input):
                 match = re.match(commands_dict['ADD_REQUIREMENT'], user_input)
                 if match:
@@ -95,7 +91,6 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                     print('Invalid input for -ap command')
         elif user_input == commands_dict['PRINT_REQUIREMENTS']:
             printer_util.print_reqs(data_engine)
-
         elif re.match(commands_dict['DELETE_REQUIREMENT'], user_input):
                 match = re.match(commands_dict['DELETE_REQUIREMENT'], user_input)
                 if match:
@@ -104,7 +99,6 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                     printer_util.print_req_deleted()
                 else:
                     print('Invalid input for -dr command')
-
         elif re.match(commands_dict['ADD_TABLE'], user_input):
                 match = re.match(commands_dict['ADD_TABLE'], user_input)
                 if match:
@@ -112,7 +106,6 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                     data_engine.add_table(index)
                 else:
                     print('Invalid input for -at command')
-
         elif re.match(commands_dict['REMOVE_TABLE'], user_input):
                 match = re.match(commands_dict['REMOVE_TABLE'], user_input)
                 if match:
@@ -120,19 +113,16 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
                     data_engine.remove_table(index)
                 else:
                     print('Invalid input for -rt command')
-
         elif user_input == commands_dict['SEE_TABLES']:
                 try:
                     printer_util.see_tables_added(data_engine)
                 except Exception as e:
                     print('Invalid input for -rt command')
-
         elif user_input == commands_dict['PRINT PROMPT']:
             if len(data_engine.table_dict) == 0:
                 printer_util.print_db_prompt(data_engine)
             else:
                 printer_util.print_tables_prompt(data_engine)
-
         elif user_input == commands_dict['CLEAR_TABLES']:
             data_engine.clear_tables()
             printer_util.print_tables_cleared()
