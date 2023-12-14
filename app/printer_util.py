@@ -3,7 +3,7 @@ import time
 from colorama import Fore
 from halo import Halo
 from models import MODELS
-from commands import commands_dict as commands
+
 import re
 from sys import stdout
 
@@ -123,27 +123,6 @@ def print_engine_started():
 def print_engine_stopped():
     print(Fore.LIGHTBLUE_EX + 'ENGINE STOPPED _ _ _')
 
-def handle_not_running_commands(user_input):
-    matching_commands = [
-        commands['WRITE_DATA'],
-        commands['INSERT_INTO_DB'],
-        commands['GENERATE'],
-        commands['ADD_REQUIREMENT'],
-        commands['PRINT_REQUIREMENTS']
-    ]
-
-    for cmd in matching_commands:
-        if cmd == user_input:
-            print_engine_not_running()
-            return
-
-    # Check if user_input matches the patterns for 'GENERATE' or 'ADD_POMPT'
-    generate_match = re.match(commands['GENERATE'], user_input)
-    add_prompt_match = re.match(commands['ADD_REQUIREMENT'], user_input)
-
-    if generate_match or add_prompt_match:
-        print_engine_not_running()
-
 def print_req_added(requirement):
     print(f"Requirement added: \"{requirement}\". Use -pr to see all requirements.")
 
@@ -196,9 +175,6 @@ def print_models():
     for i, model in enumerate(MODELS, start=1):
         print(f"[{i}] {model}")
     print('\n')
-
-def print_model_set(model):
-    print(f"Model set to {model}.")
 
 def print_get_model(data_engine):
     print(f"Current model: {data_engine.model}.")

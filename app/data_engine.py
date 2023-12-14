@@ -1,6 +1,7 @@
 import gpt
 from database_manager import Database_Manager
 from datetime import datetime
+from models import MODELS
 
 class Data_Engine:
     
@@ -150,6 +151,9 @@ class Data_Engine:
     def clear_tables(self):
         self.table_dict = {}
 
-    def set_model(self, model):
-        if model is None : raise TypeError("model cannot be None")
-        self.model = model
+    def set_model(self, index):
+        try:
+            if index is None : raise TypeError("model cannot be None")
+            self.model = MODELS[index-1]
+        except IndexError:
+            print('Invalid index')
