@@ -62,7 +62,7 @@ def remove_table(user_input):
         index = int(match.group(1))
         data_engine.remove_table(index)
 
-def see_tables(user_input):
+def see_tables():
     try:
         printer_util.see_tables_added(data_engine)
     except Exception as e:
@@ -122,11 +122,19 @@ def print_get_model():
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-def execute_command(user_input, db_manager, data_engine, engine_running):
+def execute_command(*args):
 
-    if user_input not in engine_commands.values() and user_input not in non_engine_commands.values():
-            if not any(re.match(command, user_input) for command in engine_commands.values()) and not any(re.match(command, user_input) for command in non_engine_commands.values()):
-                printer_util.print_invalid_command(user_input)
+    if args[0] not in command_registry.engine_commands.values() and args[0] not in command_registry.non_engine_commands.values():
+            if not any(re.match(command, args[0]) for command in command_registry.engine_commands.values()) and not any(re.match(command, args[0]) for command in command_registry.non_engine_commands.values()):
+                printer_util.print_invalid_command(args[0])
+
+    for command, (pattern, func) in command_registry.engine_commands.items():
+        match = re.match(pattern, user_input)
+    if match:
+        func(user_input)
+        break
+    else:
+        print("Invalid command")
 
     # # ENGINE COMMANDS
                     
