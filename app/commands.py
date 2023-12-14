@@ -127,6 +127,6 @@ def execute_command(user_input, db_manager, data_engine, engine_running):
             data_engine.clear_tables()
             printer_util.print_tables_cleared()
     else:
-        printer_util.handle_not_running_commands(user_input)
+        printer_util.print_engine_not_running()
 
     
