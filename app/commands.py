@@ -1,32 +1,152 @@
 import re
 import printer_util
 
+db_manager = None
+data_engine = None
+engine_running = [False]
+
+def write_data(user_input):
+    match = re.match(engine_commands['WRITE_DATA'], user_input)
+    if match:
+        output_directory = match.group(1)
+        data_engine.write_to_file(output_directory)
+
+def insert_into_db():
+    try:
+        db_manager.insert_into_db(data_engine.insert_script)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+def generate(user_input):
+    match = re.match(engine_commands['GENERATE'], user_input)
+    if match:
+        nr_of_lines = int(match.group(1))
+        printer_util.print_response_db(data_engine, nr_of_lines)
+    else:
+        print('Invalid input for -g command')
+
+def generate_table(user_input):
+    match = re.match(engine_commands['GENERATE_TABLE'], user_input)
+    if match:
+        nr_of_lines = int(match.group(1))
+        table_index = int(match.group(2))
+        printer_util.print_response(data_engine, nr_of_lines, table_index)
+
+def add_requirement(user_input):
+    match = re.match(engine_commands['ADD_REQUIREMENT'], user_input)
+    if match:
+        prompt = match.group(1)
+        data_engine.add_requirement(prompt)
+        printer_util.print_req_added(prompt)
+
+def delete_requirement(user_input):
+    match = re.match(engine_commands['DELETE_REQUIREMENT'], user_input)
+    if match:
+        index = int(match.group(1))
+        data_engine.delete_requirement(index)
+        printer_util.print_req_deleted()
+
+def print_requirements():
+    printer_util.print_reqs(data_engine)
+
+def add_table(user_input):
+    match = re.match(engine_commands['ADD_TABLE'], user_input)
+    if match:
+        index = int(match.group(1))
+        data_engine.add_table(index)
+
+def remove_table(user_input):
+    match = re.match(engine_commands['REMOVE_TABLE'], user_input)
+    if match:
+        index = int(match.group(1))
+        data_engine.remove_table(index)
+
+def see_tables(user_input):
+    try:
+        printer_util.see_tables_added(data_engine)
+    except Exception as e:
+        print('Invalid input for -rt command')
+
+def print_prompt():
+    if len(data_engine.table_dict) == 0:
+        printer_util.print_db_prompt(data_engine)
+    else:
+        printer_util.print_tables_prompt(data_engine)
+
+def clear_tables():
+    data_engine.clear_tables()
+    printer_util.print_tables_cleared()
+
+def print_help():
+    printer_util.print_help()
+
+def print_tables():
+    printer_util.print_tables(db_manager)
+
+def print_table_relationships():
+    printer_util.print_table_relationships(db_manager)
+
+def print_table_order():
+    printer_util.print_table_order(db_manager)
+
+def start_engine():
+    engine_running[0] = True 
+    printer_util.print_engine_started()
+
+def stop_engine():
+    engine_running[0] = False
+    printer_util.print_engine_stopped()
+    data_engine.clear()
+
+def quit():
+    pass
+
+def print_models():
+    try:
+        printer_util.print_models()
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+def set_model(user_input):
+    match = re.match(non_engine_commands['SET_MODEL'], user_input)
+    if match:
+        model_index = int(match.group(1))
+        data_engine.set_model(model_index)
+    else:
+        print('Invalid input for --setmodel command')
+
+def print_get_model():
+    try:
+        printer_util.print_get_model(data_engine)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
 engine_commands = {
-   
-    'WRITE_DATA': r'-w\s+(.+)$',
-    'INSERT_INTO_DB': '-idb',
-    'GENERATE': r'-g\s+(\d+)$',
-    'GENERATE_TABLE': r'-g\s+(\d+)\s+-t\s+(\d+)$',
-    'ADD_REQUIREMENT': r'-ar\s+(.+)$',
-    'DELETE_REQUIREMENT': r'-dr\s+(\d+)$',
-    'PRINT_REQUIREMENTS': '-pr',
-    'ADD_TABLE': r'-at\s+(\d+)$',
-    'REMOVE_TABLE': r'-rt\s+(\d+)$',
-    'SEE_TABLES': '-st',
-    'PRINT PROMPT': '-pp',
-    'CLEAR_TABLES': '-ct'
+    'WRITE_DATA': (r'-w\s+(.+)$', write_data()),
+    'INSERT_INTO_DB': ('-idb', insert_into_db()),
+    'GENERATE': (r'-g\s+(\d+)$', generate()),
+    'GENERATE_TABLES': (r'-g\s+(\d+)\s+-t\s+(\d+)$', generate_table()),
+    'ADD_REQUIREMENT': (r'-ar\s+(.+)$', add_requirement()),
+    'DELETE_REQUIREMENT': (r'-dr\s+(\d+)$', delete_requirement()),
+    'PRINT_REQUIREMENTS': ('-pr', print_requirements()),
+    'ADD_TABLE': (r'-at\s+(\d+)$', add_table()),
+    'REMOVE_TABLE': (r'-rt\s+(\d+)$', remove_table()),
+    'SEE_TABLES': ('-st', see_tables()),
+    'PRINT PROMPT': ('-pp', print_prompt()),
+    'CLEAR_TABLES': ('-ct', clear_tables()),
     }
 
-non_engine_commands = { 'PRINT_HELP': '--help',
-    'PRINT_TABLES': '-pt',
-    'PRINT_TABLE_RELATIONSHIPS': '-ptr',
-    'PRINT_TABLE_ORDER': '-pto',
-    'START_ENGINE': '--start',
-    'STOP_ENGINE': '--stop',
-    'QUIT': '-q',
-    'MODELS': '--models',
-    'SET_MODEL': r'--setmodel\s+(\d+)$',
-    'GET_MODEL': '--getmodel'
+non_engine_commands = { 
+    'PRINT_HELP': ('--help', print_help()),
+    'PRINT_TABLES': ('-pt', print_tables()),
+    'PRINT_TABLE_RELATIONSHIPS': ('-ptr', print_table_relationships()),
+    'PRINT_TABLE_ORDER': ('-pto', print_table_order()),
+    'START_ENGINE': ('--start', start_engine()), 
+    'STOP_ENGINE': ('--stop', stop_engine()),
+    'QUIT': ('-q', quit()),
+    'MODELS': ('--models', print_models()), 
+    'SET_MODEL': (r'--setmodel\s+(\d+)$', set_model()),
+    'GET_MODEL': ('--getmodel', print_get_model()),
     }
 
 def execute_command(user_input, db_manager, data_engine, engine_running):

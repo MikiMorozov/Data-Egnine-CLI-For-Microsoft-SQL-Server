@@ -15,6 +15,9 @@ def main():
     db_manager = Database_Manager(connection_string)
     data_engine = Data_Engine(db_manager)
 
+    commands.data_engine = data_engine
+    commands.db_manager = db_manager
+
     # for table in db_manager.table_props:
     #     printer_util.print_table(table_prop)
 

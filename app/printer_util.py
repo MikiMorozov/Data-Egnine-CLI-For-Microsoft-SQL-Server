@@ -175,3 +175,6 @@ def print_models():
 
 def print_get_model(data_engine):
     print(f"Current model: {data_engine.model}.")
+
+def print_tables_cleared():
+    print('Tables cleared. -pp to see prompt.')
