@@ -19,7 +19,7 @@ def get_response(prompt, model, user_prompt):
             model=model,
             messages=[
                 {"role": "system", "content": prompt},
-                {"role": "assistant", "content": 'I am a highly intelligent assistant that can generate SQL Server INSERT statements with dummy data for your tables. I will only give code snippets and leave out comments.'},
+                {"role": "assistant", "content": 'I am a highly intelligent assistant that can generate SQL Server INSERT statements with dummy data for your tables. I will only give code snippets and leave out comments. I will make sure to take into consideration special characters and escape characters for MS SQL Server syntax.'},
                 {"role": "user", "content": user_prompt},
             ]
         )

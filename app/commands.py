@@ -31,8 +31,7 @@ non_engine_commands = { 'PRINT_HELP': '--help',
 
 def execute_command(user_input, db_manager, data_engine, engine_running):
 
-    if user_input not in engine_commands.values() and user_input not in non_engine_commands.values():
-            if not any(re.match(command, user_input) for command in engine_commands.values()) and not any(re.match(command, user_input) for command in non_engine_commands.values()):
+    if user_input not in engine_commands.values() and user_input not in non_engine_commands.values() and not any(re.match(command, user_input) for command in engine_commands.values()) and not any(re.match(command, user_input) for command in non_engine_commands.values()):
                 printer_util.print_invalid_command(user_input)
 
     # ENGINE COMMANDS
