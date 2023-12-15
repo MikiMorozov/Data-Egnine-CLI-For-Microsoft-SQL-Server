@@ -1,6 +1,6 @@
 # #!/usr/bin/env python
 import printer_util
-import app.command_exe as command_exe
+import command_exe
 from colorama import Fore, Style
 from setup_handler import check_env, check_api_key
 import command_exe
@@ -20,7 +20,7 @@ def main():
             user_input = input(Fore.LIGHTBLUE_EX + '>>> ' + Style.RESET_ALL).strip().lower()
 
         if command_exe.command_valid(user_input):
-            if user_input in command_exe.command_registry.engine_commands.values() and command_exe.engine_running[0] == False:
+            if user_input in command_registry.engine_commands.values() and command_exe.engine_running[0] == False:
                command_exe.engine_command_handler(user_input, command_exe.engine_running)
             elif (user_input in command_registry.non_engine_commands.values() and command_exe.engine_running[0] == True) or (user_input in command_exe.command_registry.non_engine_commands.values()):
                 command_function = command_exe.command_functions.get(user_input)

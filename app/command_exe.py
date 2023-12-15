@@ -1,7 +1,6 @@
 import inspect
 import re
 import printer_util
-import command_registry
 from database_manager import Database_Manager
 from data_engine import Data_Engine
 
@@ -17,6 +16,7 @@ def has_param(func):
         return True
 
 def write_data(user_input):
+    import command_registry
     match = re.match(command_registry.engine_commands['WRITE_DATA'], user_input)
     if match:
         output_directory = match.group(1)
@@ -29,6 +29,7 @@ def insert_into_db():
         print(f"An unexpected error occurred: {e}")
 
 def generate(user_input):
+    import command_registry
     match = re.match(command_registry.engine_commands['GENERATE'], user_input)
     if match:
         nr_of_lines = int(match.group(1))
@@ -37,6 +38,7 @@ def generate(user_input):
         print('Invalid input for -g command')
 
 def generate_tables(user_input):
+    import command_registry
     match = re.match(command_registry.engine_commands['GENERATE_TABLE'], user_input)
     if match:
         nr_of_lines = int(match.group(1))
@@ -44,6 +46,7 @@ def generate_tables(user_input):
         printer_util.print_response(data_engine, nr_of_lines, table_index)
 
 def add_requirement(user_input):
+    import command_registry
     match = re.match(command_registry.engine_commands['ADD_REQUIREMENT'], user_input)
     if match:
         prompt = match.group(1)
@@ -51,6 +54,7 @@ def add_requirement(user_input):
         printer_util.print_req_added(prompt)
 
 def delete_requirement(user_input):
+    import command_registry
     match = re.match(command_registry.engine_commands['DELETE_REQUIREMENT'], user_input)
     if match:
         index = int(match.group(1))
@@ -61,12 +65,14 @@ def print_requirements():
     printer_util.print_reqs(data_engine)
 
 def add_table(user_input):
+    import command_registry
     match = re.match(command_registry.engine_commands['ADD_TABLE'], user_input)
     if match:
         index = int(match.group(1))
         data_engine.add_table(index)
 
 def remove_table(user_input):
+    import command_registry
     match = re.match(command_registry.engine_commands['REMOVE_TABLE'], user_input)
     if match:
         index = int(match.group(1))
@@ -119,6 +125,7 @@ def print_models():
         print(f"An unexpected error occurred: {e}")
 
 def set_model(user_input):
+    import command_registry
     match = re.match(command_registry.non_engine_commands['SET_MODEL'], user_input)
     if match:
         model_index = int(match.group(1))
@@ -133,14 +140,20 @@ def print_get_model():
         print(f"An unexpected error occurred: {e}")
 
 def command_valid(user_input):
+    from command_registry import engine_commands, non_engine_commands
 
-    if user_input not in command_registry.engine_commands.values() and user_input not in command_registry.non_engine_commands.values():
-        if not any(re.match(command, user_input) for command in command_registry.engine_commands.values()) and not any(re.match(command, user_input) for command in command_registry.non_engine_commands.values()):
+    non_engine_command = re.match(non_engine_commands[user_input], user_input)
+    engine_command = re.match(engine_commands[user_input], user_input)
+
+    if user_input not in engine_commands.values() and user_input not in non_engine_commands.values():
+        if not any(non_engine_command) in non_engine_commands.values() and not any(engine_command) in engine_commands.values():
             printer_util.print_invalid_command(user_input)
             return False
+        
     return True
 
 def engine_command_handler(user_input):
+    import command_registry
     if user_input in command_registry.engine_commands.values() and engine_running[0] == False:
         printer_util.print_engine_not_running()
         return

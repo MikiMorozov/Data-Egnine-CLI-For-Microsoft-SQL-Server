@@ -43,8 +43,8 @@ class Database_Manager:
         self.connection_string = self.driver + os.getenv("CONNECTION_STRING")
     def set_connection_string_sa(self):
         self.connection_string_sa = f"mssql+pyodbc:///?odbc_connect=" + self.connection_string
-    def set_connection_string_pyodbc(self, connection_string):
-        self.connection_string_pyodbc = connection_string
+    def set_connection_string_pyodbc(self):
+        self.connection_string_pyodbc = self.connection_string
     def set_engine(self):
         self.engine = sqlalchemy.create_engine(self.connection_string_sa)
     def set_inspector(self):
