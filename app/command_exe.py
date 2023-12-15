@@ -1,3 +1,4 @@
+import inspect
 import re
 import printer_util
 import command_registry
@@ -5,8 +6,15 @@ from database_manager import Database_Manager
 from data_engine import Data_Engine
 
 engine_running = [False]
+program_running = [True]
 db_manager = Database_Manager()
 data_engine = Data_Engine(db_manager)
+
+def has_param(func):
+    signature = inspect.signature(func)
+    params = signature.parameters
+    if len(params) > 0:
+        return True
 
 def write_data(user_input):
     match = re.match(command_registry.engine_commands['WRITE_DATA'], user_input)
@@ -102,7 +110,7 @@ def stop_engine():
     data_engine.clear()
 
 def quit():
-    pass
+   program_running[0] = False
 
 def print_models():
     try:
@@ -131,3 +139,8 @@ def command_valid(user_input):
             printer_util.print_invalid_command(user_input)
             return False
     return True
+
+def engine_command_handler(user_input):
+    if user_input in command_registry.engine_commands.values() and engine_running[0] == False:
+        printer_util.print_engine_not_running()
+        return

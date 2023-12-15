@@ -44,5 +44,3 @@ def check_api_key():
                 with open('.env', 'a') as env_file:
                     env_file.write('\nOPENAI_API_KEY=your_api_key_here\n')
                     return False
-
-                    
