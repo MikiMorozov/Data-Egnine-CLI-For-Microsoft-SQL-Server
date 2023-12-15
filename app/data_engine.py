@@ -26,15 +26,18 @@ class Data_Engine:
         if db_manager is None : raise TypeError("db_manager cannot be None")
         self.db_manager = db_manager
 
-    def generate(self, nr_of_lines, table_index):
+    def generate(self, nr_of_lines, table_index=None):
 
         prompt = ''
         user_prompt = ''
-        if table_index is None:
+        if table_index is None and len(self.table_dict) == 0:
             prompt = self.set_prompt()
             user_prompt = self.format_user_prompt_db(nr_of_lines)
+        elif table_index is None and len(self.table_dict) != 0:
+            prompt = self.set_prompt()
+            user_prompt = self.format_user_prompt_tables(nr_of_lines)
         else:
-            prompt = self.set_prompt(table_index)
+            prompt = self.format_prompt_tables(table_index)
             user_prompt = self.format_user_prompt_tables(nr_of_lines, table_index)
 
         
@@ -73,7 +76,7 @@ class Data_Engine:
         self.requirement_list = []
         self.table_dict = {}
 
-    def set_prompt(self, table_index):
+    def set_prompt(self, table_index=None):
         if table_index is None:
             prompt = ''
 
@@ -95,7 +98,7 @@ class Data_Engine:
             prompt = self.db_manager.table_props[table_index - 1]
             self.db_prompt = prompt
      
-    def format_user_prompt_db(self, nr_of_lines, table_index):
+    def format_user_prompt_db(self, nr_of_lines, table_index=None):
         if table_index is None:
             which = 'each individual table'
         else:

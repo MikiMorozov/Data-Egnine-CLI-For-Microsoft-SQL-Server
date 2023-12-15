@@ -4,7 +4,7 @@ engine_commands = {
     r'-w\s+(.+)$': command_exe.write_data,
     '-idb': command_exe.insert_into_db,
     r'-g\s+(\d+)$': command_exe.generate,
-    r'-g\s+(\d+)\s+-t\s+(\d+)$': command_exe.generate_tables,
+    r'-g\s+(\d+)\s+-t\s+(\d+)$': command_exe.generate,
     r'-ar\s+(.+)$': command_exe.add_requirement,
     r'-dr\s+(\d+)$': command_exe.delete_requirement,
     '-pr': command_exe.print_requirements,
