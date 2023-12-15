@@ -21,23 +21,22 @@ class Data_Engine:
         self.model = 'gpt-3.5-turbo-1106'
         self.table_dict = {}
         self.insert_script = ''
-        self.set_prompt()
 
     def set_db_manager(self, db_manager):
         if db_manager is None : raise TypeError("db_manager cannot be None")
         self.db_manager = db_manager
 
-    def generate(self, nr_of_lines):
+    def generate(self, nr_of_lines, table_index):
 
         prompt = ''
         user_prompt = ''
-        
-        if len(self.table_dict) == 0:
-            prompt = self.db_prompt
+        if table_index is None:
+            prompt = self.set_prompt()
             user_prompt = self.format_user_prompt_db(nr_of_lines)
         else:
-            prompt = self.format_prompt_tables()
-            user_prompt = self.format_user_prompt_tables(nr_of_lines)
+            prompt = self.set_prompt(table_index)
+            user_prompt = self.format_user_prompt_tables(nr_of_lines, table_index)
+
         
         response = gpt.get_response(prompt, self.model, user_prompt)
         self.format_response(response)
@@ -74,26 +73,34 @@ class Data_Engine:
         self.requirement_list = []
         self.table_dict = {}
 
-    def set_prompt(self):
-        prompt = ''
+    def set_prompt(self, table_index):
+        if table_index is None:
+            prompt = ''
 
-        for string in self.db_manager.table_props:
-            prompt += string
-            prompt += "\n"
+            if len(self.table_dict) == 0:
 
-        self.db_prompt = prompt
-    
-    def format_prompt_tables(self):
-        prompt = ''
+                for string in self.db_manager.table_props:
+                    prompt += string
+                    prompt += "\n"
 
-        for index in self.table_dict.values():
-            prompt += self.db_manager.table_props[index]
-            prompt += "\n"
+                self.db_prompt = prompt
 
-        return prompt
-    
-    def format_user_prompt_db(self, nr_of_lines):
-        user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for each individual table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
+            else:
+                for index in self.table_dict.values():
+                    prompt += self.db_manager.table_props[index]
+                    prompt += "\n"
+
+                self.db_prompt = prompt
+        else:
+            prompt = self.db_manager.table_props[table_index - 1]
+            self.db_prompt = prompt
+     
+    def format_user_prompt_db(self, nr_of_lines, table_index):
+        if table_index is None:
+            which = 'each individual table'
+        else:
+            which = 'this table ' + next(iter(self.table_dict.keys()))
+        user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for {which}. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
         if len(self.requirement_list) != 0:
             requirements = self.format_requirements()
             user_prompt += requirements
@@ -158,5 +165,17 @@ class Data_Engine:
             print(f"Model set to '{self.model}'")
         except IndexError:
             print('Invalid index')
-    def generate_table(nr_of_lines, table_index):
-        pass
+
+    def generate_table(self, nr_of_lines, table_index):
+        prompt = ''
+        user_prompt = ''
+        
+        if len(self.table_dict) == 0:
+            prompt = self.db_prompt
+            user_prompt = self.format_user_prompt_db(nr_of_lines)
+        else:
+            prompt = self.format_prompt_tables()
+            user_prompt = self.format_user_prompt_tables(nr_of_lines)
+        
+        response = gpt.get_response(prompt, self.model, user_prompt)
+        self.format_response(response)
