@@ -13,10 +13,13 @@ db_manager = Database_Manager()
 data_engine = Data_Engine(db_manager)
 
 def has_param(func):
-    signature = inspect.signature(func)
-    params = signature.parameters
-    if len(params) > 0:
-        return True
+    try:
+        signature = inspect.signature(func)
+        params = signature.parameters
+        if len(params) > 0:
+            return True
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def write_data(output_directory):
     try:
@@ -45,21 +48,36 @@ def generate(nr_of_lines, table_index=None):
         print(f"An unexpected error occurred: {e}")
 
 def add_requirement(prompt):
+    try:
         data_engine.add_requirement(prompt)
         printer_util.print_req_added(prompt)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def delete_requirement(index):
-    data_engine.delete_requirement(index)
-    printer_util.print_req_deleted()
+    try:
+        data_engine.delete_requirement(index)
+        printer_util.print_req_deleted()
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def print_requirements():
-    printer_util.print_reqs(data_engine)
+    try:
+        printer_util.print_reqs(data_engine)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def add_table(index):
-    data_engine.add_table(index)
+    try:
+        data_engine.add_table(index)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def delete_table(index):
-    data_engine.delete_table(index)
+    try:
+        data_engine.delete_table(index)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def see_tables():
     try:
@@ -68,14 +86,20 @@ def see_tables():
         print('Invalid input for -rt command')
 
 def print_prompt():
-    if len(data_engine.table_dict) == 0:
-        printer_util.print_db_prompt(data_engine)
-    else:
-        printer_util.print_tables_prompt(data_engine)
+    try:
+        if len(data_engine.table_dict) == 0:
+            printer_util.print_db_prompt(data_engine)
+        else:
+            printer_util.print_tables_prompt(data_engine)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def clear_tables():
-    data_engine.clear_tables()
-    printer_util.print_tables_cleared()
+    try:
+        data_engine.clear_tables()
+        printer_util.print_tables_cleared()
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def print_help():
     printer_util.print_help()
@@ -94,9 +118,12 @@ def start_engine():
     printer_util.print_engine_started()
 
 def stop_engine():
-    engine_running[0] = False
-    printer_util.print_engine_stopped()
-    data_engine.clear()
+    try:
+        engine_running[0] = False
+        printer_util.print_engine_stopped()
+        data_engine.clear()
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def quit():
    program_running[0] = False
@@ -108,62 +135,77 @@ def print_models():
         print(f"An unexpected error occurred: {e}")
 
 def set_model(model_index):
+    try:
         data_engine.set_model(model_index)
+    except:
+        print(f"An unexpected error occurred: {e}")
 
 def print_get_model():
     printer_util.print_get_model(data_engine)
 
 def command_valid(user_input):
-    from command_registry import engine_commands, non_engine_commands
-    # Check if user input matches any key in non_engine_commands
-    non_engine_match = any(re.match(command, user_input) for command in non_engine_commands.keys())
-    
-    # Check if user input matches any key in engine_commands
-    engine_match = any(re.match(command, user_input) for command in engine_commands.keys())
-
-    if not (non_engine_match or engine_match):
-        return False
+    try:
+        from command_registry import engine_commands, non_engine_commands
+        # Check if user input matches any key in non_engine_commands
+        non_engine_match = any(re.match(command, user_input) for command in non_engine_commands.keys())
         
-    return True
+        # Check if user input matches any key in engine_commands
+        engine_match = any(re.match(command, user_input) for command in engine_commands.keys())
+
+        if not (non_engine_match or engine_match):
+            return False
+            
+        return True
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def engine_command_handler():
     printer_util.print_engine_not_running()
     
 def engine_check(user_input):
-    from command_registry import engine_commands, non_engine_commands
-    engine_match = any(re.match(command, user_input) for command in engine_commands.keys())
+    try:
+        from command_registry import engine_commands, non_engine_commands
+        engine_match = any(re.match(command, user_input) for command in engine_commands.keys())
 
-    if engine_match and engine_running[0] == False:
-        return False
-    return True
+        if engine_match and engine_running[0] == False:
+            return False
+        return True
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def get_command(user_input):
-    from command_registry import engine_commands, non_engine_commands
+    try:
+        from command_registry import engine_commands, non_engine_commands
 
-    non_engine_match = next((command for command in non_engine_commands.keys() if re.match(command, user_input)), None)
-    engine_match = next((command for command in engine_commands.keys() if re.match(command, user_input)), None)
-    if non_engine_match:
-        command_function = non_engine_commands.get(non_engine_match)
-        if command_function:
-            if has_param(command_function):
-                match = re.match(non_engine_match, user_input)
-                if match:
-                    return command_function(match.group(1))
-            else:
-                return command_function()
+        non_engine_match = next((command for command in non_engine_commands.keys() if re.match(command, user_input)), None)
+        engine_match = next((command for command in engine_commands.keys() if re.match(command, user_input)), None)
+        if non_engine_match:
+            command_function = non_engine_commands.get(non_engine_match)
+            if command_function:
+                if has_param(command_function):
+                    match = re.match(non_engine_match, user_input)
+                    if match:
+                        return command_function(match.group(1))
+                else:
+                    return command_function()
 
-    elif engine_match:
-        command_function = engine_commands.get(engine_match)
-        if command_function:
-            if has_param(command_function):
-                match = re.match(engine_match, user_input)
-                if match:
-                    return command_function(*match.groups())
-            else:
-                return command_function()
+        elif engine_match:
+            command_function = engine_commands.get(engine_match)
+            if command_function:
+                if has_param(command_function):
+                    match = re.match(engine_match, user_input)
+                    if match:
+                        return command_function(*match.groups())
+                else:
+                    return command_function()    
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")               
 
 def set_terminal():
-    if engine_running[0] == False:
-        return input('> ').strip().lower()
-    else:
-        return input(Fore.LIGHTBLUE_EX + '>>> ' + Style.RESET_ALL).strip().lower()
+    try:
+        if engine_running[0] == False:
+            return input('> ').strip().lower()
+        else:
+            return input(Fore.LIGHTBLUE_EX + '>>> ' + Style.RESET_ALL).strip().lower()
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
