@@ -40,7 +40,12 @@ class Database_Manager:
 
     # setters
     def set_connection_string(self):
-        self.connection_string = self.driver + os.getenv("CONNECTION_STRING")
+        try:
+            if os.getenv("CONNECTION_STRING") is None:
+                raise Exception("CONNECTION_STRING environment variable not set")
+            self.connection_string = self.driver + os.getenv("CONNECTION_STRING")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
     def set_connection_string_sa(self):
         self.connection_string_sa = f"mssql+pyodbc:///?odbc_connect=" + self.connection_string
     def set_connection_string_pyodbc(self):

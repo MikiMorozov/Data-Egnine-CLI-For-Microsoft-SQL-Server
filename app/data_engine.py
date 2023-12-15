@@ -28,8 +28,11 @@ class Data_Engine:
         self.assistant = 'I am a highly intelligent assistant that can generate SQL Server INSERT statements with dummy data for your tables. I will only give code snippets and leave out comments. I will make sure to take into consideration special characters and escape characters for MS SQL Server syntax.'
 
     def set_db_manager(self, db_manager):
-        if db_manager is None : raise TypeError("db_manager cannot be None")
-        self.db_manager = db_manager
+        try:
+            if db_manager is None : raise TypeError("db_manager cannot be None")
+            self.db_manager = db_manager
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
     def generate(self, nr_of_lines, table_index=None):
         try:
