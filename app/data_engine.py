@@ -18,32 +18,38 @@ class Data_Engine:
     def __init__(self, db_manager):
         self.set_db_manager(db_manager)
         self.requirement_list = []
-        self.model = 'gpt-3.5-turbo-1106'
+        self.model = 'gpt-3.5-turbo-1106' #default model
         self.table_dict = {}
         self.insert_script = ''
         self.set_prompt()
+
+    def set_assistant(self, assistant):
+        if assistant is None : raise TypeError("assistant cannot be None")
+        self.assistant = 'I am a highly intelligent assistant that can generate SQL Server INSERT statements with dummy data for your tables. I will only give code snippets and leave out comments. I will make sure to take into consideration special characters and escape characters for MS SQL Server syntax.'
 
     def set_db_manager(self, db_manager):
         if db_manager is None : raise TypeError("db_manager cannot be None")
         self.db_manager = db_manager
 
     def generate(self, nr_of_lines, table_index=None):
+        try:
+            prompt = ''
+            user_prompt = ''
+            if table_index is None and len(self.table_dict) == 0:
+                prompt = self.set_prompt()
+                user_prompt = self.format_user_prompt(nr_of_lines)
+            elif table_index is None and len(self.table_dict) != 0:
+                prompt = self.set_prompt()
+                user_prompt = self.format_user_prompt_tables(nr_of_lines)
+            else:
+                prompt = self.set_prompt(table_index)
+                user_prompt = self.format_user_prompt(nr_of_lines, table_index)
 
-        prompt = ''
-        user_prompt = ''
-        if table_index is None and len(self.table_dict) == 0:
-            prompt = self.set_prompt()
-            user_prompt = self.format_user_prompt(nr_of_lines)
-        elif table_index is None and len(self.table_dict) != 0:
-            prompt = self.set_prompt()
-            user_prompt = self.format_user_prompt_tables(nr_of_lines)
-        else:
-            prompt = self.set_prompt(table_index)
-            user_prompt = self.format_user_prompt(nr_of_lines, table_index)
-
-        
-        response = gpt.get_response(prompt, self.model, user_prompt)
-        self.format_response(response)
+            
+            response = gpt.get_response(prompt, self.model, user_prompt, self.assistant)
+            self.format_response(response)
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
     def write_to_file(self, output_directory):
         try:
@@ -71,7 +77,10 @@ class Data_Engine:
             print('Invalid index')
 
     def add_requirement(self, prompt):
-        self.requirement_list.append(prompt)
+        try:
+            self.requirement_list.append(prompt)
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
     def clear(self):
         self.insert_script = ''
@@ -79,64 +88,79 @@ class Data_Engine:
         self.table_dict = {}
 
     def set_prompt(self, table_index=None):
-        if table_index is None:
-            prompt = ''
+        try:
+            if table_index is None:
+                prompt = ''
 
-            if len(self.table_dict) == 0:
+                if len(self.table_dict) == 0:
 
-                for string in self.db_manager.table_props:
-                    prompt += string
-                    prompt += "\n"
+                    for string in self.db_manager.table_props:
+                        prompt += string
+                        prompt += "\n"
 
-                self.prompt = prompt
-                return prompt
+                    self.prompt = prompt
+                    return prompt
 
+                else:
+                    for index in self.table_dict.values():
+                        prompt += self.db_manager.table_props[index]
+                        prompt += "\n"
+
+                    self.prompt = prompt
+                    return prompt
             else:
-                for index in self.table_dict.values():
-                    prompt += self.db_manager.table_props[index]
-                    prompt += "\n"
-
+                prompt = self.db_manager.table_props[table_index - 1]
                 self.prompt = prompt
-                return prompt
-        else:
-            prompt = self.db_manager.table_props[table_index - 1]
-            self.prompt = prompt
-            return prompt
+                return prompt           
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
      
     def format_user_prompt(self, nr_of_lines, table_index=None):
-        if table_index is None:
-            which = 'each individual table'
-        else:
-            which = 'this table ' + next(iter(self.db_manager.table_order))
-        user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for {which}. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
-        if len(self.requirement_list) != 0:
-            requirements = self.format_requirements()
-            user_prompt += requirements
-        return user_prompt
+        try:
+            if table_index is None:
+                which = 'each individual table'
+            else:
+                which = 'this table ' + next(iter(self.db_manager.table_order))
+            user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for {which}. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
+            if len(self.requirement_list) != 0:
+                requirements = self.format_requirements()
+                user_prompt += requirements
+            return user_prompt
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
     def format_user_prompt_tables(self, nr_of_lines):
-        tables = ''
+        try:
+            tables = ''
 
-        for table in self.table_dict.keys():
-            tables += table
-            tables += ', '
+            for table in self.table_dict.keys():
+                tables += table
+                tables += ', '
 
-        user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for these tables: {tables}. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
-        if len(self.requirement_list) != 0:
-            requirements = self.format_requirements()
-            user_prompt += requirements
-        return user_prompt
+            user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for these tables: {tables}. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
+            if len(self.requirement_list) != 0:
+                requirements = self.format_requirements()
+                user_prompt += requirements
+            return user_prompt
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
     def format_requirements(self):
-        requirements = 'Take into consideration the following requirements: \n'
-        for i, string in enumerate(self.requirement_list, start=1):
-            requirements += f"{i}. {string}\n"
-        return requirements
+        try:
+            requirements = 'Take into consideration the following requirements: \n'
+            for i, string in enumerate(self.requirement_list, start=1):
+                requirements += f"{i}. {string}\n"
+            return requirements
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
     
     def format_response(self, response):
-        begin_idx = response.find("INSERT INTO")
-        end_idx = response.rfind(";") + 1
-        self.insert_script = response[begin_idx:end_idx]
+        try:
+            begin_idx = response.find("INSERT INTO")
+            end_idx = response.rfind(";") + 1
+            self.insert_script = response[begin_idx:end_idx]
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
     def add_table(self, table_index):
         # if table_dict already contains the table, don't add it again. check by table name if the strings match
@@ -178,17 +202,3 @@ class Data_Engine:
             print('Invalid index')
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
-    def generate_table(self, nr_of_lines, table_index):
-        prompt = ''
-        user_prompt = ''
-        
-        if len(self.table_dict) == 0:
-            prompt = self.db_prompt
-            user_prompt = self.format_user_prompt_db(nr_of_lines)
-        else:
-            prompt = self.format_prompt_tables()
-            user_prompt = self.format_user_prompt_tables(nr_of_lines)
-        
-        response = gpt.get_response(prompt, self.model, user_prompt)
-        self.format_response(response)
