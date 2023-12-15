@@ -1,6 +1,7 @@
 import sqlalchemy
 import pyodbc
 from sqlalchemy.schema import CreateTable
+import os
 
 #DRIVER={ODBC Driver 17 for SQL Server};Server=michael\SQLEXPRESS01;Database=Hotel;Trusted_Connection=yes;
 class Database_Manager:
@@ -8,6 +9,8 @@ class Database_Manager:
 
     # properties
 
+    driver = str
+    connection_string: str
     connection_string_sa: str
     connection_string_pyodbc: str
     engine: sqlalchemy.Engine
@@ -21,9 +24,11 @@ class Database_Manager:
 
     # constructor
 
-    def __init__(self, connection_string):
-        self.set_connection_string_sa(connection_string)
-        self.set_connection_string_pyodbc(connection_string)
+    def __init__(self):
+        self.driver = "DRIVER={ODBC Driver 17 for SQL Server};"
+        self.set_connection_string()
+        self.set_connection_string_sa()
+        self.set_connection_string_pyodbc()
         self.set_engine()
         self.set_inspector()
         self.set_metadata()
@@ -34,20 +39,21 @@ class Database_Manager:
         self.set_table_props()
 
     # setters
-
-    def set_connection_string_sa(self, connection_string):
-        self.connection_string = f"mssql+pyodbc:///?odbc_connect=" + connection_string
+    def set_connection_string(self):
+        self.connection_string = self.driver + os.getenv("CONNECTION_STRING")
+    def set_connection_string_sa(self):
+        self.connection_string_sa = f"mssql+pyodbc:///?odbc_connect=" + self.connection_string
     def set_connection_string_pyodbc(self, connection_string):
         self.connection_string_pyodbc = connection_string
     def set_engine(self):
-        self.engine = sqlalchemy.create_engine(self.connection_string)
+        self.engine = sqlalchemy.create_engine(self.connection_string_sa)
     def set_inspector(self):
         self.inspector = sqlalchemy.Inspector.from_engine(self.engine)
     def set_metadata(self):
         self.metadata = sqlalchemy.MetaData()
         self.metadata.reflect(bind=self.engine)
     def set_db_name(self):
-        self.db_name = self.connection_string.split(';')[2].split('=')[1]
+        self.db_name = self.connection_string_sa.split(';')[2].split('=')[1]
     def set_tables(self):
         self.tables = self.inspector.get_table_names()
     def set_relationships(self):
@@ -56,14 +62,12 @@ class Database_Manager:
                                 for table in self.metadata.tables.values()}
     def set_table_order(self):
         """Get the order in which tables should be generated."""
-        engine = sqlalchemy.create_engine(self.connection_string)
-        inspector = sqlalchemy.Inspector.from_engine(engine)
 
         # Get tables without foreign keys
         tables_without_foreign_keys = []
 
-        for table_name in inspector.get_table_names():
-            foreign_keys = inspector.get_foreign_keys(table_name)
+        for table_name in self.inspector.get_table_names():
+            foreign_keys = self.inspector.get_foreign_keys(table_name)
         if not foreign_keys:
             tables_without_foreign_keys.append(table_name)
 
@@ -71,13 +75,13 @@ class Database_Manager:
         self.table_order = tables_without_foreign_keys.copy()
 
         # Get tables with foreign keys
-        tables_with_foreign_keys = list(set(inspector.get_table_names()) - set(tables_without_foreign_keys))
+        tables_with_foreign_keys = list(set(self.inspector.get_table_names()) - set(tables_without_foreign_keys))
 
         # Add tables with foreign keys in the order of their foreign key dependencies
         while tables_with_foreign_keys:
             table_added = False
             for table in tables_with_foreign_keys.copy():
-                foreign_keys = inspector.get_foreign_keys(table)
+                foreign_keys = self.inspector.get_foreign_keys(table)
 
                 # Check if all referred tables are already in the order
                 if all(fk['referred_table'] in self.table_order for fk in foreign_keys):
