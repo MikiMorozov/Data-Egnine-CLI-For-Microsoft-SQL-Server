@@ -31,6 +31,7 @@ def insert_into_db():
         print(f"An unexpected error occurred: {e}")
 
 def generate(nr_of_lines, table_index=None):
+    table_index = int(table_index) - 1 if table_index is not None else None
     try: 
         with Halo(text='generating data...'):
             start_time = time.time()
@@ -57,8 +58,8 @@ def print_requirements():
 def add_table(index):
     data_engine.add_table(index)
 
-def remove_table(index):
-    data_engine.remove_table(index)
+def delete_table(index):
+    data_engine.delete_table(index)
 
 def see_tables():
     try:
@@ -125,17 +126,14 @@ def command_valid(user_input):
         
     return True
 
-def engine_command_handler(user_input):
-    import command_registry
-    if user_input in command_registry.engine_commands.values() and engine_running[0] == False:
+def engine_command_handler():
         printer_util.print_engine_not_running()
-        return
     
 def engine_check(user_input):
     from command_registry import engine_commands, non_engine_commands
     engine_match = any(re.match(command, user_input) for command in engine_commands.keys())
 
-    if(engine_match and engine_running[0] == False):
+    if engine_match and engine_running[0] == False:
         return False
     return True
 
@@ -144,7 +142,6 @@ def get_command(user_input):
 
     non_engine_match = next((command for command in non_engine_commands.keys() if re.match(command, user_input)), None)
     engine_match = next((command for command in engine_commands.keys() if re.match(command, user_input)), None)
-
     if non_engine_match:
         command_function = non_engine_commands.get(non_engine_match)
         if command_function:

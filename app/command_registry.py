@@ -9,7 +9,7 @@ engine_commands = {
     r'-dr\s+(\d+)$': command_exe.delete_requirement,
     '-pr': command_exe.print_requirements,
     r'-at\s+(\d+)$': command_exe.add_table,
-    r'-rt\s+(\d+)$': command_exe.remove_table,
+    r'-dt\s+(\d+)$': command_exe.delete_table,
     '-st': command_exe.see_tables,
     '-pp': command_exe.print_prompt,
     '-ct': command_exe.clear_tables,
@@ -17,7 +17,7 @@ engine_commands = {
 
 non_engine_commands = { 
     '--help': command_exe.print_help,
-    '-pt': command_exe.print_tables,
+    r'^\-pt$': command_exe.print_tables,
     '-ptr': command_exe.print_table_relationships,
     '-pto': command_exe.print_table_order,
     '--start': command_exe.start_engine, 

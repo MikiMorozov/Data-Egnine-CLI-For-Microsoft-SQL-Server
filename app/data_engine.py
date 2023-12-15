@@ -9,7 +9,7 @@ class Data_Engine:
 
     db_manager: Database_Manager
     insert_script: str
-    db_prompt: str
+    prompt: str
     requirement_list: list
     model = str
     table_dict: dict
@@ -21,6 +21,7 @@ class Data_Engine:
         self.model = 'gpt-3.5-turbo-1106'
         self.table_dict = {}
         self.insert_script = ''
+        self.set_prompt()
 
     def set_db_manager(self, db_manager):
         if db_manager is None : raise TypeError("db_manager cannot be None")
@@ -32,13 +33,13 @@ class Data_Engine:
         user_prompt = ''
         if table_index is None and len(self.table_dict) == 0:
             prompt = self.set_prompt()
-            user_prompt = self.format_user_prompt_db(nr_of_lines)
+            user_prompt = self.format_user_prompt(nr_of_lines)
         elif table_index is None and len(self.table_dict) != 0:
             prompt = self.set_prompt()
             user_prompt = self.format_user_prompt_tables(nr_of_lines)
         else:
-            prompt = self.format_prompt_tables(table_index)
-            user_prompt = self.format_user_prompt_tables(nr_of_lines, table_index)
+            prompt = self.set_prompt(table_index)
+            user_prompt = self.format_user_prompt(nr_of_lines, table_index)
 
         
         response = gpt.get_response(prompt, self.model, user_prompt)
@@ -63,6 +64,7 @@ class Data_Engine:
             print(f"An unexpected error occurred: {e}")
 
     def delete_requirement(self, index):
+        index = int(index)
         try:
             self.requirement_list.pop(index-1)
         except IndexError:
@@ -86,23 +88,26 @@ class Data_Engine:
                     prompt += string
                     prompt += "\n"
 
-                self.db_prompt = prompt
+                self.prompt = prompt
+                return prompt
 
             else:
                 for index in self.table_dict.values():
                     prompt += self.db_manager.table_props[index]
                     prompt += "\n"
 
-                self.db_prompt = prompt
+                self.prompt = prompt
+                return prompt
         else:
             prompt = self.db_manager.table_props[table_index - 1]
-            self.db_prompt = prompt
+            self.prompt = prompt
+            return prompt
      
-    def format_user_prompt_db(self, nr_of_lines, table_index=None):
+    def format_user_prompt(self, nr_of_lines, table_index=None):
         if table_index is None:
             which = 'each individual table'
         else:
-            which = 'this table ' + next(iter(self.table_dict.keys()))
+            which = 'this table ' + next(iter(self.db_manager.table_order))
         user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for {which}. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
         if len(self.requirement_list) != 0:
             requirements = self.format_requirements()
@@ -135,6 +140,7 @@ class Data_Engine:
 
     def add_table(self, table_index):
         # if table_dict already contains the table, don't add it again. check by table name if the strings match
+        table_index = int(table_index)
         try:
             table_name = self.db_manager.table_order[table_index - 1]
 
@@ -146,7 +152,8 @@ class Data_Engine:
         except IndexError:
             print('Invalid index')
 
-    def remove_table(self, table_index):
+    def delete_table(self, table_index):
+        table_index = int(table_index)
         try:
             table_name = self.db_manager.table_order[table_index - 1]
 
@@ -162,12 +169,15 @@ class Data_Engine:
         self.table_dict = {}
 
     def set_model(self, index):
+        index = int(index)
         try:
             if index is None : raise TypeError("model cannot be None")
             self.model = MODELS[index-1]
             print(f"Model set to '{self.model}'")
         except IndexError:
             print('Invalid index')
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
     def generate_table(self, nr_of_lines, table_index):
         prompt = ''

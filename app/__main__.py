@@ -12,14 +12,14 @@ def main():
     if (not check_env() or not check_api_key()):
         return
     
-    while command_exe.program_running:
+    while command_exe.program_running[0] == True:
 
         user_input = command_exe.set_terminal()
 
         if command_exe.command_valid(user_input) and command_exe.engine_check(user_input):
             command_exe.get_command(user_input)
         elif not command_exe.engine_check(user_input):
-            command_exe.engine_command_handler(user_input)
+            command_exe.engine_command_handler()
         else: 
             printer_util.print_invalid_command(user_input)
 

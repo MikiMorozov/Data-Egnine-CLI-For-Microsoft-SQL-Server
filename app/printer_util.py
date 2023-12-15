@@ -143,12 +143,12 @@ def see_tables_added(data_engine):
 
 def print_db_prompt(data_engine):
     print('\n')
-    print(f"{data_engine.db_prompt}")
+    print(f"{data_engine.prompt}")
     print('\n')
 
 def print_tables_prompt(data_engine):
         print('\n')
-        print(f"{data_engine.format_prompt_tables()}")
+        print(f"{data_engine.set_prompt()}")
         print('\n')
 
 def print_tables_cleared():
