@@ -3,6 +3,7 @@ import re
 import printer_util
 from database_manager import Database_Manager
 from data_engine import Data_Engine
+from colorama import Fore, Style
 
 engine_running = [False]
 program_running = [True]
@@ -141,14 +142,14 @@ def print_get_model():
 
 def command_valid(user_input):
     from command_registry import engine_commands, non_engine_commands
+    # Check if user input matches any key in non_engine_commands
+    non_engine_match = any(re.match(command, user_input) for command in non_engine_commands.keys())
+    
+    # Check if user input matches any key in engine_commands
+    engine_match = any(re.match(command, user_input) for command in engine_commands.keys())
 
-    non_engine_command = re.match(non_engine_commands[user_input], user_input)
-    engine_command = re.match(engine_commands[user_input], user_input)
-
-    if user_input not in engine_commands.values() and user_input not in non_engine_commands.values():
-        if not any(non_engine_command) in non_engine_commands.values() and not any(engine_command) in engine_commands.values():
-            printer_util.print_invalid_command(user_input)
-            return False
+    if not (non_engine_match or engine_match):
+        return False
         
     return True
 
@@ -157,3 +158,38 @@ def engine_command_handler(user_input):
     if user_input in command_registry.engine_commands.values() and engine_running[0] == False:
         printer_util.print_engine_not_running()
         return
+    
+def engine_check(user_input):
+    from command_registry import engine_commands, non_engine_commands
+    engine_match = any(re.match(command, user_input) for command in engine_commands.keys())
+
+    if(engine_match and engine_running[0] == False):
+        printer_util.print_engine_not_running()
+        return False
+    return True
+
+def get_command(user_input):
+    from command_registry import engine_commands, non_engine_commands
+
+    non_engine_match = any(re.match(command, user_input) for command in non_engine_commands.keys())
+    engine_match = any(re.match(command, user_input) for command in engine_commands.keys())
+
+    if non_engine_match:
+        command_function = non_engine_commands[user_input]
+        if has_param(command_function):
+            return command_function(user_input)
+        else:    
+            return command_function()
+        
+    elif engine_match:
+        command_function = engine_commands[user_input]
+        if has_param(command_function):
+            return command_function(user_input)
+        else:
+            return command_function()
+
+def set_terminal():
+    if engine_running[0] == False:
+        return input('> ').strip().lower()
+    else:
+        return input(Fore.LIGHTBLUE_EX + '>>> ' + Style.RESET_ALL).strip().lower()
