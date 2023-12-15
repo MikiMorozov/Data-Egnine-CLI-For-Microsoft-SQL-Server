@@ -127,7 +127,7 @@ def command_valid(user_input):
     return True
 
 def engine_command_handler():
-        printer_util.print_engine_not_running()
+    printer_util.print_engine_not_running()
     
 def engine_check(user_input):
     from command_registry import engine_commands, non_engine_commands
