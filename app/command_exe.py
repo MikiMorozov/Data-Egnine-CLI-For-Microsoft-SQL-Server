@@ -16,12 +16,11 @@ def has_param(func):
     if len(params) > 0:
         return True
 
-def write_data(user_input):
-    import command_registry
-    match = re.match(command_registry.engine_commands['WRITE_DATA'], user_input)
-    if match:
-        output_directory = match.group(1)
+def write_data(output_directory):
+    try:
         data_engine.write_to_file(output_directory)
+    except Exception as e:  
+        print(f"An unexpected error occurred: {e}")
 
 def insert_into_db():
     try:
@@ -29,55 +28,31 @@ def insert_into_db():
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-def generate(user_input):
-    import command_registry
-    match = re.match(command_registry.engine_commands['GENERATE'], user_input)
-    if match:
-        nr_of_lines = int(match.group(1))
+def generate(nr_of_lines):
+    try:
         printer_util.print_response_db(data_engine, nr_of_lines)
-    else:
-        print('Invalid input for -g command')
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
-def generate_tables(user_input):
-    import command_registry
-    match = re.match(command_registry.engine_commands['GENERATE_TABLE'], user_input)
-    if match:
-        nr_of_lines = int(match.group(1))
-        table_index = int(match.group(2))
-        printer_util.print_response(data_engine, nr_of_lines, table_index)
+def generate_tables(nr_of_lines, table_index):
+    printer_util.print_response(data_engine, nr_of_lines, table_index)
 
-def add_requirement(user_input):
-    import command_registry
-    match = re.match(command_registry.engine_commands['ADD_REQUIREMENT'], user_input)
-    if match:
-        prompt = match.group(1)
+def add_requirement(prompt):
         data_engine.add_requirement(prompt)
         printer_util.print_req_added(prompt)
 
-def delete_requirement(user_input):
-    import command_registry
-    match = re.match(command_registry.engine_commands['DELETE_REQUIREMENT'], user_input)
-    if match:
-        index = int(match.group(1))
-        data_engine.delete_requirement(index)
-        printer_util.print_req_deleted()
+def delete_requirement(index):
+    data_engine.delete_requirement(index)
+    printer_util.print_req_deleted()
 
 def print_requirements():
     printer_util.print_reqs(data_engine)
 
-def add_table(user_input):
-    import command_registry
-    match = re.match(command_registry.engine_commands['ADD_TABLE'], user_input)
-    if match:
-        index = int(match.group(1))
-        data_engine.add_table(index)
+def add_table(index):
+    data_engine.add_table(index)
 
-def remove_table(user_input):
-    import command_registry
-    match = re.match(command_registry.engine_commands['REMOVE_TABLE'], user_input)
-    if match:
-        index = int(match.group(1))
-        data_engine.remove_table(index)
+def remove_table(index):
+    data_engine.remove_table(index)
 
 def see_tables():
     try:
@@ -125,20 +100,11 @@ def print_models():
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-def set_model(user_input):
-    import command_registry
-    match = re.match(command_registry.non_engine_commands['SET_MODEL'], user_input)
-    if match:
-        model_index = int(match.group(1))
+def set_model(model_index):
         data_engine.set_model(model_index)
-    else:
-        print('Invalid input for --setmodel command')
 
 def print_get_model():
-    try:
-        printer_util.print_get_model(data_engine)
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+    printer_util.print_get_model(data_engine)
 
 def command_valid(user_input):
     from command_registry import engine_commands, non_engine_commands
@@ -164,29 +130,34 @@ def engine_check(user_input):
     engine_match = any(re.match(command, user_input) for command in engine_commands.keys())
 
     if(engine_match and engine_running[0] == False):
-        printer_util.print_engine_not_running()
         return False
     return True
 
 def get_command(user_input):
     from command_registry import engine_commands, non_engine_commands
 
-    non_engine_match = any(re.match(command, user_input) for command in non_engine_commands.keys())
-    engine_match = any(re.match(command, user_input) for command in engine_commands.keys())
+    non_engine_match = next((command for command in non_engine_commands.keys() if re.match(command, user_input)), None)
+    engine_match = next((command for command in engine_commands.keys() if re.match(command, user_input)), None)
 
     if non_engine_match:
-        command_function = non_engine_commands[user_input]
-        if has_param(command_function):
-            return command_function(user_input)
-        else:    
-            return command_function()
-        
+        command_function = non_engine_commands.get(non_engine_match)
+        if command_function:
+            if has_param(command_function):
+                match = re.match(non_engine_match, user_input)
+                if match:
+                    return command_function(match.group(1))
+            else:
+                return command_function()
+
     elif engine_match:
-        command_function = engine_commands[user_input]
-        if has_param(command_function):
-            return command_function(user_input)
-        else:
-            return command_function()
+        command_function = engine_commands.get(engine_match)
+        if command_function:
+            if has_param(command_function):
+                match = re.match(engine_match, user_input)
+                if match:
+                    return command_function(*match.groups())
+            else:
+                return command_function()
 
 def set_terminal():
     if engine_running[0] == False:
