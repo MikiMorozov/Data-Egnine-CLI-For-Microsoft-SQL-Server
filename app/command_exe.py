@@ -4,6 +4,8 @@ import printer_util
 from database_manager import Database_Manager
 from data_engine import Data_Engine
 from colorama import Fore, Style
+import time
+import Halo
 
 engine_running = [False]
 program_running = [True]
@@ -29,12 +31,34 @@ def insert_into_db():
         print(f"An unexpected error occurred: {e}")
 
 def generate(nr_of_lines):
-    try:
-        printer_util.print_response_db(data_engine, nr_of_lines)
+    try: 
+        with Halo(text='generating data...'):
+            start_time = time.time()
+            data_engine.generate_table(nr_of_lines)
+            end_time = time.time()
+            print('\n')
+            print(Fore.LIGHTBLUE_EX + data_engine.insert_script)
+            print('\n')
+            print(f"Time elapsed: {round(end_time - start_time, 3)} seconds\n")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-def generate_tables(nr_of_lines, table_index):
+    printer_util.print_response(data_engine, nr_of_lines)
+
+def generate_table(nr_of_lines, table_index):
+
+    try: 
+        with Halo(text='generating data...'):
+            start_time = time.time()
+            data_engine.generate_table(nr_of_lines, table_index)
+            end_time = time.time()
+            print('\n')
+            print(Fore.LIGHTBLUE_EX + data_engine.insert_script)
+            print('\n')
+            print(f"Time elapsed: {round(end_time - start_time, 3)} seconds\n")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
     printer_util.print_response(data_engine, nr_of_lines, table_index)
 
 def add_requirement(prompt):

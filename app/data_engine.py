@@ -158,3 +158,5 @@ class Data_Engine:
             print(f"Model set to '{self.model}'")
         except IndexError:
             print('Invalid index')
+    def generate_table(nr_of_lines, table_index):
+        pass
