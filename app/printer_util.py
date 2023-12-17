@@ -11,16 +11,14 @@ def welcome():
     print("*  Welcome to Data Engine CLI for SQL Server  *")
     print("*  v1.0                                       *")
     print("***********************************************")
-
 def print_tables(db_manager):
     try:
         print('\nTables:')
-        for table in enumerate(db_manager.tables, start=1):
-            print(table)
+        for i, table_name in enumerate(db_manager.tables, start = 1):
+            print(f"{i}. {table_name}")
         print('\n')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_table_relationships(db_manager):
     try:
         print('\nTable relationships:')
@@ -30,7 +28,6 @@ def print_table_relationships(db_manager):
         print('\n')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_table_order(db_manager):
     try:
         print('\nTable order for data generation:')
