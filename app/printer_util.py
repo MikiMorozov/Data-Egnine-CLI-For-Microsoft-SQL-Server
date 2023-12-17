@@ -13,15 +13,15 @@ def welcome():
     print("***********************************************")
 def print_tables(db_manager):
     try:
-        print('\nTables:')
-        for i, table_name in enumerate(db_manager.tables, start = 1):
-            print(f"{i}. {table_name}")
+        print('\nTables:\n')
+        for table_name in db_manager.tables:
+            print(f"{table_name}")
         print('\n')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 def print_table_relationships(db_manager):
     try:
-        print('\nTable relationships:')
+        print('\nTable relationships:\n')
         for table_name, foreign_keys in db_manager.relationships.items():
             for foreign_key in foreign_keys:
                 print(f"{table_name} -> {foreign_key}")
@@ -30,7 +30,7 @@ def print_table_relationships(db_manager):
         print(f"An unexpected error occurred: {e}")
 def print_table_order(db_manager):
     try:
-        print('\nTable order for data generation:')
+        print('\nTable order for data generation:\n')
         for i, table_name in enumerate(db_manager.table_order, start=1):
             print(f"[{i}] {table_name}")
         print('\n')

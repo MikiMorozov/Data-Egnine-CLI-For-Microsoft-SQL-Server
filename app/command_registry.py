@@ -10,7 +10,7 @@ engine_commands = {
     r'\s*-pr\s*': command_exe.print_requirements,
     r'-at\s+(\d+)$': command_exe.add_table,
     r'-dt\s+(\d+)$': command_exe.delete_table,
-    r'\s*-st\s*': command_exe.see_tables,
+    r'\s*-ptp\s*': command_exe.see_tables,
     r'\s*-pp\s*': command_exe.print_prompt,
     r'\s*-ct\s*': command_exe.clear_tables,
     }
