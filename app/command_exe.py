@@ -20,19 +20,16 @@ def has_param(func):
             return True
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def write_data(output_directory):
     try:
         data_engine.write_to_file(output_directory)
     except Exception as e:  
         print(f"An unexpected error occurred: {e}")
-
 def insert_into_db():
     try:
         db_manager.insert_into_db(data_engine.insert_script)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def generate(nr_of_lines, table_index=None):
     table_index = int(table_index) if table_index is not None else None
     try: 
@@ -46,45 +43,38 @@ def generate(nr_of_lines, table_index=None):
             print(f"Time elapsed: {round(end_time - start_time, 3)} seconds\n")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def add_requirement(prompt):
     try:
         data_engine.add_requirement(prompt)
         printer_util.print_req_added(prompt)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def delete_requirement(index):
     try:
         data_engine.delete_requirement(index)
         printer_util.print_req_deleted()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_requirements():
     try:
         printer_util.print_reqs(data_engine)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def add_table(index):
     try:
         data_engine.add_table(index)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def delete_table(index):
     try:
         data_engine.delete_table(index)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def see_tables():
     try:
         printer_util.see_tables_added(data_engine)
     except Exception as e:
         print('Invalid input for -rt command')
-
 def print_prompt():
     try:
         if len(data_engine.table_dict) == 0:
@@ -93,30 +83,23 @@ def print_prompt():
             printer_util.print_tables_prompt(data_engine)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def clear_tables():
     try:
         data_engine.clear_tables()
         printer_util.print_tables_cleared()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_help():
     printer_util.print_help()
-
 def print_tables():
     printer_util.print_tables(db_manager)
-
 def print_table_relationships():
     printer_util.print_table_relationships(db_manager)
-
 def print_table_order():
-    printer_util.print_table_order(db_manager)
-
+    printer_util.print_table_order(data_engine.model)
 def start_engine():
     engine_running[0] = True 
     printer_util.print_engine_started()
-
 def stop_engine():
     try:
         engine_running[0] = False
@@ -124,26 +107,22 @@ def stop_engine():
         data_engine.clear()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def quit():
    program_running[0] = False
    print('Bye!')
-
 def print_models():
     try:
         printer_util.print_models()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def set_model(model_index):
     try:
         data_engine.set_model(model_index)
+        printer_util.print_set_model(data_engine)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_get_model():
     printer_util.print_get_model(data_engine)
-
 def command_valid(user_input):
     try:
         from command_registry import engine_commands, non_engine_commands
@@ -159,10 +138,8 @@ def command_valid(user_input):
         return True
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def engine_command_handler():
     printer_util.print_engine_not_running()
-    
 def engine_check(user_input):
     try:
         from command_registry import engine_commands, non_engine_commands
@@ -173,7 +150,6 @@ def engine_check(user_input):
         return True
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def get_command(user_input):
     try:
         from command_registry import engine_commands, non_engine_commands
@@ -201,7 +177,6 @@ def get_command(user_input):
                     return command_function()    
     except Exception as e:
         print(f"An unexpected error occurred: {e}")               
-
 def set_terminal():
     try:
         if engine_running[0] == False:

@@ -89,6 +89,7 @@ class Data_Engine:
         self.insert_script = ''
         self.requirement_list = []
         self.table_dict = {}
+        self.set_prompt()
 
     def set_prompt(self, table_index=None):
         try:
@@ -117,7 +118,6 @@ class Data_Engine:
                 return prompt           
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-     
     def format_user_prompt(self, nr_of_lines, table_index=None):
         try:
             if table_index is None:
@@ -131,7 +131,6 @@ class Data_Engine:
             return user_prompt
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
     def format_user_prompt_tables(self, nr_of_lines):
         try:
             tables = ''
@@ -147,7 +146,6 @@ class Data_Engine:
             return user_prompt
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
     def format_requirements(self):
         try:
             requirements = 'Take into consideration the following requirements: \n'
@@ -156,7 +154,6 @@ class Data_Engine:
             return requirements
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-    
     def format_response(self, response):
         try:
             begin_idx = response.find("INSERT INTO")
@@ -164,7 +161,6 @@ class Data_Engine:
             self.insert_script = response[begin_idx:end_idx]
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
     def add_table(self, table_index):
         # if table_dict already contains the table, don't add it again. check by table name if the strings match
         table_index = int(table_index)
@@ -178,7 +174,6 @@ class Data_Engine:
                 print(f"Table '{table_name}' is already in the list.")
         except IndexError:
             print('Invalid index')
-
     def delete_table(self, table_index):
         table_index = int(table_index)
         try:
@@ -191,16 +186,13 @@ class Data_Engine:
                 print(f"Table '{table_name}' is not in the list.")
         except IndexError:
             print('Invalid index')
-
     def clear_tables(self):
         self.table_dict = {}
-
     def set_model(self, index):
         index = int(index)
         try:
-            if index is None : raise TypeError("model cannot be None")
+            if index is None : raise TypeError("index cannot be None")
             self.model = MODELS[index-1]
-            print(f"Model set to '{self.model}'")
         except IndexError:
             print('Invalid index')
         except Exception as e:

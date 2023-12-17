@@ -36,34 +36,29 @@ def print_table_order(db_manager):
         print('\n')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_help():
     try:
         print(HELP_TEXT)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_error():
     print('Please specify a valid command. Use -h or --help for help.')
-
 def print_invalid_command(user_input):
     print(f"Invalid command: \'{user_input}\'. Use --help for help.")
-
 def print_engine_started():
     try:
         print(Fore.LIGHTBLUE_EX + 'ENGINE STARTED _ _ _')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_engine_stopped():
     try:
         print(Fore.LIGHTBLUE_EX + 'ENGINE STOPPED _ _ _')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
+def print_engine_not_running():
+    print('This is an engine-dependent command. Engine not running. Use --start to start the engine.')
 def print_req_added(requirement):
     print(f"Requirement added: \"{requirement}\". Use -pr to see all requirements.")
-
 def print_reqs(data_engine):
     try:
         if len(data_engine.requirement_list) == 0:
@@ -75,13 +70,10 @@ def print_reqs(data_engine):
         print('\n')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_req_deleted():
     print(f"Requirement deleted.")
-
 def print_table_deleted():
     print(f"Table deleted from prompt. Use -sp to see the prompt.")
-
 def see_tables_added(data_engine):
     try:
         if len(data_engine.table_dict) == 0:
@@ -94,7 +86,6 @@ def see_tables_added(data_engine):
             print('\n')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_db_prompt(data_engine):
     try:
         print('\n')
@@ -102,7 +93,6 @@ def print_db_prompt(data_engine):
         print('\n')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_tables_prompt(data_engine):
     try:
         print('\n')
@@ -110,10 +100,8 @@ def print_tables_prompt(data_engine):
         print('\n')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_tables_cleared():
     print('Tables cleared. -pp to see prompt.')
-
 def print_models():
     try:
         print('\nModels:\n')
@@ -122,12 +110,12 @@ def print_models():
         print('\n')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
 def print_get_model(data_engine):
     try:
         print(f"Current model: {data_engine.model}.")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
+def print_model_set(model):
+    print(f"Model set to {model}.")
 def print_tables_cleared():
     print('Tables cleared. -pp to see prompt.')
