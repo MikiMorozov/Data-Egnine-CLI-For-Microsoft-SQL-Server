@@ -142,11 +142,13 @@ class Database_Manager:
     def insert_into_db(self, insert_stmt):
         try:
             conn = pyodbc.connect(self.connection_string_pyodbc)
+            insert_stmt = 'BEGIN TRANSACTION\n' + insert_stmt + '\nCOMMIT TRANSACTION'
+            print(insert_stmt)
             with conn as connection:
                 cursor = connection.cursor()
                 cursor.execute(insert_stmt)
+                print('Data succesfully inserted into database.\n')
                 cursor.commit()
-                print('Data succesfully inserted into database.')
         except Exception as e:
             cursor.rollback() 
             print(f"An unexpected error occurred: {e}")

@@ -118,7 +118,7 @@ class Data_Engine:
                 which = 'each individual table'
             else:
                 which = 'this table ' + self.db_manager.table_order[table_index - 1]
-            user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for {which}. This means no consecutive INSERT statements per table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
+            user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for {which}. This means no consecutive INSERT statements per table. Take into consideration the FK constraints if there are any. Take into consideration special characters in SQL Server syntax, add escape characters if needed. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
             if len(self.requirement_list) != 0:
                 requirements = self.format_requirements()
                 user_prompt += requirements
@@ -133,7 +133,7 @@ class Data_Engine:
                 tables += table
                 tables += ', '
 
-            user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for these tables: {tables}. This means no consecutive INSERT statements per table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
+            user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for these tables: {tables}. This means no consecutive INSERT statements per table. Take into consideration the FK constraints if there are any. Take into consideration special characters in SQL Server syntax, add escape characters if needed. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
             if len(self.requirement_list) != 0:
                 requirements = self.format_requirements()
                 user_prompt += requirements
