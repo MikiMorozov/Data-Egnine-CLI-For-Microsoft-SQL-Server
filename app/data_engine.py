@@ -23,17 +23,14 @@ class Data_Engine:
         self.insert_script = ''
         self.set_prompt()
         self.set_assistant()
-
     def set_assistant(self):
         self.assistant = 'I am a highly intelligent assistant that can generate SQL Server INSERT statements with dummy data for your tables. I will only give code snippets and leave out comments. I will make sure to take into consideration special characters and escape characters for MS SQL Server syntax.'
-
     def set_db_manager(self, db_manager):
         try:
             if db_manager is None : raise TypeError("db_manager cannot be None")
             self.db_manager = db_manager
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
     def generate(self, nr_of_lines, table_index=None):
         try:
             prompt = ''
@@ -53,7 +50,6 @@ class Data_Engine:
             self.format_response(response)
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
     def write_to_file(self, output_directory):
         try:
             timestamp = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
@@ -71,26 +67,24 @@ class Data_Engine:
             print(f"Error: Permission denied. Unable to write to '{output_directory}'.")
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
     def delete_requirement(self, index):
         index = int(index)
         try:
             self.requirement_list.pop(index-1)
         except IndexError:
             print('Invalid index')
-
     def add_requirement(self, prompt):
         try:
             self.requirement_list.append(prompt)
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
+    def clear_requirements(self):
+        self.requirement_list = []
     def clear(self):
         self.insert_script = ''
         self.requirement_list = []
         self.table_dict = {}
         self.set_prompt()
-
     def set_prompt(self, table_index=None):
         try:
             if table_index is None:
@@ -107,7 +101,7 @@ class Data_Engine:
 
                 else:
                     for index in self.table_dict.values():
-                        prompt += self.db_manager.table_props[index - 1]
+                        prompt += self.db_manager.table_props[index]
                         prompt += "\n"
 
                     self.prompt = prompt
@@ -124,7 +118,7 @@ class Data_Engine:
                 which = 'each individual table'
             else:
                 which = 'this table ' + self.db_manager.table_order[table_index - 1]
-            user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for {which}. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
+            user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for {which}. This means no consecutive INSERT statements per table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
             if len(self.requirement_list) != 0:
                 requirements = self.format_requirements()
                 user_prompt += requirements
@@ -139,7 +133,7 @@ class Data_Engine:
                 tables += table
                 tables += ', '
 
-            user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for these tables: {tables}. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
+            user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for these tables: {tables}. This means no consecutive INSERT statements per table. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
             if len(self.requirement_list) != 0:
                 requirements = self.format_requirements()
                 user_prompt += requirements

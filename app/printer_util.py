@@ -72,6 +72,8 @@ def print_reqs(data_engine):
         print(f"An unexpected error occurred: {e}")
 def print_req_deleted():
     print(f"Requirement deleted.")
+def print_reqs_cleared():
+    print('Requirements cleared. -ar to add a requirement.')
 def print_table_deleted():
     print(f"Table deleted from prompt. Use -sp to see the prompt.")
 def see_tables_added(data_engine):
@@ -115,7 +117,7 @@ def print_get_model(data_engine):
         print(f"Current model: {data_engine.model}.")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-def print_model_set(model):
+def print_set_model(model):
     print(f"Model set to {model}.")
 def print_tables_cleared():
     print('Tables cleared. -pp to see prompt.')

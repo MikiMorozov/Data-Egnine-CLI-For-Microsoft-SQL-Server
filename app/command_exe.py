@@ -60,6 +60,12 @@ def print_requirements():
         printer_util.print_reqs(data_engine)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+def clear_requirements():
+    try:
+        data_engine.clear_requirements()
+        printer_util.print_reqs_cleared()
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 def add_table(index):
     try:
         data_engine.add_table(index)
@@ -96,7 +102,7 @@ def print_tables():
 def print_table_relationships():
     printer_util.print_table_relationships(db_manager)
 def print_table_order():
-    printer_util.print_table_order(data_engine.model)
+    printer_util.print_table_order(db_manager)
 def start_engine():
     engine_running[0] = True 
     printer_util.print_engine_started()
@@ -118,7 +124,7 @@ def print_models():
 def set_model(model_index):
     try:
         data_engine.set_model(model_index)
-        printer_util.print_set_model(data_engine)
+        printer_util.print_set_model(data_engine.model)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 def print_get_model():

@@ -13,6 +13,7 @@ engine_commands = {
     r'\s*-ptp\s*': command_exe.see_tables,
     r'\s*-pp\s*': command_exe.print_prompt,
     r'\s*-ct\s*': command_exe.clear_tables,
+    r'\s*-cr\s*': command_exe.clear_requirements,
     }
 
 non_engine_commands = { 

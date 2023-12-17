@@ -22,6 +22,7 @@ HELP_TEXT = """
     -g <number> -t <table_index>        specify the number of lines of data data to be generated for given table. Table index can be found using -pto command
     -ar <requirement_text>                   adds requirement <requirement_text> to the requirement list when engine is running. Prompts are used to customize the data generation output.
     -dr <index>                         deletes requirement <index> from the requirement list when engine is running
+    -cr                                 clears requirement list when engine is running
     -pr                                 prints all saved requirements
     -at                                 add table to prompt
     -dt                                 delete table from prompt
