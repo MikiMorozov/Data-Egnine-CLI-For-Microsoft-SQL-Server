@@ -26,6 +26,9 @@ def write_data(output_directory):
     except Exception as e:  
         print(f"An unexpected error occurred: {e}")
 def insert_into_db():
+    if data_engine.insert_script == '':
+        print('No data to insert. Please generate data first. Use the -g <number> [-t <index>] command.')
+        return
     try:
         db_manager.insert_into_db(data_engine.insert_script)
     except Exception as e:
