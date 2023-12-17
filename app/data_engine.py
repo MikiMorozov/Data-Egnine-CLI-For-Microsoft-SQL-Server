@@ -22,9 +22,9 @@ class Data_Engine:
         self.table_dict = {}
         self.insert_script = ''
         self.set_prompt()
+        self.set_assistant()
 
-    def set_assistant(self, assistant):
-        if assistant is None : raise TypeError("assistant cannot be None")
+    def set_assistant(self):
         self.assistant = 'I am a highly intelligent assistant that can generate SQL Server INSERT statements with dummy data for your tables. I will only give code snippets and leave out comments. I will make sure to take into consideration special characters and escape characters for MS SQL Server syntax.'
 
     def set_db_manager(self, db_manager):
@@ -106,7 +106,7 @@ class Data_Engine:
 
                 else:
                     for index in self.table_dict.values():
-                        prompt += self.db_manager.table_props[index]
+                        prompt += self.db_manager.table_props[index - 1]
                         prompt += "\n"
 
                     self.prompt = prompt
@@ -123,7 +123,7 @@ class Data_Engine:
             if table_index is None:
                 which = 'each individual table'
             else:
-                which = 'this table ' + next(iter(self.db_manager.table_order))
+                which = 'this table ' + self.db_manager.table_order[table_index - 1]
             user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for {which}. Take into consideration the FK constraints if there are any. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
             if len(self.requirement_list) != 0:
                 requirements = self.format_requirements()

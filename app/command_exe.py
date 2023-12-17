@@ -34,7 +34,7 @@ def insert_into_db():
         print(f"An unexpected error occurred: {e}")
 
 def generate(nr_of_lines, table_index=None):
-    table_index = int(table_index) - 1 if table_index is not None else None
+    table_index = int(table_index) if table_index is not None else None
     try: 
         with Halo(text='generating data...'):
             start_time = time.time()
@@ -127,6 +127,7 @@ def stop_engine():
 
 def quit():
    program_running[0] = False
+   print('Bye!')
 
 def print_models():
     try:
@@ -137,7 +138,7 @@ def print_models():
 def set_model(model_index):
     try:
         data_engine.set_model(model_index)
-    except:
+    except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
 def print_get_model():

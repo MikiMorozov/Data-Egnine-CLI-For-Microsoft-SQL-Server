@@ -7,10 +7,10 @@ from help import HELP_TEXT
 
 def welcome():
     os.system('cls')
-    print("****************************************")
-    print("Welcome to Data Engine CLI for SQL Server")
-    print("v1.0")
-    print("****************************************")
+    print("***********************************************")
+    print("*  Welcome to Data Engine CLI for SQL Server  *")
+    print("*  v1.0                                       *")
+    print("***********************************************")
 
 def print_tables(db_manager):
     try:

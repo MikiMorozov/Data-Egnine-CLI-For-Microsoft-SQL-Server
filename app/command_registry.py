@@ -18,11 +18,11 @@ engine_commands = {
 non_engine_commands = { 
     r'\s*--help\s*': command_exe.print_help,
     r'^\-pt$': command_exe.print_tables,
-   r'\s*-ptr\s*': command_exe.print_table_relationships,
+    r'\s*-ptr\s*': command_exe.print_table_relationships,
     r'\s*-pto\s*': command_exe.print_table_order,
     r'\s*--start\s*': command_exe.start_engine, 
     r'\s*--stop\s*': command_exe.stop_engine,
-    r'\s*-p\s*': command_exe.quit,
+    r'\s*-q\s*': command_exe.quit,
     r'\s*--models\s*': command_exe.print_models, 
     r'--setmodel\s+(\d+)$': command_exe.set_model,
     r'\s*--getmodel\s*': command_exe.print_get_model,
