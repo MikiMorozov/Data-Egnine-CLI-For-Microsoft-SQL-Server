@@ -142,15 +142,15 @@ class Database_Manager:
     def insert_into_db(self, insert_stmt):
         try:
             conn = pyodbc.connect(self.connection_string_pyodbc)
-            insert_stmt = insert_stmt 
-            print(insert_stmt)
             with conn as connection:
                 cursor = connection.cursor()
                 cursor.execute(insert_stmt)
-                print('Data succesfully inserted into database.\n')
                 cursor.commit()
+                print('Data succesfully inserted into database.\n')
         except pyodbc.Error as e:
         # Rollback the transaction if an error occurs
+            for arg in e.args:
+                print(arg)
             connection.rollback()
 
         # Print the error message
