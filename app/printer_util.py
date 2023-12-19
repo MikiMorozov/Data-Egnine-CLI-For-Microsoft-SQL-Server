@@ -4,6 +4,7 @@ from colorama import Fore
 from halo import Halo
 from models import MODELS
 from help import HELP_TEXT
+import token_util
 
 def welcome():
     os.system('cls')
@@ -88,18 +89,12 @@ def see_tables_added(data_engine):
             print('\n')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-def print_db_prompt(data_engine):
+def print_system_prompt(data_engine):
     try:
+        prompt = data_engine.get_prompt()
         print('\n')
-        print(f"{data_engine.prompt}")
-        print('\n')
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-def print_tables_prompt(data_engine):
-    try:
-        print('\n')
-        print(f"{data_engine.set_prompt()}")
-        print('\n')
+        print(f"{prompt}")
+        token_util.get_tokens_system_prompt(prompt, data_engine)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 def print_tables_cleared():

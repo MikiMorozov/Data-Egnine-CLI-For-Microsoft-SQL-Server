@@ -21,7 +21,6 @@ class Data_Engine:
         self.model = 'gpt-3.5-turbo-1106' #default model
         self.table_dict = {}
         self.insert_script = ''
-        self.set_prompt()
         self.set_assistant()
     def set_assistant(self):
         self.assistant = 'I am a highly intelligent assistant that can generate SQL Server INSERT statements with dummy data for your tables. I will only give code snippets and leave out comments. I will make sure to take into consideration special characters and escape characters for MS SQL Server syntax.'
@@ -35,17 +34,8 @@ class Data_Engine:
         try:
             prompt = ''
             user_prompt = ''
-            if table_index is None and len(self.table_dict) == 0:
-                prompt = self.set_prompt()
-                user_prompt = self.format_user_prompt(nr_of_lines)
-            elif table_index is None and len(self.table_dict) != 0:
-                prompt = self.set_prompt()
-                user_prompt = self.format_user_prompt_tables(nr_of_lines)
-            else:
-                prompt = self.set_prompt(table_index)
-                user_prompt = self.format_user_prompt(nr_of_lines, table_index)
-
-            
+            prompt = self.get_prompt()
+            user_prompt = self.format_user_prompt(nr_of_lines, table_index)
             response = gpt.get_response(prompt, self.model, user_prompt, self.assistant)
             self.format_response(response)
         except Exception as e:
@@ -85,7 +75,7 @@ class Data_Engine:
         self.requirement_list = []
         self.table_dict = {}
         self.set_prompt()
-    def set_prompt(self, table_index=None):
+    def get_prompt(self, table_index=None):
         try:
             if table_index is None:
                 prompt = ''
@@ -104,7 +94,6 @@ class Data_Engine:
                         prompt += self.db_manager.table_props[index]
                         prompt += "\n"
 
-                    self.prompt = prompt
                     return prompt
             else:
                 prompt = self.db_manager.table_props[table_index - 1]
@@ -114,29 +103,25 @@ class Data_Engine:
             print(f"An unexpected error occurred: {e}")
     def format_user_prompt(self, nr_of_lines, table_index=None):
         try:
-            if table_index is None:
+            # if there is no table_index given and there are no tables in the table_dict, then the user wants to generate data for all tables
+            if table_index is None and len(self.table_dict) == 0:
                 which = 'each individual table'
-            else:
+            # if there is no table_index given and there are tables in the table_dict, then the user wants to generate data for the tables in the table_dict
+            elif table_index is None and len(self.table_dict) != 0:
+                which = 'these tables: '
+                for table in self.table_dict.keys():
+                    which += table
+                    which += ', '
+            # if there is a table_index given, then the user wants to generate data for that table
+            elif table_index is not None:
                 which = 'this table ' + self.db_manager.table_order[table_index - 1]
+
             user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for {which}. This means no consecutive INSERT statements per table. Take into consideration the FK constraints if there are any. Take into consideration special characters in SQL Server syntax, add escape characters if needed. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
+
             if len(self.requirement_list) != 0:
                 requirements = self.format_requirements()
                 user_prompt += requirements
-            return user_prompt
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
-    def format_user_prompt_tables(self, nr_of_lines):
-        try:
-            tables = ''
 
-            for table in self.table_dict.keys():
-                tables += table
-                tables += ', '
-
-            user_prompt = f"Generate 1 SQL Server INSERT statement with {nr_of_lines} lines of dummy data for these tables: {tables}. This means no consecutive INSERT statements per table. Take into consideration the FK constraints if there are any. Take into consideration special characters in SQL Server syntax, add escape characters if needed. Output everything in 1 code snippet. Don't add comments to the code snippet. Don't generate IDs if they are auto-generated. \n"
-            if len(self.requirement_list) != 0:
-                requirements = self.format_requirements()
-                user_prompt += requirements
             return user_prompt
         except Exception as e:
             print(f"An unexpected error occurred: {e}")

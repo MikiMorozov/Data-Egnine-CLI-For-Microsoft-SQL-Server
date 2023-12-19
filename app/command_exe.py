@@ -6,6 +6,7 @@ from data_engine import Data_Engine
 from colorama import Fore, Style
 import time
 from halo import Halo
+import token_util
 
 engine_running = [False]
 program_running = [True]
@@ -44,6 +45,9 @@ def generate(nr_of_lines, table_index=None):
             print(Fore.LIGHTBLUE_EX + data_engine.insert_script)
             print('\n')
             print(f"Time elapsed: {round(end_time - start_time, 3)} seconds\n")
+            #reste font color
+            print(Style.RESET_ALL)
+            token_util.get_total_tokens(data_engine, nr_of_lines, data_engine.insert_script)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 def add_requirement(prompt):
@@ -86,10 +90,7 @@ def see_tables():
         print('Invalid input for -rt command')
 def print_prompt():
     try:
-        if len(data_engine.table_dict) == 0:
-            printer_util.print_db_prompt(data_engine)
-        else:
-            printer_util.print_tables_prompt(data_engine)
+        printer_util.print_system_prompt(data_engine)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 def clear_tables():
