@@ -160,7 +160,7 @@ def engine_check(user_input):
         return True
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-def get_command(user_input):
+def execute_command(user_input):
     try:
         from command_registry import engine_commands, non_engine_commands
 

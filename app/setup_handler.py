@@ -1,6 +1,6 @@
 import os
 
-def check_env():
+def check_env_connection_string():
     try:
         if os.path.exists('.env'):
             print('.env file detected.')
