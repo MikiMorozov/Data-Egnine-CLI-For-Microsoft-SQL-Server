@@ -18,6 +18,11 @@ This lightweight CLI is designed to generate test data for your SQL Server datab
 - [Badges](#badges)
 - [Demo](#demo)
 
+## Prerequisites
+
+1. [Python](https://www.python.org/downloads/) installed
+2. [ODBC Driver for SQL Server](https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16#download-for-windows) installed
+
 ## Installation
 
 1. Clone the repository:
@@ -102,7 +107,27 @@ Engine-dependent commands:
 
 ## Configuration
 
-The only configuration you'll need to do is install an ODBC driver for your database if you haven't already. This program currently only supports ODBC Driver 17 for SQL Server.
+1. Open the ODBC Data Source Administrator:
+
+   - On Windows, search for "ODBC" in the Start menu and choose "ODBC Data Sources (32-bit)" or "ODBC Data Sources (64-bit)" based on your system architecture.
+   - On macOS/Linux, use the odbcad32 or odbcad64 command in the terminal.
+
+2. In the ODBC Data Source Administrator, go to the "System DSN" tab.
+
+3. Click "Add" to add a new data source.
+
+4. Select "ODBC Driver 17 for SQL Server" from the list.
+
+5. Configure the connection parameters:
+
+   - Name: Enter a name for your data source.
+   - Server: Enter the address of your SQL Server.
+   - Authentication: Choose the appropriate authentication method.
+   - Database: Enter the name of your database.
+   - (Other settings as needed)
+   - Test the connection to ensure it's successful.
+
+6. Click "OK" to save the data source.
 
 ### Step 1: install ODBC Driver for SQL Server
 
