@@ -1,6 +1,6 @@
 # Data Engine CLI For Microsoft SQL Server
 
-This lightweight CLI is designed to generate test data for your SQL Server database. Just add your API key and connection string to an .env file in the app directory and you're good to go! Using OpenAI GPT models this application sends prompts with all relevant metadata of your database, along with any user input, resulting in ready-made INSERT statements you can use instantly. Wether you want to copy and paste, write to a file or insert directly into your database is completely up to you.
+This lightweight CLI is designed to generate test data for your SQL Server database. Just add your API key and connection string to an .env file in the app directory and you're good to go! Using OpenAI GPT models, this application sends prompts with all relevant metadata of your database, along with any user input, resulting in ready-made INSERT statements you can use instantly. Wether you want to copy and paste, write to a file or insert directly into your database is completely up to you.
 
 ## Table of Contents
 
