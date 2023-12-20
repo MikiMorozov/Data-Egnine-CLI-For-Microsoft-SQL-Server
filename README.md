@@ -58,7 +58,7 @@ This lightweight CLI is designed to generate test data for your SQL Server datab
    pip install -r requirements.txt
    ```
 
-Note: don't create an .env file just yet. Run the program for the first time, it will create an .env file with placeholders and exit.
+**Note**: don't create an .env file just yet. Run the program for the first time, it will create an .env file with placeholders and exit.
 
 6. Now you're ready to run the project:
 
@@ -66,7 +66,7 @@ Note: don't create an .env file just yet. Run the program for the first time, it
    python __main__.py
    ```
 
-Copy and paste your connection string and OpenAI API key instead of the placeholder, run program again and you're good to go!
+**Note**:Copy and paste your connection string and OpenAI API key instead of the placeholder, run program again and you're good to go!
 
 ## Usage
 
@@ -102,7 +102,13 @@ Engine-dependent commands:
 
 ## Configuration
 
-Explain any configuration settings that users might need to adjust.
+The only configuration you'll need to do is install an ODBC driver for your database if you haven't already. This program currently supports ODBC Driver 17 for SQL Server only.
+
+### Step 1: install ODBC Driver for SQL Server
+
+Go to: https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16#download-for-windows
+
+### Step 2:
 
 ## Contributing
 
