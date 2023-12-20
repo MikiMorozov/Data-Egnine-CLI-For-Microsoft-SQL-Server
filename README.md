@@ -78,8 +78,8 @@ Engine-independent commands:
     -pt                                 see all tables in the database
     -ptr                                see tables and their FK relationships
     -pto                                see table order for data generation
-    -start                              starts engine: keeps prompts, generated data, tables and requirements to memory
-    -stop                               stops engine: clears the above from memory
+    --start                             starts engine: keeps prompts, generated data, tables and requirements to memory
+    --stop                              stops engine: clears the above from memory
     --models                            see all models
     --setmodel <model_index>            set model
     --getmodel                          get current model
@@ -88,7 +88,7 @@ Engine-independent commands:
 Engine-dependent commands:
 
     -g <number> [-t <table_index>]      specify the number of lines of data data to be generated for each table. Can be used with -t to specify the table index. Table index can be found using -pto command
-    -ar <requirement_text>                   adds requirement <requirement_text> to the requirement list when engine is running. Prompts are used to customize the data generation output.
+    -ar <requirement_text>              adds requirement <requirement_text> to the requirement list when engine is running. Prompts are used to customize the data generation output.
     -dr <index>                         deletes requirement <index> from the requirement list when engine is running
     -cr                                 clears requirement list when engine is running
     -pr                                 prints all saved requirements
@@ -102,7 +102,7 @@ Engine-dependent commands:
 
 ## Configuration
 
-The only configuration you'll need to do is install an ODBC driver for your database if you haven't already. This program currently supports ODBC Driver 17 for SQL Server only.
+The only configuration you'll need to do is install an ODBC driver for your database if you haven't already. This program currently only supports ODBC Driver 17 for SQL Server.
 
 ### Step 1: install ODBC Driver for SQL Server
 
