@@ -1,4 +1,4 @@
-# __bold__Project Title__bold__
+# __Project Title__
 
 A short description of your project.
 
