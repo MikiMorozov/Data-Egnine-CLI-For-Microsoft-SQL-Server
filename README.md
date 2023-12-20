@@ -20,8 +20,51 @@ This lightweight CLI is designed to generate test data for your SQL Server datab
 
 ## Installation
 
-1. Clone repository to you system
-2. Enter the venv
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone <link to this repository>
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd your-repository
+   ```
+
+3. Create a virtual environment:
+
+   ```bash
+   python -m venv venv
+   ```
+
+4. Activate the virtual environment:
+
+   - On Windows:
+
+     ```bash
+     .\venv\Scripts\activate
+     ```
+
+   - On macOS/Linux:
+
+     ```bash
+     source venv/bin/activate
+     ```
+
+5. Install project dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+6. Now you're ready to run the project:
+
+   ```bash
+   python __main__py
+   ```
 
 ## Usage
 
