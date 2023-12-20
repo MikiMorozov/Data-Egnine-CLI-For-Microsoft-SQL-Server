@@ -9,9 +9,6 @@ This lightweight CLI is designed to generate test data for your SQL Server datab
 - [Configuration](#configuration)
 - [License](#license)
 - [Credits](#credits)
-- [Documentation](#documentation)
-- [Tests](#tests)
-- [Changelog](#changelog)
 - [Support](#support)
 - [Acknowledgments](#acknowledgments)
 - [Badges](#badges)
@@ -134,24 +131,58 @@ Engine-dependent commands:
 
 ## Credits
 
-Acknowledge any third-party libraries, resources, or contributors.
+I would like to express my gratitude to the following open-source projects and their contributors, whose work has made my project possible:
 
-## Documentation
-
-Link to or include additional documentation or user guides.
+- [aiohttp](https://github.com/aio-libs/aiohttp) v3.9.0
+- [aiosignal](https://github.com/python-trio/aiosignal) v1.3.1
+- [annotated-types](https://github.com/python/peps/pull/1145) v0.6.0
+- [anyio](https://github.com/agronholm/anyio) v3.7.1
+- [attrs](https://github.com/python-attrs/attrs) v23.1.0
+- [certifi](https://github.com/certifi/python-certifi) v2023.11.17
+- [charset-normalizer](https://github.com/Drekin/charset_normalizer) v3.3.2
+- [click](https://github.com/pallets/click) v8.1.7
+- [colorama](https://github.com/tartley/colorama) v0.4.6
+- [distro](https://github.com/nir0s/distro) v1.8.0
+- [frozenlist](https://github.com/freshcat/frozenlist) v1.4.0
+- [greenlet](https://github.com/python-greenlet/greenlet) v3.0.1
+- [h11](https://github.com/python-hyper/h11) v0.14.0
+- [halo](https://github.com/manrajgrover/halo) v0.0.31
+- [httpcore](https://github.com/encode/httpcore) v1.0.2
+- [httpx](https://github.com/encode/httpx) v0.25.2
+- [idna](https://github.com/kjd/idna) v3.6
+- [iniconfig](https://github.com/matrix-org/python-iniconfig) v2.0.0
+- [log-symbols](https://github.com/sindresorhus/log-symbols) v0.0.14
+- [multidict](https://github.com/aio-libs/multidict) v6.0.4
+- [openai](https://github.com/openai/openai) v1.3.7
+- [packaging](https://github.com/pypa/packaging) v23.2
+- [pluggy](https://github.com/pytest-dev/pluggy) v1.3.0
+- [prompt-toolkit](https://github.com/prompt-toolkit/python-prompt-toolkit) v3.0.41
+- [pydantic](https://github.com/samuelcolvin/pydantic) v2.5.2
+- [pydantic-core](https://github.com/samuelcolvin/pydantic-core) v2.14.5
+- [pymssql](https://github.com/pymssql/pymssql) v2.2.11
+- [PyMySQL](https://github.com/PyMySQL/PyMySQL) v1.1.0
+- [pyodbc](https://github.com/mkleehammer/pyodbc) v5.0.1
+- [pytest](https://github.com/pytest-dev/pytest) v7.4.3
+- [python-dotenv](https://github.com/theskumar/python-dotenv) v1.0.0
+- [regex](https://github.com/python/regex) v2023.10.3
+- [requests](https://github.com/psf/requests) v2.31.0
+- [six](https://github.com/benjaminp/six) v1.16.0
+- [sniffio](https://github.com/python-trio/sniffio) v1.3.0
+- [spinners](https://github.com/ionelmc/python-spinners) v0.0.24
+- [SQLAlchemy](https://github.com/sqlalchemy/sqlalchemy) v2.0.23
+- [termcolor](https://github.com/hfeeki/termcolor) v2.4.0
+- [tiktoken](https://github.com/boudinfl/tiktoken) v0.5.2
+- [tqdm](https://github.com/tqdm/tqdm) v4.66.1
+- [typing-extensions](https://github.com/python/typing) v4.8.0
+- [urllib3](https://github.com/urllib3/urllib3) v2.1.0
+- [wcwidth](https://github.com/jquast/wcwidth) v0.2.12
+- [yarl](https://github.com/aio-libs/yarl) v1.9.3
 
 ## Support
 
-Information on how users can get help or support.
-
-## Acknowledgments
-
-Show appreciation for individuals or organizations that supported or inspired your work.
+1. **GitHub Issues:**
+   - [Open an issue](https://github.com/your-username/your-repo/issues) on the GitHub repository to report bugs, request features, or ask questions.
 
 ## Badges
 
-Include badges to showcase project or build status.
-
-## Demo
-
-Link to a live demo or a video demonstrating your app.
+![Version](https://img.shields.io/badge/Version-1.0.0-brightgreen.svg)
