@@ -7,7 +7,6 @@ This lightweight CLI is designed to generate test data for your SQL Server datab
 - [Installation](#installation)
 - [Usage](#usage)
 - [Configuration](#configuration)
-- [Contributing](#contributing)
 - [License](#license)
 - [Credits](#credits)
 - [Documentation](#documentation)
@@ -129,19 +128,9 @@ Engine-dependent commands:
 
 6. Click "OK" to save the data source.
 
-### Step 1: install ODBC Driver for SQL Server
-
-Go to: https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16#download-for-windows
-
-### Step 2:
-
-## Contributing
-
-Guidelines for contributing to your project.
-
 ## License
 
-Specify the license under which your project is released.
+[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 ## Credits
 
