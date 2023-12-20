@@ -47,7 +47,7 @@ def generate(nr_of_lines, table_index=None):
             print(f"Time elapsed: {round(end_time - start_time, 3)} seconds\n")
             #reste font color
             print(Style.RESET_ALL)
-            token_util.get_total_tokens(data_engine, nr_of_lines, data_engine.insert_script)
+        token_util.get_total_tokens(data_engine, nr_of_lines, data_engine.insert_script)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 def add_requirement(prompt):

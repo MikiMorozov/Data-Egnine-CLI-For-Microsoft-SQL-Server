@@ -32,11 +32,9 @@ class Data_Engine:
             print(f"An unexpected error occurred: {e}")
     def generate(self, nr_of_lines, table_index=None):
         try:
-            prompt = ''
-            user_prompt = ''
-            prompt = self.get_prompt()
+            system_prompt = self.get_system_prompt()
             user_prompt = self.format_user_prompt(nr_of_lines, table_index)
-            response = gpt.get_response(prompt, self.model, user_prompt, self.assistant)
+            response = gpt.get_response(system_prompt, self.model, user_prompt, self.assistant)
             self.format_response(response)
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
@@ -74,8 +72,8 @@ class Data_Engine:
         self.insert_script = ''
         self.requirement_list = []
         self.table_dict = {}
-        self.set_prompt()
-    def get_prompt(self, table_index=None):
+        self.get_system_prompt()
+    def get_system_prompt(self, table_index=None):
         try:
             if table_index is None:
                 prompt = ''

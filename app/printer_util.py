@@ -1,7 +1,5 @@
 import os
-import time
 from colorama import Fore
-from halo import Halo
 from models import MODELS
 from help import HELP_TEXT
 import token_util
@@ -91,10 +89,10 @@ def see_tables_added(data_engine):
         print(f"An unexpected error occurred: {e}")
 def print_system_prompt(data_engine):
     try:
-        prompt = data_engine.get_prompt()
+        system_prompt = data_engine.get_system_prompt()
         print('\n')
-        print(f"{prompt}")
-        token_util.get_tokens_system_prompt(prompt, data_engine)
+        print(f"{system_prompt}")
+        token_util.get_tokens_system_prompt(system_prompt, data_engine)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 def print_tables_cleared():
