@@ -20,8 +20,6 @@ This lightweight CLI is designed to generate test data for your SQL Server datab
 
 ## Installation
 
-## Installation
-
 1. Clone the repository:
 
    ```bash
