@@ -67,7 +67,7 @@ This lightweight CLI is designed to generate test data for your SQL Server datab
    python __main__.py
    ```
 
-**Note**:Copy and paste your connection string and OpenAI API key instead of the placeholder, run program again and you're good to go!
+**Note**: copy and paste your connection string and OpenAI API key instead of the placeholder, run program again and you're good to go!
 
 ## Usage
 
