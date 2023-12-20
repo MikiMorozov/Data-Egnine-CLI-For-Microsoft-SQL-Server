@@ -1,8 +1,8 @@
-#__Project Title__
+# **Data Egnine CLI For Microsoft SQL Server**
 
-A short description of your project.
+This lightweight CLI is designed to generate test data for your SQL Server database.
 
-## Table of Contents
+## **Table of Contents**
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -18,11 +18,11 @@ A short description of your project.
 - [Badges](#badges)
 - [Demo](#demo)
 
-## Installation
+## **Installation**
 
 Include step-by-step instructions on how to install and set up your app.
 
-## Usage
+## **Usage**
 
 Provide information on how to use your app. Include examples and screenshots if applicable.
 
@@ -30,35 +30,27 @@ Provide information on how to use your app. Include examples and screenshots if 
 
 Explain any configuration settings that users might need to adjust.
 
-## Contributing
+## **Contributing**
 
 Guidelines for contributing to your project.
 
-## License
+## **License**
 
 Specify the license under which your project is released.
 
-## Credits
+## **Credits**
 
 Acknowledge any third-party libraries, resources, or contributors.
 
-## Documentation
+## **Documentation**
 
 Link to or include additional documentation or user guides.
 
-## Tests
-
-Explain how to run tests for your app.
-
-## Changelog
-
-Keep a changelog documenting changes in each version.
-
-## Support
+## **Support**
 
 Information on how users can get help or support.
 
-## Acknowledgments
+## **Acknowledgments**
 
 Show appreciation for individuals or organizations that supported or inspired your work.
 
