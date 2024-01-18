@@ -69,8 +69,8 @@ def print_reqs(data_engine):
         print('\n')
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-def print_req_deleted():
-    print(f"Requirement deleted.")
+def print_req_deleted(req):
+    print(f'Requirement deleted: "{req}". Use -pr to see all requirements.')
 def print_reqs_cleared():
     print('Requirements cleared. -ar to add a requirement.')
 def print_table_deleted():

@@ -45,7 +45,7 @@ def generate(nr_of_lines, table_index=None):
             print(Fore.LIGHTBLUE_EX + data_engine.insert_script)
             print('\n')
             print(f"Time elapsed: {round(end_time - start_time, 3)} seconds\n")
-            #reste font color
+            #reset font color
             print(Style.RESET_ALL)
         token_util.get_total_tokens(data_engine, nr_of_lines, data_engine.insert_script)
     except Exception as e:
@@ -58,8 +58,8 @@ def add_requirement(prompt):
         print(f"An unexpected error occurred: {e}")
 def delete_requirement(index):
     try:
+        printer_util.print_req_deleted(data_engine.requirement_list[int(index)-1])
         data_engine.delete_requirement(index)
-        printer_util.print_req_deleted()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 def print_requirements():
