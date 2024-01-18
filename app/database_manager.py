@@ -39,6 +39,7 @@ class Database_Manager:
         self.set_table_props()
 
     # setters
+        
     def set_connection_string(self):
         try:
             if os.getenv("CONNECTION_STRING") is None:
