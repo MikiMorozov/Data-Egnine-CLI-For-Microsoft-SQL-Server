@@ -93,37 +93,33 @@ class Database_Manager:
     def set_table_order(self):
         """Get the order in which tables should be generated."""
 
-        # Get tables without foreign keys
+        # get tables without foreign keys
         tables_without_foreign_keys = []
         try:
             for table_name in self.inspector.get_table_names():
                     foreign_keys = self.inspector.get_foreign_keys(table_name)
                     if not foreign_keys:
                         tables_without_foreign_keys.append(table_name)
-            for table_name in self.inspector.get_table_names():
-                foreign_keys = self.inspector.get_foreign_keys(table_name)
-            if not foreign_keys:
-                tables_without_foreign_keys.append(table_name)
 
-            # Build the table order
+            # build the table order
             self.table_order = tables_without_foreign_keys.copy()
 
-            # Get tables with foreign keys
+            # get tables with foreign keys
             tables_with_foreign_keys = list(set(self.inspector.get_table_names()) - set(tables_without_foreign_keys))
 
-            # Add tables with foreign keys in the order of their foreign key dependencies
+            # add tables with foreign keys in the order of their foreign key dependencies
             while tables_with_foreign_keys:
                 table_added = False
                 for table in tables_with_foreign_keys.copy():
                     foreign_keys = self.inspector.get_foreign_keys(table)
 
-                    # Check if all referred tables are already in the order
+                    # check if all referred tables are already in the order
                     if all(fk['referred_table'] in self.table_order for fk in foreign_keys):
                         self.table_order.append(table)
                         tables_with_foreign_keys.remove(table)
                         table_added = True
 
-                # If no table was added, there might be a circular dependency
+                # if no table was added, there might be a circular dependency
                 if not table_added:
                     raise ValueError("Circular dependency detected in table relationships.")
         except Exception as e:
@@ -149,15 +145,10 @@ class Database_Manager:
                 cursor.commit()
                 print('Data succesfully inserted into database.\n')
         except pyodbc.Error as e:
-        # Rollback the transaction if an error occurs
             for arg in e.args:
                 print(arg)
             connection.rollback()
-
-        # Print the error message
             print(f"Error Message: {e}")
-
         finally:
-        # Close the cursor and connection
             if 'cursor' in locals():
                 cursor.close()
