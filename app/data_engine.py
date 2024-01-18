@@ -15,6 +15,7 @@ class Data_Engine:
     table_dict: dict
 
     # constructor
+    
     def __init__(self, db_manager):
         self.set_db_manager(db_manager)
         self.requirement_list = []

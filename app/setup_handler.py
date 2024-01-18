@@ -34,7 +34,6 @@ def check_env_connection_string():
     except Exception as e:
         print(f'An unexpected error occurred: {e}')
         return False
-
 def check_api_key():
     try:
         api_key = ''
