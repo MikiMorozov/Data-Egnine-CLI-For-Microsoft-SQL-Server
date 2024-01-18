@@ -119,7 +119,7 @@ def stop_engine():
         print(f"An unexpected error occurred: {e}")
 def quit():
    program_running[0] = False
-   print('Bye!')
+   print('Thank you for using Data Engine, goodbye!')
 def print_models():
     try:
         printer_util.print_models()
